@@ -1,0 +1,20 @@
+-	Parser:
+Reads everything and puts it all into a struct (linked list perhaps).
+
+
+
+-	Executor
+Takes the linked list and executes the simpleCommands in the following order:
+
+
+cat file1.txt | grep "e" | sort -r | head -n 10 > outfile < infile > errfile
+
+cat file1.txt
+	grep
+		sort
+			head > put it in outfile and errfile
+				redo all of it but with infile
+
+
+- Shell Subsystems
+env $VAR
