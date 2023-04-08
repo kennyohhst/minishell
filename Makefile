@@ -6,6 +6,7 @@ SRC = main.c create_list.c ft_split.c ft_strdup.c ft_strlcpy.c ft_strlen.c ft_su
 HEAD = minishell.h
 OBJDIR = build
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
+LIBFT = ./libft/libft.a
 
 #DONT FORGET TO PAY ELECTRICITY AND ALSO TO REMOVE THE COMMAND LINE AT THE "all:" RULE
 
@@ -18,8 +19,13 @@ $(OBJDIR):
 $(OBJDIR)/%.o: %.c $(HEAD)
 	$(CC) $(FLAGS) -c $< -o $@
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $@ -lreadline
+# $(NAME): $(OBJ)
+# 	$(CC) $(FLAGS) $(OBJ) -o $@ -lreadline
+$(NAME): $(LIBFT) $(OBJ)
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $@ -lreadline
+
+$(LIBFT):
+	make -C ./libft
 
 # run: $(NAME)
 # 	./$(NAME)
@@ -29,6 +35,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	make -C libft fclean
 
 re: fclean all
 	

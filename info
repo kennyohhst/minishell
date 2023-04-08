@@ -1,6 +1,19 @@
 -	Parser:
 Reads everything and puts it all into a struct (linked list perhaps).
 
+quotes should work as followed: (used echo for testing)
+
+"welcome to the world"		=	welcome to the world
+'welcome to the world'		=	welcome to the world
+"welcome to "the" world"	=	welcome to the world
+"welcome to 'the' world"	=	welcome to 'the' world
+'welcome to "the" world'	=	welcome to "the" world
+"welcome to the world's"	=	welcome to the world's
+'welcome to the world"s'	=	welcome to the world"s
+"welcome to the world"s"	=X	dquote>
+
+
+history <<<has told us "life is like a potato" but its all a lie
 
 
 -	Executor

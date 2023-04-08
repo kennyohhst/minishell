@@ -6,37 +6,21 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/07 15:15:59 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/08 18:27:22 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void test(t_token *cmd)
-{
-	t_token *temp;
-
-	temp = cmd;
-	write(1, "ho\n", 3);	
-	
-	if (temp->next != NULL)
-	{
-		write(1, "hiiiiiii\n", 6);	
-		while (temp != NULL)
-			write(1, "hi\n", 3);	
-	}
-}
-
-
 void	parse(t_token **cmd)
 {
-	// t_token *temp;
 	char	*raw_input;
 	
 	raw_input = (char *)1;
     while (raw_input)
     {
         raw_input = readline("aardappelschil>> ");
+		printf("raw_input:	%s\n", raw_input);
 		if (!(ft_strncmp(raw_input, "exit", 5)))
 			exit(0);
         if (raw_input != NULL && raw_input[0] != '\0')
