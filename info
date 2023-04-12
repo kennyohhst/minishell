@@ -1,3 +1,7 @@
+LINUX HEAP BUFFER OVERFLOW:
+create_list /home/code/42/minishell/create_list.c:47
+
+
 -	Parser:
 Reads everything and puts it all into a struct (linked list perhaps).
 
