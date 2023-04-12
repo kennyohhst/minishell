@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/08 18:27:22 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/12 17:14:34 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	parse(t_token **cmd)
     while (raw_input)
     {
         raw_input = readline("aardappelschil>> ");
-		printf("raw_input:	%s\n", raw_input);
+		// printf("raw_input:	%s\n", raw_input);
 		if (!(ft_strncmp(raw_input, "exit", 5)))
 			exit(0);
         if (raw_input != NULL && raw_input[0] != '\0')
@@ -29,7 +29,7 @@ void	parse(t_token **cmd)
 			create_list(cmd, raw_input);
 			while ((*cmd) != NULL)
 			{
-				printf("%s\n", (*cmd)->str);
+				printf(".%s\n", (*cmd)->str);
 				(*cmd) = (*cmd)->next;
 			}
 		}

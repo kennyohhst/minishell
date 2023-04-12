@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/08 18:22:37 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/12 17:14:05 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(void)
         parse(&cmd);
         if (cmd)
 		{
-        	printf("%s\n", cmd->str);
+        	// printf("%s\n", cmd->str);
 			ft_free_list(cmd);
 		}
     }
