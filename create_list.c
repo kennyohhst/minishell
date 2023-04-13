@@ -6,24 +6,21 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:01:44 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/12 20:38:18 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/13 18:52:36 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	quotes(char *str, int q)
+int quotes(char *str, int i)
 {
-	int	i;
-	
-	i = ft_strlen(str);
-	while (i != q)
+	if (!str)
+		return (0);
+	while (str[i] && str[i] != 34 && str[i] != 39)
 	{
-		if (str[i] == '"')
-			return (i);
-		i--;
+		i++;
 	}
-	return (0);
+	return (i);
 }
 
 int	is_print(char c)
@@ -44,28 +41,29 @@ void	create_list(t_token **cmd, char *str)
 	temp = str;
 	i = 0;
 	x = 0;
-	while (temp[i])
+	while (temp[x])
 	{
-		while (is_print(temp[i]))
+		while (temp[i] && is_print(temp[i]))
 		{
-			if (temp[i] == '"')
-				i = quotes(temp + x, i);
-			if (i == 0 && x != 0)
-				exit (write(2, "Error quotes\n", 14));
+			if (temp[i] == 34 || temp[i] == 39)
+				i = quotes(str, i + 1);
 			i++;
 		}
 		ft_add_nodes(cmd, NULL, ft_substr(temp, x, (i - x)));
-		x = i + 1;
+		x = i;
 		i++;
 	}
 }
-	
+
+
+// void	create_list(t_token **cmd, char *str)
+// {
 // 	char	**splitstr;
 // 	int		x;
 	
 // 	if (!str)
 // 		exit(2);
-// 	splitstr = ft_split(str, ' ');
+// 	splitstr = ft_split(str, 39);
 // 	x = 0;
 // 	if (!splitstr)
 // 		exit(2);
