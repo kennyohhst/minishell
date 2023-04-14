@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/14 18:36:05 by kkalika          ###   ########.fr       */
+/*   Created: 2022/01/21 19:06:28 by kkalika           #+#    #+#             */
+/*   Updated: 2023/04/14 18:33:50 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(void)
+char	*ft_strchr(char *s, int c)
 {
+	int	i;
+	int	slen;
 
-	t_token	*cmd;
-	
-    cmd = NULL;
-    while (1)
-    {
-        printf("%s\n", ft_strtrim("          welcome to the world       ", " "));
-        parse(&cmd);
-        if (cmd)
-		{
-        	// printf("%s\n", cmd->str);
-			ft_free_list(cmd);
-		}
-    }
-    return (0);
+	i = 0;
+	slen = ft_strlen(s);
+	while (i <= slen)
+	{
+		if (s[i] == (char) c)
+			return (&s[i]);
+		i++;
+	}
+	return (0);
 }

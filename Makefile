@@ -2,7 +2,7 @@ NAME = minishell
 CC = gcc
 FLAGS = -g -Wall -Werror -Wextra -fsanitize=address
 SRC = main.c create_list.c ft_split.c ft_strdup.c ft_strlcpy.c ft_strlen.c ft_substr.c ft_memcpy.c ft_free_s.c ft_add_nodes.c \
-		ft_free_list.c parse.c ft_strncmp.c
+		ft_free_list.c parse.c ft_strncmp.c ft_strtrim.c ft_strchr.c
 HEAD = minishell.h
 OBJDIR = build
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))

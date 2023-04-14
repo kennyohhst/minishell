@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:01:44 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/13 18:52:36 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/14 18:53:31 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	create_list(t_token **cmd, char *str)
 	x = 0;
 	while (temp[x])
 	{
+		while (temp[i] == ' ')
+			i++;
 		while (temp[i] && is_print(temp[i]))
 		{
 			if (temp[i] == 34 || temp[i] == 39)
