@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 16:21:16 by code              #+#    #+#             */
-/*   Updated: 2023/04/06 19:24:17 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/20 18:52:47 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@ void	ft_add_nodes(t_token **cmd, t_token *temp, char *str)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
-	// new->str = malloc(ft_strlen(str));
 	if (!new)
 		exit(write(2, "Error\n", 6));
-	new->str = ft_strdup(str);
+	new->str = ft_strtrim(ft_strdup(str), "' '\t\n\v\f\r");
 	temp = (*cmd);
 	if (temp)
 	{

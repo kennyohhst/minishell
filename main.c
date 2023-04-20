@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/14 18:36:05 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/20 18:56:36 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int main(void)
     cmd = NULL;
     while (1)
     {
-        printf("%s\n", ft_strtrim("          welcome to the world       ", " "));
+        // printf("%s\n", ft_strtrim("          welcome to the world       ", " "));
         parse(&cmd);
         if (cmd)
 		{
