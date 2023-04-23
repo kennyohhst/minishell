@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/14 18:33:26 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/21 15:01:46 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	parse(t_token **cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strchr(char *s, int c);
+int		quote_count(char *str);
+
 
 
 

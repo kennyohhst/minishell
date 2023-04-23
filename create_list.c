@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:01:44 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/20 20:43:31 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/21 15:08:43 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,10 @@ void	create_list(t_token **cmd, char *str)
 	int	x;
 
 	temp = str;
-	i = -1;
+	i = 0;
 	x = 0;
 	while (temp[x])
 	{
-		if (i == -1)
-		{
-			temp = ft_strtrim(temp, "' '\t\n\v\f\r");
-			i++;			
-		}
 		while (temp[i] == 32 || (temp[i] >= 9 && temp[i] <= 13))
 			i++;
 		if (temp[i] == '\0')
@@ -56,8 +51,6 @@ void	create_list(t_token **cmd, char *str)
 		{
 			if (temp[i] == 34 || temp[i] == 39)
 				i = quotes(temp, i + 1);
-			// if (temp[i + 1] != 34 || temp[i + 1] != 39)
-			// 	return;
 			i++;
 		}
 		ft_add_nodes(cmd, NULL, ft_substr(temp, x, (i - x)));

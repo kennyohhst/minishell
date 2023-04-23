@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/14 17:55:17 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/21 13:33:00 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	parse(t_token **cmd)
         if (raw_input != NULL && raw_input[0] != '\0')
         {
 			add_history(raw_input);
-			create_list(cmd, raw_input);
+			if (quote_count(raw_input))
+				create_list(cmd, raw_input);
 			while ((*cmd) != NULL)
 			{
 				printf(".%s\n", (*cmd)->str);
