@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/21 15:01:46 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/23 17:15:08 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 typedef struct tokens
 {
 	char			*str;
-	struct tokens	*next;
-	
+	struct tokens	*next;	
 }t_token;
 
 void	create_list(t_token **cmd, char *str);
@@ -41,9 +40,10 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strchr(char *s, int c);
 int		quote_count(char *str);
-
-
-
-
+int		p_d_token(t_token **cmd, char *str);
+int		e_var_token(t_token **cmd, char *str);
+int		d_quotes_token(t_token **cmd, char *str);
+int		s_quotes_token(t_token **cmd, char *str);		
+int		std_token(t_token **cmd, char *str);
 
 #endif

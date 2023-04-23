@@ -6,21 +6,25 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:01:44 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/21 15:08:43 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/23 16:52:29 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int quotes(char *str, int i)
+int	tokenize(char mode, t_token **cmd, char *str)
 {
-	if (!str)
-		return (i);
-	while (str[i] && str[i] != 34 && str[i] != 39)
-	{
-		i++;
-	}
-	return (i);
+	if (mode == 0)
+		return (p_d_token(cmd, str));
+	if (mode == 1)
+		return (e_var_token(cmd, str));
+	if (mode == 2)
+		return (d_quotes_token(cmd, str));
+	if (mode == 3)
+		return (s_quotes_token(cmd, str));
+	if (mode == 4)
+		return (std_token(cmd, str));
+	return (-1);
 }
 
 int	is_print(char c)
@@ -32,45 +36,42 @@ int	is_print(char c)
 	return (0);
 }
 
-void	create_list(t_token **cmd, char *str)
+int	check_char(char c)
 {
-	char *temp;
-	int	i;
-	int	x;
-
-	temp = str;
-	i = 0;
-	x = 0;
-	while (temp[x])
+	if (is_print(c))
 	{
-		while (temp[i] == 32 || (temp[i] >= 9 && temp[i] <= 13))
-			i++;
-		if (temp[i] == '\0')
-			break;
-		while (temp[i] && is_print(temp[i]))
-		{
-			if (temp[i] == 34 || temp[i] == 39)
-				i = quotes(temp, i + 1);
-			i++;
-		}
-		ft_add_nodes(cmd, NULL, ft_substr(temp, x, (i - x)));
-		x = i;
-		i++;
+		if (c == '|' || c == '>' || c == '<')
+			return (0);
+		else if (c == '$')
+			return (1);
+		else if (c == 34)
+			return (2);
+		else if (c == 39)
+			return (3);
+		else
+			return (4);
 	}
+	return (-1);
 }
 
+void	create_list(t_token **cmd, char *str)
+{
+	int	err_check;
+	int	i;
+	int	mode;
 
-// void	create_list(t_token **cmd, char *str)
-// {
-// 	char	**splitstr;
-// 	int		x;
-	
-// 	if (!str)
-// 		exit(2);
-// 	splitstr = ft_split(str, 39);
-// 	x = 0;
-// 	if (!splitstr)
-// 		exit(2);
-// 	while (splitstr[x] != NULL)
-// 		ft_add_nodes(cmd, NULL, splitstr[x++]);
-// }
+	i = 0;
+	while (str[i] != '\0')
+	{
+		while (str[i] == 32)
+			i++;
+		if (str[i] == '\0')
+			break ;
+		mode = check_char(str[i]);
+		err_check = tokenize(mode, cmd, (str + i));
+		if (err_check == -1)
+			return ;
+		else
+			i += err_check;
+	}
+}

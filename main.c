@@ -6,27 +6,38 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/20 18:56:36 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/23 17:14:41 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(void)
+void	list_check(t_token *cmd)
 {
+	t_token	*temp;
 
+	temp = cmd;
+	while (temp)
+	{
+		printf("%s\n", temp->str);
+		temp = temp->next;
+	}
+}
+
+int	main(void)
+{
 	t_token	*cmd;
-	
-    cmd = NULL;
-    while (1)
-    {
-        // printf("%s\n", ft_strtrim("          welcome to the world       ", " "));
-        parse(&cmd);
-        if (cmd)
+
+	cmd = NULL;
+	while (1)
+	{
+		parse(&cmd);
+		list_check(cmd);
+		if (cmd)
 		{
-        	// printf("%s\n", cmd->str);
 			ft_free_list(cmd);
+			cmd = NULL;
 		}
-    }
-    return (0);
+	}
+	return (0);
 }
