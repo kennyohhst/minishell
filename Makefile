@@ -1,35 +1,77 @@
-NAME = minishell
-CC = gcc
-FLAGS = -g -Wall -Werror -Wextra -fsanitize=address
-SRC = main.c create_list.c ft_split.c ft_strdup.c ft_strlcpy.c ft_strlen.c ft_substr.c ft_memcpy.c ft_free_s.c ft_add_nodes.c \
-		ft_free_list.c parse.c ft_strncmp.c ft_strtrim.c ft_strchr.c quote_count.c tokens.c
-HEAD = minishell.h
-OBJDIR = build
-OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
+NAME := minishell
+NICKNAME := MINISHELL
 
-#DONT FORGET TO PAY ELECTRICITY AND ALSO TO REMOVE THE COMMAND LINE AT THE "all:" RULE
+# Directories
+HDR_DIR := include
+LIB_DIR := lib
+SRC_DIR := src
+OBJ_DIR := obj
 
-all: $(OBJDIR) $(NAME)
-	./$(NAME)
+# Compiler flags
+CC := gcc
+CFLAGS := -Wall -Werror -Wextra -g
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+# Includes
+HDR_FILES :=	minishell.h
 
-$(OBJDIR)/%.o: %.c $(HEAD)
-	$(CC) $(FLAGS) -c $< -o $@
+# Libft
+LIBFT_DIR		:= $(LIB_DIR)/libft
+LIB				:= $(LIBFT_DIR)/libft.a
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $@ -lreadline
+# Files
+SRC_FILES :=	main.c							\
+				create_list.c					\
+				ft_free_string_array.c			\
+				ft_add_nodes.c					\
+				ft_free_list.c					\
+				parse.c							\
+				quote_count.c					\
+				tokens.c						\
 
-# run: $(NAME)
-# 	./$(NAME)
+SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
+HDR := $(addprefix $(HDR_DIR)/, $(HDR_FILES))
+
+# Colours
+GREEN	:= \033[32;1m
+YELLOW	:= \033[33;1m
+RED		:= \033[31;1m
+BOLD	:= \033[1m
+RESET	:= \033[0m
+
+# Rules
+all: ${NAME}
+
+$(NAME): $(OBJ) $(LIB)
+	@printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
+	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline
+	@printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
+
+$(LIB):
+	@make -C $(LIBFT_DIR)
+
+$(OBJ_DIR)/%.o: src/%.c $(HDR)
+	@mkdir -p obj
+	@mkdir -p "obj/lst"
+	@mkdir -p "obj/sort"
+	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@
+
+norminette:
+	@norminette $(SRC)
 
 clean:
-	rm -rf $(OBJDIR)
+	@echo "$(RED)$(BOLD)Cleaning $(NICKNAME)...$(RESET)"
+	@rm -rf $(OBJ)
+	@rm -rf $(OBJ_DIR)
+	@make clean -C $(LIBFT_DIR)
 
-fclean: clean
-	rm -f $(NAME)
+fclean:
+	@echo "$(RED)$(BOLD)Fully cleaning $(NICKNAME)...$(RESET)"
+	@rm -rf ${NAME}
+	@rm -rf $(OBJ)
+	@rm -rf $(OBJ_DIR)
+	@make fclean -C $(LIBFT_DIR)
 
-re: fclean all
-	
-.PHONY: clean fclean re all
+re: fclean ${NAME}
+
+.PHONY: all norminette clean fclean re

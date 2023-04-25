@@ -1,0 +1,10 @@
+# default
+.vscode
+.DS_STORE
+a.out
+*.o
+*.a
+*.exe
+
+# project specific
+minishell
