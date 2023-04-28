@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   add_nodes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/23 16:28:03 by opelser           #+#    #+#             */
-/*   Updated: 2023/04/28 11:41:23 by kkalika          ###   ########.fr       */
+/*   Created: 2022/10/16 16:21:16 by code              #+#    #+#             */
+/*   Updated: 2023/04/28 16:46:26 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	add_nodes(t_token **cmd, t_token *temp, char *str, int type)
 {
-	size_t		i;
+	t_token	*new;
 
-	i = 0;
-	while (s1[i] || s2[i])
+	new = malloc(sizeof(t_token));
+	if (!new)
+		exit(write(2, "Error\n", 6));
+	new->str = ft_strdup(str);
+	new->type = type;
+	temp = (*cmd);
+	if (temp)
 	{
-		if ((unsigned char) s1[i] < (unsigned char) s2[i])
-			return (-1);
-		if ((unsigned char) s1[i] > (unsigned char) s2[i])
-			return (1);
-		i++;
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+		new->next = NULL;
 	}
-	return (0);
+	else
+	{
+		new->next = NULL;
+		(*cmd) = new;
+	}
 }

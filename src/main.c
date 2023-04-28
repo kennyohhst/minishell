@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/23 17:14:41 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/28 18:33:55 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	list_check(t_token *cmd)
 	temp = cmd;
 	while (temp)
 	{
-		printf("%s\n", temp->str);
+		printf("%s		:		%d\n", temp->str, temp->type);
 		temp = temp->next;
 	}
 }

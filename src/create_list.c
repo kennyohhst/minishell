@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:01:44 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/23 16:52:29 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/28 16:42:33 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	tokenize(char mode, t_token **cmd, char *str)
 {
 	if (mode == 0)
-		return (p_d_token(cmd, str));
+		return (p_d_token(cmd, str, 0, str[0]));
 	if (mode == 1)
 		return (e_var_token(cmd, str));
 	if (mode == 2)

@@ -18,7 +18,7 @@ quotes should work as followed: (used echo for testing)
 "welcome to the world"s"	=X	dquote>
 
 
-history <<<has told us "life is like a potato" but it's all a lie
+history <<<has |||told us "life is like a''' potato" but its all a lie
 
 history
 <<

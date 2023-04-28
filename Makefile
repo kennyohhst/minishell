@@ -22,11 +22,12 @@ LIB				:= $(LIBFT_DIR)/libft.a
 SRC_FILES :=	main.c							\
 				create_list.c					\
 				ft_free_string_array.c			\
-				ft_add_nodes.c					\
+				add_nodes.c					\
 				ft_free_list.c					\
 				parse.c							\
 				quote_count.c					\
 				tokens.c						\
+				valid_pipe_check.c				\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
@@ -41,6 +42,7 @@ RESET	:= \033[0m
 
 # Rules
 all: ${NAME}
+	./$(NAME)
 
 $(NAME): $(OBJ) $(LIB)
 	@printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/23 17:17:20 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/28 12:49:12 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	parse(t_token **cmd)
 		if (raw_input != NULL && raw_input[0] != '\0')
 		{
 			add_history(raw_input);
-			create_list(cmd, raw_input);
+			if ((quote_count(raw_input) % 2) != 0)
+				create_list(cmd, raw_input);
 			free(raw_input);
 			break ;
 		}

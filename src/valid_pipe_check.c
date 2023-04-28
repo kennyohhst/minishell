@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_add_nodes.c                                     :+:      :+:    :+:   */
+/*   valid_pipe_check.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/16 16:21:16 by code              #+#    #+#             */
-/*   Updated: 2023/04/23 15:47:09 by kkalika          ###   ########.fr       */
+/*   Created: 2023/04/28 13:41:24 by kkalika           #+#    #+#             */
+/*   Updated: 2023/04/28 16:45:17 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
-void	ft_add_nodes(t_token **cmd, t_token *temp, char *str)
+int	valid_pipe_check(char *str)
 {
-	t_token	*new;
+	int	i;
 
-	new = malloc(sizeof(t_token));
-	if (!new)
-		exit(write(2, "Error\n", 6));
-	new->str = ft_strdup(str);
-	temp = (*cmd);
-	if (temp)
-	{
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
-		new->next = NULL;
-	}
-	else
-	{
-		new->next = NULL;
-		(*cmd) = new;
-	}
+	i = 0;
+	while (str[i] == 32)
+		i++;
+	return (ft_isalnum(str[i]));
 }
