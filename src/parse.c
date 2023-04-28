@@ -6,17 +6,14 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/28 12:49:12 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/28 18:42:05 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse(t_token **cmd)
+void	parse(t_token **cmd, char *raw_input)
 {
-	char	*raw_input;
-
-	raw_input = (char *)1;
 	while (raw_input)
 	{
 		raw_input = readline("aardappelschil>> ");

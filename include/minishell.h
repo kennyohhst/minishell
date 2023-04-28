@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/28 16:46:56 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/28 18:42:43 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
 void	add_nodes(t_token **cmd, t_token *temp, char *str, int type);
 void	ft_free_list(t_token *list);
-void	parse(t_token **cmd);
+void	parse(t_token **cmd, char *raw_input);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strtrim(char const *s1, char const *set);
 int		quote_count(char *str);
