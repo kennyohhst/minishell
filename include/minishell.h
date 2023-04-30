@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/28 18:42:43 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/30 18:07:41 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef enum types
 	I_RED_2,
 	E_VARIABLE,
 	DQ_STRING,
+	DQE_STRING,
 	SQ_STRING,
 	STRING
 }t_type;

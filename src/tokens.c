@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/28 18:56:10 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/04/30 18:05:43 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,20 @@ int	e_var_token(t_token **cmd, char *str)
 int	d_quotes_token(t_token **cmd, char *str)
 {
 	int	i;
+	int	e_var;
 
+	e_var = 0;
 	i = 1;
 	while (str[i] != '\0')
 	{
-		if (str[i] == 34 && i != 1)
+		if (str[i] == '$')
+			e_var++;
+		if (str[i] == 34 && i != 1 && e_var == 0)
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
+		else if (str[i] == 34 && i != 1 && e_var > 0)
+			return (add_nodes(cmd, NULL
+					, ft_substr(str, 1, i - 1), DQE_STRING), (i + 1));
 		i++;
 	}
 	return (-1);
