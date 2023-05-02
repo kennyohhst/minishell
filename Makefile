@@ -22,7 +22,7 @@ LIB				:= $(LIBFT_DIR)/libft.a
 SRC_FILES :=	main.c							\
 				create_list.c					\
 				ft_free_string_array.c			\
-				add_nodes.c					\
+				add_nodes.c						\
 				ft_free_list.c					\
 				parse.c							\
 				quote_count.c					\
@@ -54,8 +54,6 @@ $(LIB):
 
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
-	@mkdir -p "obj/lst"
-	@mkdir -p "obj/sort"
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@
 
 norminette:
