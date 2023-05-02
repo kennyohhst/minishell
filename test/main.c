@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/02 16:47:12 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/02 23:12:55 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/02 23:22:09 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ char	*get_command_location(char *command, char **paths)
 		}
 		i++;
 	}
+	free(command);
 	return (get_path(paths));
 }
 
@@ -92,5 +93,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!command)
 		return (3);
 
+	free(paths);
+	free_ptr_arr((void **) split_paths);
 	execve(command, NULL, envp);
 }
