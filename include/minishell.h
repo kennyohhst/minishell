@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/30 18:07:41 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/05/03 19:07:10 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,36 @@ typedef struct tokens
 	char			*str;
 	t_type			type;
 	struct tokens	*next;	
-}t_token;
+}		t_token;
+
+//		~ list_functions.c
 
 void	create_list(t_token **cmd, char *str);
-char	**ft_split(char const *s, char c);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-void	ft_free_string_array(char **string);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(const char *s1);
 void	add_nodes(t_token **cmd, t_token *temp, char *str, int type);
 void	ft_free_list(t_token *list);
+
+//		~ ft_free_string_array.c
+
+void	ft_free_string_array(char **string);
+
+//		~ parse.c
+
 void	parse(t_token **cmd, char *raw_input);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strtrim(char const *s1, char const *set);
+
+//		~ quote_count.c
+
 int		quote_count(char *str);
+
+//		~ tokens.c
+
 int		p_d_token(t_token **cmd, char *str, int i, char c);
 int		e_var_token(t_token **cmd, char *str);
 int		d_quotes_token(t_token **cmd, char *str);
 int		s_quotes_token(t_token **cmd, char *str);		
 int		std_token(t_token **cmd, char *str);
+
+//		~ valid_pipe_check.c
+
 int		valid_pipe_check(char *str);
 
 #endif

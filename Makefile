@@ -20,14 +20,12 @@ LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
 SRC_FILES :=	main.c							\
-				create_list.c					\
 				ft_free_string_array.c			\
-				add_nodes.c						\
-				ft_free_list.c					\
 				parse.c							\
 				quote_count.c					\
 				tokens.c						\
 				valid_pipe_check.c				\
+				list_functions.c				\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

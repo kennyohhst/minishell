@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   quote_count.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/28 13:04:30 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   quote_count.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/21 13:16:43 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/05/03 18:48:03 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	open_closed_q(char	*str, char c)
+static int	open_closed_q(char	*str, char c)
 {
 	int	i;
 	int	q;
