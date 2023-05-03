@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/03 19:07:10 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/03 21:58:36 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,6 @@ void	create_list(t_token **cmd, char *str);
 void	add_nodes(t_token **cmd, t_token *temp, char *str, int type);
 void	ft_free_list(t_token *list);
 
-//		~ ft_free_string_array.c
-
-void	ft_free_string_array(char **string);
-
 //		~ parse.c
 
 void	parse(t_token **cmd, char *raw_input);
@@ -71,5 +67,9 @@ int		std_token(t_token **cmd, char *str);
 //		~ valid_pipe_check.c
 
 int		valid_pipe_check(char *str);
+
+//		~ get_command_path.c
+
+char	*get_command_path(char *command);
 
 #endif
