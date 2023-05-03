@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/02 16:47:12 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/02 23:22:09 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/03 18:44:04 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,15 @@ char	*get_command_location(char *command, char **paths)
 	return (get_path(paths));
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
 	char	**split_paths;
 	char	*paths;
-	char	*command;
+	char	*command = "ls\0";
+	char	*command_path;
 
-	(void) argc;
-	command = argv[1];
-
-	paths = parse(envp);
+	paths = getenv("PATH");
+	// paths = parse(envp);
 	if (!paths)
 		return (1);
 
@@ -89,11 +88,14 @@ int	main(int argc, char **argv, char **envp)
 	if (!split_paths)
 		return (2);
 
-	command = get_command_location(argv[1], split_paths);
-	if (!command)
-		return (3);
+	command_path = get_command_location(command, split_paths);
+	if (!command_path)
+		return (free_ptr_arr((void **) split_paths), 3);
 
-	free(paths);
+	command = malloc(ft_strlen(command) + 1);
+	if (!command)
+		return (free_ptr_arr((void **) split_paths), 4);
+	ft_strlcpy(command, command_path, ft_strlen(command_path) + 1);
 	free_ptr_arr((void **) split_paths);
-	execve(command, NULL, envp);
+	execve(command, NULL, NULL);
 }
