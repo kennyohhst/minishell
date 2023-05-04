@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/04 20:41:35 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/04 21:06:03 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,26 @@ void	handle_sig(int sig)
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_token	*cmd;
-	int		i;
+	char	*cmd_path;
 
+	(void) argc;
 	cmd = NULL;
 	signal(SIGINT, handle_sig);
 	rl_catch_signals = 0;
 	while (1)
 	{
-		i = parse(&cmd, (char *) 1);
-		if (i == -1)
+		if (parse(&cmd, (char *) 1) == -1)
 			exit(0);
+		cmd_path = get_command_path(cmd->str);
+		if (!execute(cmd_path, argv, envp))
+		{
+			free(cmd_path);
+			ft_free_list(cmd);
+			return (1);
+		}
 		list_check(cmd);
 		if (cmd)
 		{

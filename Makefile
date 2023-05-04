@@ -19,13 +19,14 @@ LIBFT_DIR		:= $(LIB_DIR)/libft
 LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
-SRC_FILES :=	main.c							\
-				ft_free_string_array.c			\
-				parse.c							\
-				quote_count.c					\
-				tokens.c						\
-				valid_pipe_check.c				\
-				list_functions.c				\
+SRC_FILES :=	main.c					\
+				parse.c					\
+				quote_count.c			\
+				tokens.c				\
+				valid_pipe_check.c		\
+				list_functions.c		\
+				get_command_path.c		\
+				execute.c				\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

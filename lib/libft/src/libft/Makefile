@@ -48,7 +48,8 @@ SRC_FILES :=	ft_isalnum.c		\
 				ft_putchar_fd.c		\
 				ft_putstr_fd.c		\
 				ft_putendl_fd.c		\
-				ft_putnbr_fd.c
+				ft_putnbr_fd.c		\
+				ft_free_str_arr.c	\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

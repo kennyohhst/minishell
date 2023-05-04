@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_free_s.c                                        :+:    :+:            */
+/*   ft_free_str_arr.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/13 14:54:25 by code          #+#    #+#                 */
-/*   Updated: 2023/04/25 22:29:45 by opelser       ########   odam.nl         */
+/*   Created: 2023/05/03 21:02:56 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/03 21:08:11 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "stdlib.h"
 
-void	ft_free_string_array(char **strings)
+void	ft_free_str_arr(char **strings)
 {
-	int	i;
+	int		i;
 
 	i = 0;
-	if (!(*strings))
-		return ;
-	while (strings[i] != NULL)
+	while (strings[i])
 	{
 		free(strings[i]);
 		i++;
