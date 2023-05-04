@@ -44,7 +44,7 @@ all: ${NAME}
 
 $(NAME): $(OBJ) $(LIB)
 	@printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
-	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline
+	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -I/Users/$(USER)/.brew/opt/readline/include -L/Users/$(USER)/.brew/opt/readline/lib
 	@printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 $(LIB):
@@ -52,7 +52,7 @@ $(LIB):
 
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
-	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@
+	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I/Users/$(USER)/.brew/opt/readline/include
 
 norminette:
 	@norminette $(SRC)

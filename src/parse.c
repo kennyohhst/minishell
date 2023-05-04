@@ -6,19 +6,28 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/04/28 18:42:05 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/04 20:43:27 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse(t_token **cmd, char *raw_input)
+void	raw_input_check(char *raw_input, t_token **cmd)
 {
-	while (raw_input)
+	(void) cmd;
+	if (!(ft_strncmp(raw_input, "exit", 5)))
+	{
+		free(raw_input);
+		exit(0);
+	}
+}
+
+int	parse(t_token **cmd, char *raw_input)
+{
+	while (raw_input != NULL)
 	{
 		raw_input = readline("aardappelschil>> ");
-		if (!(ft_strncmp(raw_input, "exit", 5)))
-			exit(0);
+		raw_input_check(raw_input, cmd);
 		if (raw_input != NULL && raw_input[0] != '\0')
 		{
 			add_history(raw_input);
@@ -36,4 +45,7 @@ void	parse(t_token **cmd, char *raw_input)
 		}
 	}
 	rl_redisplay();
+	if (!raw_input)
+		return (-1);
+	return (1);
 }
