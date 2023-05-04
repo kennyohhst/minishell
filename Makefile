@@ -26,6 +26,7 @@ SRC_FILES :=	main.c					\
 				valid_pipe_check.c		\
 				list_functions.c		\
 				get_command_path.c		\
+				execute.c				\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

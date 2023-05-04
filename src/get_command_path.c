@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/04 17:20:08 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/04 20:41:24 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,14 @@ static char	*get_path(char **paths)
 static char	*get_command_location(char *command, char **paths)
 {
 	int		i;
+	char	*tmp;
 
 	i = 0;
-	command = ft_strjoin_free("/", command);
-	if (!command)
+	tmp = ft_strjoin("/", command);
+	free(command);
+	if (!tmp)
 		return (NULL);
+	command = tmp;
 	while (paths[i])
 	{
 		paths[i] = ft_strjoin_free(paths[i], command);
@@ -45,7 +48,6 @@ static char	*get_command_location(char *command, char **paths)
 		}
 		i++;
 	}
-	free(command);
 	return (get_path(paths));
 }
 
@@ -62,7 +64,6 @@ char	*get_command_path(char *command)
 	split_paths = ft_split(paths, ':');
 	if (!split_paths)
 		return (NULL);
-
 	command_path = get_command_location(command, split_paths);
 	if (!command_path)
 		return (ft_free_str_arr(split_paths), NULL);
