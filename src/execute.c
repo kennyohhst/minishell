@@ -6,13 +6,13 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/04 20:57:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 15:18:20 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	child_process(char *cmd, char **argv, char **envp)
+static int	child_process(char *cmd, char **argv, char **envp)
 {
 	exit (execve(cmd, argv, envp));
 }
@@ -25,7 +25,7 @@ int	execute(char *command_path, char **argv, char **envp)
 	{
 		// execute built ins
 		printf("not worked on this yet\n");
-		return (0);
+		return (1);
 	}
 	pid = fork();
 	if (pid == -1)
@@ -36,6 +36,6 @@ int	execute(char *command_path, char **argv, char **envp)
 			return (0);
 	}
 	else
-		wait(&pid);
+		wait(NULL);
 	return (1);
 }

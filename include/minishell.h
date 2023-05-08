@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/04 21:06:20 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/05/08 15:55:56 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 # include "../lib/libft/include/libft.h"
 
-typedef enum types
+typedef enum e_type
 {
 	PIPE_1,
 	PIPE_2,
@@ -33,14 +33,16 @@ typedef enum types
 	DQE_STRING,
 	SQ_STRING,
 	STRING
-}t_type;
+}		t_type;
 
-typedef struct tokens
+typedef struct s_token t_token;
+
+struct s_token
 {
 	char			*str;
 	t_type			type;
-	struct tokens	*next;	
-}		t_token;
+	t_token	*next;	
+};
 
 //			make struct for exit codes and keeping track of process things?
 

@@ -41,11 +41,10 @@ RESET	:= \033[0m
 
 # Rules
 all: ${NAME}
-	./$(NAME)
 
 $(NAME): $(OBJ) $(LIB)
 	@printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
-	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -I/Users/$(USER)/.brew/opt/readline/include -L/Users/$(USER)/.brew/opt/readline/lib
+	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -I /Users/$(USER)/.brew/opt/readline/include -L/Users/$(USER)/.brew/opt/readline/lib
 	@printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 $(LIB):
@@ -53,7 +52,13 @@ $(LIB):
 
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
-	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I/Users/$(USER)/.brew/opt/readline/include
+	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
+
+open: $(NAME)
+	./$(NAME)
+
+log:
+	git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)' --all
 
 norminette:
 	@norminette $(SRC)
