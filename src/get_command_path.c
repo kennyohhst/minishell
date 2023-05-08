@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   get_command_path.c                                 :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/04 20:41:24 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   get_command_path.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/03 20:43:02 by opelser           #+#    #+#             */
+/*   Updated: 2023/05/06 17:33:54 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,15 @@ char	*get_command_path(char *command)
 	paths = getenv("PATH");
 	if (!paths)
 		return (NULL);
-
 	split_paths = ft_split(paths, ':');
 	if (!split_paths)
 		return (NULL);
 	command_path = get_command_location(command, split_paths);
 	if (!command_path)
 		return (ft_free_str_arr(split_paths), NULL);
-
 	command = malloc(ft_strlen(command_path) + 1);
 	if (!command)
 		return (ft_free_str_arr(split_paths), NULL);
-
 	ft_strlcpy(command, command_path, ft_strlen(command_path) + 1);
 	ft_free_str_arr(split_paths);
 	return (command);

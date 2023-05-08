@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/04 21:06:20 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/06 17:19:38 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,15 @@ typedef struct tokens
 {
 	char			*str;
 	t_type			type;
-	struct tokens	*next;	
+	struct tokens	*next;
 }		t_token;
 
 //			make struct for exit codes and keeping track of process things?
+
+// typedef	struct	pid
+// {
+// 	pid_t	pid;
+// }t_p;
 
 //		~ list_functions.c
 
@@ -77,5 +82,8 @@ char	*get_command_path(char *command);
 //		~ execute.c
 
 int	execute(char *command_path, char **argv, char **envp);
+
+void	handle_sig(int sig);
+
 
 #endif

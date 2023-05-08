@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/04 21:08:16 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:29:15 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,17 @@ void	list_check(t_token *cmd)
 	}
 }
 
+void sigquit_handler(int sig)
+{
+    (void) sig;
+}
+
+
 void	handle_sig(int sig)
 {
-	write(1, "\n", 1);
 	if (sig == 2)
 	{
+		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
@@ -43,6 +49,7 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	cmd = NULL;
 	signal(SIGINT, handle_sig);
+	signal(SIGQUIT, sigquit_handler);
 	rl_catch_signals = 0;
 	while (1)
 	{
@@ -55,7 +62,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_free_list(cmd);
 			return (1);
 		}
-		list_check(cmd);
+		// list_check(cmd);
 		if (cmd)
 		{
 			ft_free_list(cmd);
