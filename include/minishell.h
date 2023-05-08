@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/08 20:06:36 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 20:18:05 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ struct s_token
 
 //			make struct for exit codes and keeping track of process things?
 
+// typedef	struct	pid
+// {
+// 	pid_t	pid;
+// }t_p;
+
 //		~ list_functions.c
 
 void	create_list(t_token **cmd, char *str);
@@ -79,5 +84,8 @@ char	*get_command_path(char *command);
 //		~ execute.c
 
 int		execute(t_token *cmd, char **envp);
+
+void	handle_sig(int sig);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/08 20:12:31 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 20:19:43 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 void	raw_input_check(char *raw_input, t_token **cmd)
 {
-	(void) cmd;
+	if (!raw_input)
+	{
+		ft_free_list((*cmd));
+		write(1, "exit\n", 5);
+		exit(0);
+	}
 	if (!(ft_strncmp(raw_input, "exit", 5)))
 	{
 		free(raw_input);

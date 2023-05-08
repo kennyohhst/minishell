@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/08 17:36:05 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 20:27:47 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char	*get_command_path(char *command)
 	split_paths = ft_split(paths, ':');
 	if (!split_paths)
 		return (NULL);
+
 	command_path = get_command_location(command, split_paths);
 	if (!command_path)
 		return (ft_free_str_arr(split_paths), NULL);

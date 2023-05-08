@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/08 17:23:09 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 20:22:03 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ static int		list_length(t_token *node)
 		count++;
 	}
 	return (count);
+}
+void	sighandle_proc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		signal(SIGINT, sighandle_proc);
+	}
 }
 
 static char	**get_command_argv(t_token *node, const int len)
@@ -78,6 +86,7 @@ int	execute(t_token *cmd, char **envp)
 	pid_t	pid;
 
 	pid = fork();
+	signal(SIGINT, sighandle_proc);
 	if (pid == -1)
 		return (0);
 	if (pid == 0)
