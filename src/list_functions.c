@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/03 19:01:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 17:26:22 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_free_list(t_token *list)
 	{
 		tmp = list;
 		list = list->next;
+		free(tmp->str);
 		free(tmp);
 	}
 }

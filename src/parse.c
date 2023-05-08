@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/08 15:47:25 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 20:12:31 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,21 @@ void	raw_input_check(char *raw_input, t_token **cmd)
 
 int	parse(t_token **cmd, char *raw_input)
 {
-	while (raw_input != NULL)
+	raw_input = readline("aardappelschil>> ");
+	raw_input_check(raw_input, cmd);
+	if (raw_input != NULL && raw_input[0] != '\0')
 	{
-		raw_input = readline("aardappelschil>> ");
-		raw_input_check(raw_input, cmd);
-		if (raw_input != NULL && raw_input[0] != '\0')
-		{
-			add_history(raw_input);
-			if ((quote_count(raw_input) % 2) != 0)
-				create_list(cmd, raw_input);
-			free(raw_input);
-			break ;
-		}
-		else if (raw_input[0] == '\0')
-		{
-			ft_free_list((*cmd));
-			*cmd = NULL;
-			free(raw_input);
-			break ;
-		}
+		add_history(raw_input);
+		if ((quote_count(raw_input) % 2) != 0)
+			create_list(cmd, raw_input);
+		free(raw_input);
 	}
-	// rl_redisplay();
+	else if (raw_input[0] == '\0')
+	{
+		ft_free_list(*cmd);
+		*cmd = NULL;
+		free(raw_input);
+	}
 	if (!raw_input)
 		return (-1);
 	return (1);

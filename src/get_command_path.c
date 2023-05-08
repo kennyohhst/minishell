@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/04 20:41:24 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 17:36:05 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static char	*get_path(char **paths)
 	return (NULL);
 }
 
-// dont return NULL for malloc errors?
 static char	*get_command_location(char *command, char **paths)
 {
 	int		i;
