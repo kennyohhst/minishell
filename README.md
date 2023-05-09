@@ -22,13 +22,21 @@ The shell provides a command-line interface that allows users to interact with t
 ### Installing and running
 
 1. Clone this repository:
-```git clone https://github.com/kennyohhst/minishell minishell```
+```
+git clone https://github.com/kennyohhst/minishell minishell
+```
 
 2. cd into the right directory
-```cd minishell```
+```
+cd minishell
+```
 
 3. Run Make to compile the program
-```make```
+```
+make
+```
 
 4. Execute the program
-```./minishell```
+```
+./minishell
+```
