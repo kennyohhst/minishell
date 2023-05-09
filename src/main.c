@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/08 20:17:30 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 21:10:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ void	list_check(t_token *cmd)
 
 void sigquit_handler(int sig)
 {
-    (void) sig;
+	(void) sig;
 }
-
 
 void	handle_sig(int sig)
 {
@@ -37,7 +36,7 @@ void	handle_sig(int sig)
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		// rl_redisplay();
+		rl_redisplay();
 	}
 }
 
@@ -68,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!execute(cmd, envp))
 		{
 			ft_free_list(cmd);
-			return (3);
+			return (2);
 		}
 		// list_check(cmd);
 		if (cmd)

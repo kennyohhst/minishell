@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/08 20:18:05 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/08 21:20:47 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ char	*get_command_path(char *command);
 
 int		execute(t_token *cmd, char **envp);
 
-void	handle_sig(int sig);
+//		~ builtins.c
+
+int		echo(char **argv);
 
 
 #endif

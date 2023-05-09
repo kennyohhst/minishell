@@ -9,7 +9,7 @@ OBJ_DIR := obj
 
 # Compiler flags
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra -g # -fsanitize=address
 
 # Includes
 HDR_FILES :=	minishell.h
@@ -27,6 +27,7 @@ SRC_FILES :=	main.c					\
 				list_functions.c		\
 				get_command_path.c		\
 				execute.c				\
+				builtins.c				\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
@@ -55,7 +56,7 @@ $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
 
 open: $(NAME)
-	./$(NAME)
+	@./$(NAME)
 
 log:
 	git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)' --all

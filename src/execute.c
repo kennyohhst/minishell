@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/08 20:22:03 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/09 20:06:18 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,13 @@ static int	child_process(t_token *cmd, char **envp)
 
 	cmd_argv = get_command_argv(cmd, list_length(cmd));
 	if (!cmd_argv)
+		return (1);
+
+	if (!ft_strncmp("echo", cmd_argv[0], 5))
+	{
+		echo(cmd_argv);
 		return (2);
+	}
 
 	cmd_path = get_command_path(cmd_argv[0]);
 	if (!cmd_path)
@@ -75,7 +81,7 @@ static int	child_process(t_token *cmd, char **envp)
 		// check for and execute built ins
 		printf("Unknown command, maybe a built in?\n");
 		ft_free_str_arr(cmd_argv);
-		return (1);
+		return (3);
 	}
 
 	exit (execve(cmd_path, cmd_argv, envp));
