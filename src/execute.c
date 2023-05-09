@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/09 20:06:18 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/09 21:00:07 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,15 @@ static int	child_process(t_token *cmd, char **envp)
 		return (3);
 	}
 
-	exit (execve(cmd_path, cmd_argv, envp));
+	return (execve(cmd_path, cmd_argv, envp));
 }
 
 int	execute(t_token *cmd, char **envp)
 {
 	pid_t	pid;
 
-	pid = fork();
 	signal(SIGINT, sighandle_proc);
+	pid = fork();
 	if (pid == -1)
 		return (0);
 	if (pid == 0)

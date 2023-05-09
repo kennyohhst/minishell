@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/08 21:10:32 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/09 20:55:05 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token		*cmd;
 	extern int	rl_catch_signals;
 
-	atexit(checkleaks);
+	// atexit(checkleaks);
 	(void) argc;
 	(void) argv;
 	cmd = NULL;

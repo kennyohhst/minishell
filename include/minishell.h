@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/08 21:20:47 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/09 21:24:10 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		parse(t_token **cmd, char *raw_input);
 
 //		~ quote_count.c
 
-int		quote_count(char *str);
+int		check_quotes(char *str);
 
 //		~ tokens.c
 
