@@ -27,8 +27,9 @@ SRC_FILES :=	main.c					\
 				list_functions.c		\
 				get_command_path.c		\
 				execute.c				\
-				builtins.c				\
 				signals.c				\
+				builtins/echo.c			\
+				builtins/pwd.c			\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
@@ -54,6 +55,7 @@ $(LIB):
 
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
+	@mkdir -p obj/builtins
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
 
 open: $(NAME)

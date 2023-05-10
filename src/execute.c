@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 16:34:04 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 17:13:13 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,9 @@ static int	child_process(t_token *cmd, char **envp)
 		exit (1);
 
 	if (!ft_strncmp("echo", cmd_argv[0], 5))
-	{
-		echo(cmd_argv);					// echo -n not working?? or is it adding a newline by itself
-		ft_free_str_arr(cmd_argv);
-		exit (2);
-	}
+		echo(cmd_argv);
+	if (!ft_strncmp("pwd", cmd_argv[0], 4))
+		pwd(cmd_argv);
 
 	cmd_path = get_command_path(cmd_argv[0]);
 	if (!cmd_path)
