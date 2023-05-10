@@ -9,7 +9,7 @@ OBJ_DIR := obj
 
 # Compiler flags
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -g # -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
 
 # Includes
 HDR_FILES :=	minishell.h
@@ -28,6 +28,7 @@ SRC_FILES :=	main.c					\
 				get_command_path.c		\
 				execute.c				\
 				builtins.c				\
+				signals.c				\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

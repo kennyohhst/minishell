@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 12:53:50 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 14:31:08 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,8 @@ int		execute(t_token *cmd, char **envp);
 
 int		echo(char **argv);
 
+//		~ signals.c
+
+void	init_signals(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 14:20:32 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 15:27:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #define DOUBLE_QUOTE 2
 #define SINGLE_QUOTE 3
 #define STANDARD 4
-#define DOUBLE_QUOTE_ASCII 34
-#define SINGLE_QUOTE_ASCII 39
 
 void	ft_free_list(t_token *list)
 {
@@ -80,9 +78,9 @@ static int	check_mode(char c)
 		return (REDIRECT);
 	else if (c == '$')
 		return (ENV_VARIABLE);
-	else if (c == DOUBLE_QUOTE_ASCII)
+	else if (c == '\"')
 		return (DOUBLE_QUOTE);
-	else if (c == SINGLE_QUOTE_ASCII)
+	else if (c == '\'')
 		return (SINGLE_QUOTE);
 	return (STANDARD);
 }

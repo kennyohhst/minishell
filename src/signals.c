@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_free_str_arr.c                                  :+:    :+:            */
+/*   signals.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/03 21:02:56 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 15:28:08 by opelser       ########   odam.nl         */
+/*   Created: 2023/05/10 14:28:59 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/10 14:29:34 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stdlib.h"
+#include "minishell.h"
 
-void	ft_free_str_arr(char **strings)
+static void	sig_handler(int sig)
 {
-	int		i;
-
-	i = 0;
-	if (!strings)
-		return ;
-	while (strings[i])
+	if (sig == 2)
 	{
-		free(strings[i]);
-		i++;
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
-	free(strings);
+}
+
+void	init_signals(void)
+{
+	extern int	rl_catch_signals;
+
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
+	rl_catch_signals = 0;
 }

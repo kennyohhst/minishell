@@ -6,13 +6,11 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/21 13:16:43 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/09 21:49:10 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 15:21:51 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define DOUBLE_QUOTE_ASCII 34
-#define SINGLE_QUOTE_ASCII 39
 
 static int	quote_count(char *str, char quote_type)
 {
@@ -46,7 +44,7 @@ int	check_quotes(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == DOUBLE_QUOTE_ASCII || str[i] == SINGLE_QUOTE_ASCII)
+		if (str[i] == '\"' || str[i] == '\'')
 		{
 			int tmp = quote_count(str, str[i]);
 			// printf("return: %d\n", tmp);			// I'll leave this in so you can debug, but you can remove it after should you feel the need

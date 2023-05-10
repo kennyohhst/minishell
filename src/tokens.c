@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokens.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/01 16:53:03 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tokens.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/23 14:10:55 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/05/10 15:24:38 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ int	std_token(t_token **cmd, char *str)
 	while (str[i] != '\0')
 	{
 		i++;
-		if (str[i] == 32 || str[i] == '\0' || str[i] == 34
+		if (str[i] == ' ' || str[i] == '\0' 
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<'
-			|| str[i] == '$' || str[i] == 39)
+			|| str[i] == '$' || str[i] == '\"' || str[i] == '\'')
 			return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
 	}
 	return (-1);
