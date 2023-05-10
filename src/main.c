@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 15:27:56 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 19:46:57 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,25 @@ void	list_check(t_token *cmd)
 	}
 }
 
-void	checkleaks()
+void	checkleaks(void)
 {
 	clear_history();		// we need to implement this in our code somewhere
 	system("leaks -q minishell");
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
 	t_token		*input_list;
+	extern char	**environ;
 
 	// atexit(checkleaks);
-	(void) argc;
-	(void) argv;
 	while (1)
 	{
 		init_signals();
 		input_list = parse();
 		if (!input_list)
 			continue ;
-		if (!execute(input_list, envp))
+		if (!execute(input_list, environ))
 		{
 			ft_free_list(input_list);
 			return (2);

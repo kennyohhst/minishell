@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 17:13:44 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 19:44:42 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef enum e_type
 	STRING
 }		t_type;
 
-typedef struct s_token t_token;
+typedef struct	s_token t_token;
 
 struct s_token
 {
@@ -43,13 +43,6 @@ struct s_token
 	t_type		type;
 	t_token		*next;	
 };
-
-//			make struct for exit codes and keeping track of process things?
-
-// typedef	struct	pid
-// {
-// 	pid_t	pid;
-// }t_p;
 
 //		~ list_functions.c
 
@@ -93,5 +86,6 @@ void	init_signals(void);
 
 int		echo(char **argv);
 void	pwd(char **argv);
+void	env(char **argv, char **envp);
 
 #endif
