@@ -6,17 +6,17 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 14:01:35 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 16:57:45 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	raw_input_check(char *raw_input)
+static void	exit_check(char *raw_input)
 {
 	if (!raw_input)
 	{
-		write(1, "exit\n", 5);
+		write(1, "exit\n", 5);				// this gets printed on a newline, in bash it doesnt
 		exit(0);
 	}
 	if (!ft_strncmp(raw_input, "exit", 5))
@@ -33,7 +33,7 @@ t_token *parse(void)
 
 	input_list = NULL;
 	raw_input = readline("\e[1;33mC Shell >>\033[0m ");
-	raw_input_check(raw_input);
+	exit_check(raw_input);
 	if (raw_input[0] == '\0')
 	{
 		free(raw_input);
