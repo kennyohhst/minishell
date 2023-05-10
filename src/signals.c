@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 14:28:59 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 14:29:34 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 15:43:56 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	sig_handler(int sig)
 {
-	if (sig == 2)
+	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
 		rl_replace_line("", 0);

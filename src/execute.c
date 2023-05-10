@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 15:08:26 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 16:34:04 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static int	child_process(t_token *cmd, char **envp)
 	cmd_path = get_command_path(cmd_argv[0]);
 	if (!cmd_path)
 	{
-		printf("Unknown command, maybe a built in?\n");
+		printf("%s -> Unknown command, maybe a built in?\n", cmd_argv[0]);
+		free(cmd_argv[0]);
 		exit (3);
 	}
 

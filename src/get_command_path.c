@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 14:52:41 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 16:31:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static char	*get_command_location(char *command, char **paths)
 
 	i = 0;
 	tmp = ft_strjoin("/", command);
-	free(command);
 	if (!tmp)
 		return (NULL);
 	command = tmp;

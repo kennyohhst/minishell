@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 15:27:32 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 16:05:56 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	add_nodes(t_token **cmd, t_token *temp, char *str, int type)	// I need this
 	if (!new)
 		exit(write(2, "Error\n", 6));
 	new->str = ft_strdup(str);
+	free(str);
 	new->type = type;
 	temp = (*cmd);
 	if (temp)
