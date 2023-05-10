@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:44:42 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 20:14:10 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,6 @@ void	init_signals(void);
 int		echo(char **argv);
 void	pwd(char **argv);
 void	env(char **argv, char **envp);
+void	cd(char **argv);
 
 #endif

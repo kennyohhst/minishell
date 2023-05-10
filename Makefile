@@ -28,9 +28,10 @@ SRC_FILES :=	main.c							\
 				get_command_path.c				\
 				execute.c						\
 				signals.c						\
+				builtins/cd.c					\
 				builtins/echo.c					\
-				builtins/pwd.c					\
 				builtins/env.c					\
+				builtins/pwd.c					\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
