@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/09 21:24:10 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 12:53:50 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_free_list(t_token *list);
 
 //		~ parse.c
 
-int		parse(t_token **cmd, char *raw_input);
+t_token	*parse(void);
 
 //		~ quote_count.c
 

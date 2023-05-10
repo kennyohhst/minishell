@@ -6,11 +6,19 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/08 17:26:22 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 14:20:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#define REDIRECT 0
+#define ENV_VARIABLE 1
+#define DOUBLE_QUOTE 2
+#define SINGLE_QUOTE 3
+#define STANDARD 4
+#define DOUBLE_QUOTE_ASCII 34
+#define SINGLE_QUOTE_ASCII 39
 
 void	ft_free_list(t_token *list)
 {
@@ -25,7 +33,7 @@ void	ft_free_list(t_token *list)
 	}
 }
 
-void	add_nodes(t_token **cmd, t_token *temp, char *str, int type)
+void	add_nodes(t_token **cmd, t_token *temp, char *str, int type)	// I need this function explained to me
 {
 	t_token	*new;
 
@@ -51,32 +59,32 @@ void	add_nodes(t_token **cmd, t_token *temp, char *str, int type)
 
 static int	tokenize(char mode, t_token **cmd, char *str)
 {
-	if (mode == 0)
+	if (mode == REDIRECT)
 		return (p_d_token(cmd, str, 0, str[0]));
-	if (mode == 1)
+	if (mode == ENV_VARIABLE)
 		return (e_var_token(cmd, str));
-	if (mode == 2)
+	if (mode == DOUBLE_QUOTE)
 		return (d_quotes_token(cmd, str));
-	if (mode == 3)
+	if (mode == SINGLE_QUOTE)
 		return (s_quotes_token(cmd, str));
-	if (mode == 4)
+	if (mode == STANDARD)
 		return (std_token(cmd, str));
 	return (-1);
 }
 
-static int	check_char(char c)
+static int	check_mode(char c)
 {
 	if (!ft_isprint(c))
 		return (-1);
 	if (c == '|' || c == '>' || c == '<')
-		return (0);
+		return (REDIRECT);
 	else if (c == '$')
-		return (1);
-	else if (c == 34)
-		return (2);
-	else if (c == 39)
-		return (3);
-	return (4);
+		return (ENV_VARIABLE);
+	else if (c == DOUBLE_QUOTE_ASCII)
+		return (DOUBLE_QUOTE);
+	else if (c == SINGLE_QUOTE_ASCII)
+		return (SINGLE_QUOTE);
+	return (STANDARD);
 }
 
 void	create_list(t_token **cmd, char *str)
@@ -86,16 +94,14 @@ void	create_list(t_token **cmd, char *str)
 	int	mode;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (str[i])
 	{
-		while (str[i] == 32)
+		while (str[i] == ' ')
 			i++;
-		if (str[i] == '\0')
-			break ;
-		mode = check_char(str[i]);
+		mode = check_mode(str[i]);			// check_mode has an error check but it's not used here, also checkmode doesnt check for >> and <<
 		err_check = tokenize(mode, cmd, (str + i));
 		if (err_check == -1)
-			return ;
+			return ;						// just returning doesn't tell the caller function that it's failed
 		else
 			i += err_check;
 	}

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/09 21:00:07 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/09 22:28:48 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ static int	child_process(t_token *cmd, char **envp)
 
 	if (!ft_strncmp("echo", cmd_argv[0], 5))
 	{
-		echo(cmd_argv);
+		echo(cmd_argv);					// echo -n not working?? or is it adding a newline by itself
+		ft_free_str_arr(cmd_argv);
 		return (2);
 	}
 
 	cmd_path = get_command_path(cmd_argv[0]);
 	if (!cmd_path)
 	{
-		// check for and execute built ins
 		printf("Unknown command, maybe a built in?\n");
 		ft_free_str_arr(cmd_argv);
 		return (3);

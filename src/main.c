@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/09 20:55:05 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/10 14:01:17 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,7 @@ void	list_check(t_token *cmd)
 	}
 }
 
-void sigquit_handler(int sig)
-{
-	(void) sig;
-}
-
-void	handle_sig(int sig)
+void	sig_handler(int sig)
 {
 	if (sig == 2)
 	{
@@ -40,41 +35,41 @@ void	handle_sig(int sig)
 	}
 }
 
+void	init_signals(void)
+{
+	extern int	rl_catch_signals;
+
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
+	rl_catch_signals = 0;
+}
+
 void	checkleaks()
 {
-	clear_history(); // we need to implement this in our code
+	clear_history();					// we need to implement this in our code
 	system("leaks -q minishell");
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_token		*cmd;
-	extern int	rl_catch_signals;
+	t_token		*input_list;
 
-	// atexit(checkleaks);
+	atexit(checkleaks);
 	(void) argc;
 	(void) argv;
-	cmd = NULL;
-	signal(SIGINT, handle_sig);
-	signal(SIGQUIT, sigquit_handler);
-	rl_catch_signals = 0;
 	while (1)
 	{
-		if (parse(&cmd, (char *) 1) == -1)
-			return (1);
-		if (!cmd)
+		init_signals();
+		input_list = parse();
+		if (!input_list)
 			continue ;
-		if (!execute(cmd, envp))
+		if (!execute(input_list, envp))
 		{
-			ft_free_list(cmd);
+			ft_free_list(input_list);
 			return (2);
 		}
-		// list_check(cmd);
-		if (cmd)
-		{
-			ft_free_list(cmd);
-			cmd = NULL;
-		}
+		// list_check(input_list);
+		ft_free_list(input_list);
 	}
 	return (0);
 }
