@@ -1,0 +1,129 @@
+"																		  __                  _   _                              _       _     _          _ _ 
+																		 / _|_   _ _ __   ___| |_(_) ___  _ __  ___    _ __ ___ (_)_ __ (_)___| |__   ___| | |
+																		| |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|  | '_ ` _ \| | '_ \| / __| '_ \ / _ \ | |
+																		|  _| |_| | | | | (__| |_| | (_) | | | \__ \  | | | | | | | | | | \__ \ | | |  __/ | |
+																		|_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/  |_| |_| |_|_|_| |_|_|___/_| |_|\___|_|_|
+"                                                                                      
+
+
+
+-readline:
+char *readline(const char *prompt);
+readline asks the user for input which will be stored in a dynamicly allocated char pointer. 
+Inside the parameter, you can write a "text" which will be displayed in the terminal.
+example:
+char *user_input = readline("prompt displayed on the terminal:	");
+to compile, you need "-lreadline" because it is not stdlib:
+"gcc program.c -o program -lreadline"
+
+-rl_clear_history
+void rl_clear_history(void);
+rl_clear_history deletes all the commands remembered by the library after using add_history. 
+example:
+add_history("command 1");
+rl_clear_history();
+(in this scenario, the history would be cleared and you should not be able to go up with the arrow up button to see the previously entered commands,  ("command 1")
+
+-rl_on_new_line
+void rl_on_new_line(void);
+this function ensures that the readline library knows that it has moved the cursur to a new line. without this, you could encounter undefined behaviour.
+example:
+char *user_input = readline("prompt displayed on the terminal:	");
+//parsing
+//execution
+rl_on_new_line();
+
+
+
+-rl_replace_line
+void rl_replace_line(const char *line, int clear_undo);
+this function replaces the line entered by the user, but the char *user_input would not change. it is stored somewhere else and can be called by using rl_line_buffer()
+it is unclear what the second parameter does. it has something to do with undo history.
+example:
+char *user_input = readline("shell>> ");
+rl_replace_line("welcome", 1);
+printf("%s", rl_line_buffer); //this will print out "welcome"
+
+
+
+
+
+add_history
+void add_history(const char *line);
+this function adds the input from user to a history by adding the char *user_input received by readline() into the parameter "const char *line"
+example:
+char *user_input = readline("shell>> ");
+add_history(user_input);
+now you can use the arrow keys to see the previous used inputs from the user
+
+
+access:
+int access(const char *path, int mode);
+access checks the file written in the path (can be relative or absolute). the int mode given can be "F_OK", "R_OK", "W_OK" or "X_OK".
+if it returns 0, the mode you checked is good to go, if it returns -1, the mode you checked is not possible.
+example:
+access(./info, F_OK); should return 0 because we have a file called info inside our current directory. 
+F_OK = check if file exists
+R_OK = check if file can be read
+W_OK = check if file is writable
+X_OK = check if file can be executed
+
+fork
+pid_t fork(void);
+this function creates a new process. -1 is error, 0 is child process, not 0 && -1 means parent process
+example:
+pid = fork();
+if (pid == -1)
+	error
+else if (pid == 0)
+	//child process tasks
+else 
+	//parent process tasks
+
+
+
+wait
+pid_t wait(int *status);
+
+
+
+
+
+waitpid
+wait3
+wait4
+signal
+sigaction
+sigemptyset
+sigaddset
+kill
+exit
+getcwd
+chdir
+stat
+lstat
+fstat
+unlink
+execve
+dup
+dup2
+pipe
+opendir
+readdir
+closedir
+strerror
+perror
+isatty
+ttyname
+ttyslot
+ioctl
+getenv
+tcsetattr
+tcgetattr
+tgetent
+tgetflag
+tgetnum
+tgetstr
+tgoto
+tputs
+rl_redisplay == unsure

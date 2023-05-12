@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   quote_count.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/21 13:16:43 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 15:21:51 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   quote_count.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
+/*   Updated: 2023/05/12 16:22:57 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	quote_count(char *str, char quote_type)
 	if ((count % 2) != 0)
 	{
 		write(1, "unclosed quotes\n", 17);
-		return (0);
+		exit(0);
 	}
 	return (1);
 }
@@ -47,6 +47,11 @@ int	check_quotes(char *str)
 		if (str[i] == '\"' || str[i] == '\'')
 		{
 			int tmp = quote_count(str, str[i]);
+			if (str[i] != '\0')
+			{
+				i++;
+				continue;
+			}
 			// printf("return: %d\n", tmp);			// I'll leave this in so you can debug, but you can remove it after should you feel the need
 			return (tmp);
 		}
