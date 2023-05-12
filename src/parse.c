@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/12 16:51:05 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/12 18:44:01 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	exit_check(char *raw_input)
 	if (!raw_input)
 	{
 		printf("\e[1A");
-		printf("\e[1;33mC Shell >>\033[0m exit");
+		printf("\e[1;33mC Shell >>\033[0m exit\n");
 		exit(0);
 	}
 	if (!ft_strncmp(raw_input, "exit", 5))
