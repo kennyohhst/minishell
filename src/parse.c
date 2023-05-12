@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parse.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 16:57:45 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
+/*   Updated: 2023/05/12 16:51:05 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	exit_check(char *raw_input)
 {
 	if (!raw_input)
 	{
-		write(1, "exit\n", 5);				// this gets printed on a newline, in bash it doesnt
+		printf("\e[1A");
+		printf("\e[1;33mC Shell >>\033[0m exit");
 		exit(0);
 	}
 	if (!ft_strncmp(raw_input, "exit", 5))
