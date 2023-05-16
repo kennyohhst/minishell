@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 20:16:12 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/16 20:51:11 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ static void	check_builtins(char **argv, char **envp)
 		echo(argv);
 	if (!ft_strncmp("pwd", argv[0], 4))
 		pwd(argv);
-	if (!ft_strncmp("pwd", argv[0], 4))
+	if (!ft_strncmp("env", argv[0], 4))
 		env(argv, envp);
-	if (!ft_strncmp("cd", argv[0], 4))
-		cd(argv);
+	if (!ft_strncmp("cd", argv[0], 3))
+		exit (cd(argv));
 }
 
 static int	child_process(t_token *cmd, char **envp)
