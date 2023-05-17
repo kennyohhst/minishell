@@ -6,13 +6,13 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/23 14:10:55 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 15:24:38 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/16 21:06:00 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	p_d_token(t_token **cmd, char *str, int i, char c)
+int	p_d_token(t_input **cmd, char *str, int i, char c)
 {
 	while (str[i] != '\0')
 	{
@@ -37,7 +37,7 @@ int	p_d_token(t_token **cmd, char *str, int i, char c)
 	return (-1);
 }
 
-int	e_var_token(t_token **cmd, char *str)
+int	e_var_token(t_input **cmd, char *str)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ int	e_var_token(t_token **cmd, char *str)
 	return (i);
 }
 
-int	d_quotes_token(t_token **cmd, char *str)
+int	d_quotes_token(t_input **cmd, char *str)
 {
 	int	i;
 	int	e_var;
@@ -73,7 +73,7 @@ int	d_quotes_token(t_token **cmd, char *str)
 	return (-1);
 }
 
-int	s_quotes_token(t_token **cmd, char *str)
+int	s_quotes_token(t_input **cmd, char *str)
 {
 	int	i;
 
@@ -88,7 +88,7 @@ int	s_quotes_token(t_token **cmd, char *str)
 	return (-1);
 }
 
-int	std_token(t_token **cmd, char *str)
+int	std_token(t_input **cmd, char *str)
 {
 	int	i;
 

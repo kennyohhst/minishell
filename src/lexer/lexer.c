@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:53:10 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/17 22:28:16 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,12 @@ static void	exit_check(char *raw_input)
 		write(1, "exit\n", 5);				// this gets printed on a newline, in bash it doesnt
 		exit(0);
 	}
-	if (!ft_strncmp(raw_input, "exit", 5))	// this should also print exit on a newline
-	{
-		free(raw_input);
-		exit(0);
-	}
 }
 
-t_token	*parse(void)
+t_input	*lexer(void)
 {
 	char		*raw_input;
-	t_token		*input_list;
+	t_input		*input_list;
 
 	input_list = NULL;
 	raw_input = readline("\e[1;33mC Shell >>\033[0m ");

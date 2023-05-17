@@ -6,52 +6,18 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/16 20:51:11 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/17 23:34:16 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	list_length(t_token *node)
-{
-	int		count;
 
-	if (!node)
-		return (0);
-	count = 0;
-	while (node)
-	{
-		node = node->next;
-		count++;
-	}
-	return (count);
-}
 
 void	sighandle_proc(int sig)
 {
 	if (sig == SIGINT)
 		write(1, "\n", 1);
-}
-
-static char	**get_command_argv(t_token *node, const int len)
-{
-	char		**argv;
-	int			i;
-
-	i = 0;
-	if (!node)
-		return (NULL);
-	argv = malloc((len + 1) * sizeof(char *));
-	if (!argv)
-		return (NULL);
-	while (node)
-	{
-		argv[i] = ft_strdup(node->str);
-		node = node->next;
-		i++;
-	}
-	argv[i] = NULL;
-	return (argv);
 }
 
 static void	check_builtins(char **argv, char **envp)
@@ -66,14 +32,10 @@ static void	check_builtins(char **argv, char **envp)
 		exit (cd(argv));
 }
 
-static int	child_process(t_token *cmd, char **envp)
+static int	child_process(char **argv, char **envp)
 {
 	char		*path;
-	char		**argv;
 
-	argv = get_command_argv(cmd, list_length(cmd));
-	if (!argv)
-		exit (1);
 	check_builtins(argv, envp);
 	path = get_command_path(argv[0]);
 	if (!path)
@@ -85,17 +47,19 @@ static int	child_process(t_token *cmd, char **envp)
 	return (execve(path, argv, envp));
 }
 
-int	execute(t_token *cmd, char **envp)
+int	execute(t_program_data *data, t_command **cmd)
 {
 	pid_t	pid;
 
+	// for (int i = 0; argv[i]; i++)
+		// printf("argv[%d] = [%s]\n", i, argv[i]);
 	signal(SIGINT, sighandle_proc);
 	pid = fork();
 	if (pid == -1)
 		return (0);
 	if (pid == 0)
 	{
-		if (child_process(cmd, envp) == -1)
+		if (child_process((*cmd)->argv, data->envp) == -1)
 			return (0);
 	}
 	else

@@ -20,10 +20,12 @@ LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
 SRC_FILES :=	main.c							\
-				parsing/parse.c					\
-				parsing/quote_count.c			\
-				parsing/tokens.c				\
-				parsing/valid_pipe_check.c		\
+				lexer/lexer.c					\
+				lexer/quote_count.c				\
+				lexer/tokens.c					\
+				lexer/valid_pipe_check.c		\
+				parser.c						\
+				get_command_argv.c				\
 				list_functions.c				\
 				get_command_path.c				\
 				execute.c						\
@@ -58,7 +60,7 @@ $(LIB):
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
 	@mkdir -p obj/builtins
-	@mkdir -p obj/parsing
+	@mkdir -p obj/lexer
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
 
 open: $(NAME)

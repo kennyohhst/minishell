@@ -6,22 +6,35 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:46:57 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/17 23:32:24 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	list_check(t_token *cmd)
+static void	list_check(t_input *tokenized_input)
 {
-	t_token	*temp;
+	t_input	*temp;
 
-	temp = cmd;
+	temp = tokenized_input;
 	while (temp)
 	{
-		printf("%s\t\t\t\t\t :\t%d\n", temp->str, temp->type);
+		printf("%s\t\t\t\t\t :\t%d\n", temp->str, temp->token_type);
 		temp = temp->next;
 	}
+}
+
+static t_program_data	*init_program_data(void)
+{
+	extern char		**environ;
+	t_program_data	*data;
+	
+	data = malloc(sizeof(t_program_data) * 1);
+	if (!data)
+		return (NULL);
+	data->envp = environ;
+	data->exit_code = 0;
+	return (data);
 }
 
 void	checkleaks(void)
@@ -32,23 +45,60 @@ void	checkleaks(void)
 
 int	main(void)
 {
-	t_token		*input_list;
-	extern char	**environ;
+	t_input			*tokenized_input;
+	t_program_data	*data;
+	t_command		*command_list;
 
 	// atexit(checkleaks);
+	data = init_program_data();
+	if (!data)
+		return (1);
 	while (1)
 	{
 		init_signals();
-		input_list = parse();
-		if (!input_list)
+		tokenized_input = lexer();
+		command_list = parser(tokenized_input);
+		if (!command_list)
 			continue ;
-		if (!execute(input_list, environ))
-		{
-			ft_free_list(input_list);
-			return (2);
-		}
-		// list_check(input_list);
-		ft_free_list(input_list);
+		execute(data, &command_list);
 	}
+	list_check(tokenized_input);
 	return (0);
 }
+
+/*
+int main()
+{
+	while (1)
+	{
+		initialize signals
+		get the tokenized list of input
+		parser
+		{
+			expander
+			{
+				transform the requested environment variables to strings
+				if ($?)
+					get saved exit code from global or from main struct
+			}
+			transform the tokens into a list of commands
+			make a list of redirects for every command so the executor knows where the output should go
+		}
+		executor
+		{
+			transform current command to an argv
+			
+			if (builtin && no redirects)
+				execute in parent
+			else if (builtin)
+				execute in child process
+			else
+				execute in child process with execve
+			save exit code // ernumber in main struct or in a global so we can print it
+			free current command and set the command list head to next
+		}
+		free list
+	}
+	at exit: free program data and environment list
+}
+*/
