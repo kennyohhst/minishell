@@ -9,7 +9,7 @@ OBJ_DIR := obj
 
 # Compiler flags
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -g # -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
 
 # Includes
 HDR_FILES :=	minishell.h

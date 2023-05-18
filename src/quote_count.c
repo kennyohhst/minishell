@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/12 16:22:57 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/13 18:32:16 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	quote_count(char *str, char quote_type)
 	if ((count % 2) != 0)
 	{
 		write(1, "unclosed quotes\n", 17);
-		exit(0);
+		// exit(0);
 	}
 	return (1);
 }

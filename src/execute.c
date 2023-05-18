@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:27:05 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/12 18:32:18 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/18 15:48:20 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int	execute(t_token *cmd, char **envp)
 	pid_t	pid;
 
 	signal(SIGINT, sighandle_proc);
+	signal(SIGINT, SIG_IGN);			//disable the signals of the parent. if not done, the parentwill react to the signals as well as the child and it will cause double sighandle
+	// write(1, "\n", 1);
 	pid = fork();
 	if (pid == -1)
 		return (0);
