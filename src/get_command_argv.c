@@ -19,7 +19,7 @@ static int	list_length(t_input *input)
 	if (!input)
 		return (0);
 	count = 0;
-	while (input && input->token_type < 6)
+	while (input && input->token_type > 6)
 	{
 		input = input->next;
 		count++;

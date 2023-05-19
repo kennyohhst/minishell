@@ -19,6 +19,8 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include "../lib/libft/include/libft.h"
+#include <signal.h>
+#include <sys/wait.h>
 
 typedef struct	s_program_data t_program_data;
 

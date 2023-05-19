@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-
-
 void	sighandle_proc(int sig)
 {
 	if (sig == SIGINT)
@@ -44,10 +42,21 @@ static int	child_process(char **argv, char **envp)
 	if (!path)
 	{
 		printf("%s -> Unknown command, maybe a built in?\n", argv[0]);
-		free(argv[0]);
+		ft_free_str_arr(argv);
 		exit (3);
 	}
 	return (execve(path, argv, envp));
+}
+
+static void	ft_free_command_list(t_command **cmd)
+{
+	t_command	*next;
+
+	next = (*cmd)->next;
+	ft_free_str_arr((*cmd)->argv);
+	// free redirects
+	free(*cmd);
+	*cmd = next;
 }
 
 int	execute(t_program_data *data, t_command **cmd)
@@ -68,5 +77,6 @@ int	execute(t_program_data *data, t_command **cmd)
 	}
 	else
 		wait(NULL);
+	ft_free_command_list(cmd);
 	return (1);
 }

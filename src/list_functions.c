@@ -41,7 +41,7 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this
 	new->str = ft_strdup(str);
 	free(str);
 	new->token_type = type;
-	temp = (*cmd);
+	temp = *cmd;
 	if (temp)
 	{
 		while (temp->next != NULL)

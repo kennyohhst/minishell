@@ -61,6 +61,7 @@ int	main(void)
 		if (!command_list)
 			continue ;
 		execute(data, &command_list);
+		ft_free_list(tokenized_input);
 	}
 	list_check(tokenized_input);
 	return (0);

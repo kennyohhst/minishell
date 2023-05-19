@@ -41,11 +41,13 @@ static char	*get_command_location(char *command, char **paths)
 		paths[i] = ft_strjoin_free(paths[i], command);
 		if (!paths[i])
 		{
+			free(command);
 			ft_free_str_arr(paths);
 			return (NULL);
 		}
 		i++;
 	}
+	free(command);
 	return (get_path(paths));
 }
 
