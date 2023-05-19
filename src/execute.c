@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   execute.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/17 23:34:16 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/04 17:27:05 by opelser           #+#    #+#             */
+/*   Updated: 2023/05/19 15:33:24 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 void	sighandle_proc(int sig)
 {
 	if (sig == SIGINT)
+	{
 		write(1, "\n", 1);
+		signal(SIGINT, sighandle_proc);
+	}
 }
 
 static void	check_builtins(char **argv, char **envp)
@@ -54,6 +57,7 @@ int	execute(t_program_data *data, t_command **cmd)
 	// for (int i = 0; argv[i]; i++)
 		// printf("argv[%d] = [%s]\n", i, argv[i]);
 	signal(SIGINT, sighandle_proc);
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 		return (0);

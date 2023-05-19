@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   signals.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/10 14:28:59 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:51:52 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/10 14:28:59 by opelser           #+#    #+#             */
+/*   Updated: 2023/05/19 15:36:01 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ void	init_signals(void)
 
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
-	rl_catch_signals = 1;
+	rl_catch_signals = 0;
 }

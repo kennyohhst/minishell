@@ -65,6 +65,11 @@ cat file1.txt
 - Shell Subsystems
 env $VAR
 
+-Signals:
+	ctrl+c works fine
+	ctrl+\ needs to work with a PID because it has to stop childprocess or do nothing, not sure, but currently it does nothing
+	ctrl+d segfaults
+
 -kenny tasks
 	figure out what olebolcode does
 		- if i'm correct, ole uses the path to execute existing commands, but hasnt worked on the built-ins yet.
@@ -74,3 +79,8 @@ env $VAR
 	figure out the segfault at ctrl+d. It segfaulted because of strncmp. it doesn't segfault anymore but if ctrl+c and then ctrl+d, it gives an extra \n. No idea why.
 
 	A new error occurred when ctrl+c is done. it shows "aardappelschill>> aardappelschill>> ", twice, which is a problem
+
+error/exit handling:
+	- with "echo $?" we can check with what exit() code the program exited.
+	- usually when something when well, it exits with a 0. 
+	- it might mean we need to use waitpid().
