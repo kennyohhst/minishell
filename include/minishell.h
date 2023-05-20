@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/19 20:34:29 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 17:47:13 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include "../lib/libft/include/libft.h"
+#include <signal.h>
+#include <sys/wait.h>
 
 typedef struct	s_program_data t_program_data;
 
@@ -28,8 +30,7 @@ struct s_program_data
 	int			exit_code;
 };
 
-// types of tokens : should change the name of some of these 
-typedef enum e_token_type
+typedef enum e_type
 {
 	PIPE_1,
 	PIPE_2,

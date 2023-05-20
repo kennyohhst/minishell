@@ -6,12 +6,11 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:27:05 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/19 15:47:09 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 17:50:23 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	sighandle_proc(int sig)
 {
@@ -43,10 +42,21 @@ static int	child_process(char **argv, char **envp)
 	if (!path)
 	{
 		printf("%s -> Unknown command, maybe a built in?\n", argv[0]);
-		free(argv[0]);
+		ft_free_str_arr(argv);
 		exit (3);
 	}
 	return (execve(path, argv, envp));
+}
+
+static void	ft_free_command_list(t_command **cmd)
+{
+	t_command	*next;
+
+	next = (*cmd)->next;
+	ft_free_str_arr((*cmd)->argv);
+	// free redirects
+	free(*cmd);
+	*cmd = next;
 }
 
 int	execute(t_program_data *data, t_command **cmd)
@@ -67,5 +77,6 @@ int	execute(t_program_data *data, t_command **cmd)
 	}
 	else
 		wait(NULL);
+	ft_free_command_list(cmd);
 	return (1);
 }

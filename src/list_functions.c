@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/19 20:57:32 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 17:53:46 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this
 	new->str = ft_strdup(str);
 	free(str);
 	new->token_type = type;
-	temp = (*cmd);
+	temp = *cmd;
 	if (temp)
 	{
 		while (temp->next != NULL)
@@ -52,7 +52,7 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this
 	else
 	{
 		new->next = NULL;
-		(*cmd) = new;
+		*cmd = new;
 	}
 }
 

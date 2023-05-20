@@ -34,7 +34,7 @@ SRC_FILES :=	main.c							\
 				builtins/echo.c					\
 				builtins/env.c					\
 				builtins/pwd.c					\
-				expander.c
+				expander.c						\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:43:02 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/19 15:47:19 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 17:53:17 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,13 @@ static char	*get_command_location(char *command, char **paths)
 		paths[i] = ft_strjoin_free(paths[i], command);
 		if (!paths[i])
 		{
+			free(command);
 			ft_free_str_arr(paths);
 			return (NULL);
 		}
 		i++;
 	}
+	free(command);
 	return (get_path(paths));
 }
 

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:43:09 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/20 17:09:27 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 17:53:03 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**get_command_argv(t_input *input)
 	argv = malloc((len + 1) * sizeof(char *));
 	if (!argv)
 		return (NULL);
-	while (argv[i] && input && input->token_type > 6)
+	while (input && input->token_type > 6)
 	{
 		argv[i] = ft_strdup(input->str);
 		input = input->next;

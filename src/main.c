@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/20 17:15:39 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 17:48:57 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	main(void)
 		if (!command_list)
 			continue ;
 		execute(data, &command_list);
+		ft_free_list(tokenized_input);
 	}
 	list_check(tokenized_input);
 	return (0);
