@@ -16,6 +16,7 @@ The shell provides a command-line interface that allows users to interact with t
 
 ### Prerequisites
 
+- The Readline library `sudo apt-get install libreadline8 libreadline-dev`
 - A Unix-like operating system such as Linux or macOS.
 - GCC compiler installed.
 
