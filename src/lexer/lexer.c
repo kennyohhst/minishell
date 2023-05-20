@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parse.c                                            :+:    :+:            */
+/*   lexer.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/17 22:28:16 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/20 18:14:59 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_input	*lexer(void)
 		return (NULL);
 	}
 	add_history(raw_input);
-	if ((check_quotes(raw_input) % 2) == 1)			// only checks for the first quote symbol you find, so ["string" 'string2] should be wrong but passes your check
+	if (check_quotes(raw_input))			// only checks for the first quote symbol you find, so ["string" 'string2] should be wrong but passes your check
 		create_list(&input_list, raw_input);				// 		also why do you modulo
 	free(raw_input);
 	return (input_list);
