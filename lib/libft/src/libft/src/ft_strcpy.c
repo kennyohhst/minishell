@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   ft_strcpy.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/10 17:03:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:47:18 by opelser       ########   odam.nl         */
+/*   Created: 2023/05/16 19:09:56 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/16 19:10:28 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stddef.h>
 
-void	pwd(char **argv)
+size_t	ft_strcpy(char *dst, const char *src)
 {
-	char	cwd[256];
+	size_t	i;
 
-	ft_free_str_arr(argv);
-	if (!getcwd(cwd, 256))
+	i = 0;
+	while (src[i])
 	{
-		perror("getcwd failed");
-		exit (1);
+		dst[i] = src[i];
+		i++;
 	}
-	write(1, cwd, ft_strlen(cwd));
-	write(1, "\n", 1);
-	exit (0);
+	dst[i] = '\0';
+	while (src[i])
+		i++;
+	return (i);
 }

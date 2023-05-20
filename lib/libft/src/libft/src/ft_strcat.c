@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   ft_strlcat.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/10 17:03:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:47:18 by opelser       ########   odam.nl         */
+/*   Created: 2022/10/10 19:44:08 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/16 19:18:08 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	pwd(char **argv)
+size_t	ft_strcat(char *dst, const char *src)
 {
-	char	cwd[256];
+	size_t		dst_len; 
+	size_t		src_len; 
+	size_t		i;
 
-	ft_free_str_arr(argv);
-	if (!getcwd(cwd, 256))
+	if (!dst || !src)
+		return (-1);
+	i = 0;
+	dst_len = ft_strlen(dst);
+	src_len = ft_strlen(src);
+	while (src[i])
 	{
-		perror("getcwd failed");
-		exit (1);
+		dst[dst_len + i] = src[i];
+		i++;
 	}
-	write(1, cwd, ft_strlen(cwd));
-	write(1, "\n", 1);
-	exit (0);
+	dst[dst_len + i] = '\0';
+	return (src_len + dst_len);
 }

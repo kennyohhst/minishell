@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/18 15:45:58 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/19 16:16:45 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void	exit_check(char *raw_input)
 	}
 }
 
-t_token *parse(void)
+t_input	*lexer(void)
 {
 	char		*raw_input;
-	t_token		*input_list;
+	t_input		*input_list;
 
 	input_list = NULL;
 	raw_input = readline("\e[1;33mC Shell >>\033[0m ");

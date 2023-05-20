@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/13 19:48:55 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/19 20:57:32 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 #define SINGLE_QUOTE 3
 #define STANDARD 4
 
-void	ft_free_list(t_token *list)
+void	ft_free_list(t_input *list)
 {
-	t_token	*tmp;
+	t_input	*tmp;
 
 	while (list)
 	{
@@ -31,16 +31,16 @@ void	ft_free_list(t_token *list)
 	}
 }
 
-void	add_nodes(t_token **cmd, t_token *temp, char *str, int type)	// I need this function explained to me
+void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this function explained to me
 {
-	t_token	*new;
+	t_input	*new;
 
-	new = malloc(sizeof(t_token));
+	new = malloc(sizeof(t_input));
 	if (!new)
 		exit(write(2, "Error\n", 6));
 	new->str = ft_strdup(str);
 	free(str);
-	new->type = type;
+	new->token_type = type;
 	temp = (*cmd);
 	if (temp)
 	{
@@ -56,7 +56,7 @@ void	add_nodes(t_token **cmd, t_token *temp, char *str, int type)	// I need this
 	}
 }
 
-static int	tokenize(char mode, t_token **cmd, char *str)
+static int	assign_token(char mode, t_input **cmd, char *str)
 {
 	if (mode == REDIRECT)
 		return (p_d_token(cmd, str, 0, str[0]));
@@ -86,7 +86,7 @@ static int	check_mode(char c)
 	return (STANDARD);
 }
 
-void	create_list(t_token **cmd, char *str)
+void	create_list(t_input **cmd, char *str)
 {
 	int	err_check;
 	int	i;
@@ -98,7 +98,7 @@ void	create_list(t_token **cmd, char *str)
 		while (str[i] == ' ')
 			i++;
 		mode = check_mode(str[i]);			// check_mode has an error check but it's not used here, also checkmode doesnt check for >> and <<
-		err_check = tokenize(mode, cmd, (str + i));
+		err_check = assign_token(mode, cmd, (str + i));
 		if (err_check == -1)
 			return ;						// just returning doesn't tell the caller function that it's failed
 		else

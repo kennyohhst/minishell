@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/10 17:03:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:47:18 by opelser       ########   odam.nl         */
+/*   Created: 2023/05/10 19:00:00 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/10 19:47:11 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(char **argv)
+void	env(char **argv, char **envp)
 {
-	char	cwd[256];
+	int		i;
 
 	ft_free_str_arr(argv);
-	if (!getcwd(cwd, 256))
+	i = 0;
+	while (envp[i])
 	{
-		perror("getcwd failed");
-		exit (1);
+		write(1, envp[i], ft_strlen(envp[i]));
+		i++;
 	}
-	write(1, cwd, ft_strlen(cwd));
-	write(1, "\n", 1);
 	exit (0);
 }

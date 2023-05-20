@@ -6,29 +6,12 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:27:05 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/18 15:48:20 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/19 15:47:09 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	list_length(t_token *node)
-{
-	int	count;
-
-	if (!node)
-		return (0);
-	count = 0;
-	while (node)
-	{
-		node = node->next;
-		count++;
-	}
-	return (count);
-}
-// kenny why this??? >kenny did this because if you don't, 
-// the ctrl+c after an empty "cat" will display "C Shell >> " 
-// twice on the same line. this prevents that
 
 void	sighandle_proc(int sig)
 {
@@ -39,62 +22,47 @@ void	sighandle_proc(int sig)
 	}
 }
 
-static char	**get_command_argv(t_token *node, const int len)
+static void	check_builtins(char **argv, char **envp)
 {
-	char		**argv;
-	int			i;
-
-	i = 0;
-	if (!node)
-		return (NULL);
-	argv = malloc((len + 1) * sizeof(char *));
-	if (!argv)
-		return (NULL);
-	while (node)
-	{
-		argv[i] = ft_strdup(node->str);
-		node = node->next;
-		i++;
-	}
-	argv[i] = NULL;
-	return (argv);
+	if (!ft_strncmp("echo", argv[0], 5))
+		echo(argv);
+	if (!ft_strncmp("pwd", argv[0], 4))
+		pwd(argv);
+	if (!ft_strncmp("env", argv[0], 4))
+		env(argv, envp);
+	if (!ft_strncmp("cd", argv[0], 3))
+		exit (cd(argv));
 }
 
-static int	child_process(t_token *cmd, char **envp)
+static int	child_process(char **argv, char **envp)
 {
-	char		*cmd_path;
-	char		**cmd_argv;
+	char		*path;
 
-	cmd_argv = get_command_argv(cmd, list_length(cmd));
-	if (!cmd_argv)
-		exit (1);
-	if (!ft_strncmp("echo", cmd_argv[0], 5))
-		echo(cmd_argv);
-	if (!ft_strncmp("pwd", cmd_argv[0], 4))
-		pwd(cmd_argv);
-	cmd_path = get_command_path(cmd_argv[0]);
-	if (!cmd_path)
+	check_builtins(argv, envp);
+	path = get_command_path(argv[0]);
+	if (!path)
 	{
-		printf("%s -> Unknown command, maybe a built in?\n", cmd_argv[0]);
-		free(cmd_argv[0]);
+		printf("%s -> Unknown command, maybe a built in?\n", argv[0]);
+		free(argv[0]);
 		exit (3);
 	}
-	return (execve(cmd_path, cmd_argv, envp));
+	return (execve(path, argv, envp));
 }
 
-int	execute(t_token *cmd, char **envp)
+int	execute(t_program_data *data, t_command **cmd)
 {
 	pid_t	pid;
 
+	// for (int i = 0; argv[i]; i++)
+		// printf("argv[%d] = [%s]\n", i, argv[i]);
 	signal(SIGINT, sighandle_proc);
-	signal(SIGINT, SIG_IGN);			//disable the signals of the parent. if not done, the parentwill react to the signals as well as the child and it will cause double sighandle
-	// write(1, "\n", 1);
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 		return (0);
 	if (pid == 0)
 	{
-		if (child_process(cmd, envp) == -1)
+		if (child_process((*cmd)->argv, data->envp) == -1)
 			return (0);
 	}
 	else

@@ -19,17 +19,22 @@ LIBFT_DIR		:= $(LIB_DIR)/libft
 LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
-SRC_FILES :=	main.c					\
-				parse.c					\
-				quote_count.c			\
-				tokens.c				\
-				valid_pipe_check.c		\
-				list_functions.c		\
-				get_command_path.c		\
-				execute.c				\
-				signals.c				\
-				builtins/echo.c			\
-				builtins/pwd.c			\
+SRC_FILES :=	main.c							\
+				lexer/lexer.c					\
+				lexer/quote_count.c				\
+				lexer/tokens.c					\
+				lexer/valid_pipe_check.c		\
+				parser.c						\
+				get_command_argv.c				\
+				list_functions.c				\
+				get_command_path.c				\
+				execute.c						\
+				signals.c						\
+				builtins/cd.c					\
+				builtins/echo.c					\
+				builtins/env.c					\
+				builtins/pwd.c					\
+				expander.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
@@ -56,6 +61,7 @@ $(LIB):
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
 	@mkdir -p obj/builtins
+	@mkdir -p obj/lexer
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
 
 open: $(NAME)
@@ -64,8 +70,8 @@ open: $(NAME)
 log:
 	git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)' --all
 
-norminette:
-	@norminette $(SRC)
+norm:
+	@norminette $(HDR_DIR) $(SRC)
 
 clean:
 	@echo "$(RED)$(BOLD)Cleaning $(NICKNAME)...$(RESET)"

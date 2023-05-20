@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/10 17:13:44 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
+/*   Updated: 2023/05/19 20:34:29 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,16 @@
 # include <stdlib.h>
 # include "../lib/libft/include/libft.h"
 
-typedef enum e_type
+typedef struct	s_program_data t_program_data;
+
+struct s_program_data
+{
+	char		**envp;
+	int			exit_code;
+};
+
+// types of tokens : should change the name of some of these 
+typedef enum e_token_type
 {
 	PIPE_1,
 	PIPE_2,
@@ -33,33 +42,47 @@ typedef enum e_type
 	DQE_STRING,
 	SQ_STRING,
 	STRING
-}		t_type;
+}		t_token_type;
 
-typedef struct s_token t_token;
+// this is what the lexer should return :
+typedef struct	s_input t_input;
 
-struct s_token
+struct s_input
 {
-	char		*str;
-	t_type		type;
-	t_token		*next;	
+	char			*str;
+	t_token_type	token_type;
+	t_input			*next;
 };
 
-//			make struct for exit codes and keeping track of process things?
+// this is what the parser should make out of the lexer tokenized list :
+typedef struct	s_redirect t_redirect;
 
-// typedef	struct	pid
-// {
-// 	pid_t	pid;
-// }t_p;
+struct s_redirect 
+{
+	char			*name; // this is the name of the files or the delimiter after the redirect, so like "cat > [outfile]"
+	t_token_type	type;
+	t_redirect		*next;
+};
+
+// this is what parse should return :
+typedef struct	s_command t_command;
+
+struct s_command
+{
+	char			**argv;
+	t_redirect		*redirects;
+	t_command		*next;
+};
 
 //		~ list_functions.c
 
-void	create_list(t_token **cmd, char *str);
-void	add_nodes(t_token **cmd, t_token *temp, char *str, int type);
-void	ft_free_list(t_token *list);
+void	create_list(t_input **cmd, char *str);
+void	add_nodes(t_input **cmd, t_input *temp, char *str, int type);
+void	ft_free_list(t_input *list);
 
-//		~ parse.c
+//		~ lexer.c
 
-t_token	*parse(void);
+t_input	*lexer(void);
 
 //		~ quote_count.c
 
@@ -67,15 +90,21 @@ int		check_quotes(char *str);
 
 //		~ tokens.c
 
-int		p_d_token(t_token **cmd, char *str, int i, char c);
-int		e_var_token(t_token **cmd, char *str);
-int		d_quotes_token(t_token **cmd, char *str);
-int		s_quotes_token(t_token **cmd, char *str);		
-int		std_token(t_token **cmd, char *str);
+int		p_d_token(t_input **cmd, char *str, int i, char c);
+int		e_var_token(t_input **cmd, char *str);
+int		d_quotes_token(t_input **cmd, char *str);
+int		s_quotes_token(t_input **cmd, char *str);		
+int		std_token(t_input **cmd, char *str);
+t_input *expander(t_input *token);
+
 
 //		~ valid_pipe_check.c
 
 int		valid_pipe_check(char *str);
+
+//		~ parser.c
+
+t_command	*parser(t_input *tokens);
 
 //		~ get_command_path.c
 
@@ -83,7 +112,7 @@ char	*get_command_path(char *command);
 
 //		~ execute.c
 
-int		execute(t_token *cmd, char **envp);
+int		execute(t_program_data *data, t_command **cmd);
 
 //		~ signals.c
 
@@ -93,5 +122,11 @@ void	init_signals(void);
 
 int		echo(char **argv);
 void	pwd(char **argv);
+void	env(char **argv, char **envp);
+int		cd(char **argv);
+
+//		~ get_command_argv.c
+
+char	**get_command_argv(t_input *input);
 
 #endif
