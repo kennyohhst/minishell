@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tokens.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/23 14:10:55 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/16 21:06:00 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tokens.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
+/*   Updated: 2023/05/20 22:30:18 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	d_quotes_token(t_input **cmd, char *str)
 	{
 		if (str[i] == '$')
 			e_var++;
+		if (str[i] == '\\' && str[i+1] == 34)
+			ft_strlcat(ft_strtrim(ft_substr(str, 0, i), "\\"), str+2, (ft_strlen(str) - 1));
 		if (str[i] == 34 && i != 1 && e_var == 0)
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));

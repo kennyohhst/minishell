@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/20 17:48:57 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 21:41:48 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	main(void)
 	{
 		init_signals();
 		tokenized_input = lexer();
+		list_check(tokenized_input);
 	
 		expander(tokenized_input);
 		command_list = parser(tokenized_input);
@@ -65,7 +66,6 @@ int	main(void)
 		execute(data, &command_list);
 		ft_free_list(tokenized_input);
 	}
-	list_check(tokenized_input);
 	return (0);
 }
 

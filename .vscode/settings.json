@@ -4,5 +4,12 @@
 		"stdio.h": "c",
 		"unistd.h": "c",
 		"minishell.h": "c"
-	}
+	},
+	"makefile.launchConfigurations": [
+		{
+			"cwd": "/home/code/42/testsh",
+			"binaryPath": "/home/code/42/testsh/minishell",
+			"binaryArgs": []
+		}
+	]
 }

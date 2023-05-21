@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_count.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/13 18:32:16 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/20 21:39:54 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	quote_count(char *str, char quote_type)
 	i = 0;
 	while (str[i])
 	{
+		if (str[i] == '\\')
+			i += 2;
 		if (str[i] == quote_type)
 			count++;
 		i++;
@@ -32,7 +34,7 @@ static int	quote_count(char *str, char quote_type)
 		write(1, "unclosed quotes\n", 17);
 		// exit(0);
 	}
-	return (1);
+	return (i);
 }
 
 int	check_quotes(char *str)
@@ -40,20 +42,19 @@ int	check_quotes(char *str)
 	int	i;
 
 	if (!str)
-		return (1);
+		return (0);
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '\"' || str[i] == '\'')
 		{
-			int tmp = quote_count(str, str[i]);
+			i = quote_count(str, str[i]);
 			if (str[i] != '\0')
 			{
 				i++;
 				continue;
 			}
-			// printf("return: %d\n", tmp);			// I'll leave this in so you can debug, but you can remove it after should you feel the need
-			return (tmp);
+			return (1);
 		}
 		i++;
 	}
