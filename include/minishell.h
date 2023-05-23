@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/23 21:32:59 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 00:41:07 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ struct s_environment_pointers
 	char	*id;
 	char	*value;
 	int		equal_index;
+	t_envp	*prev;
 	t_envp	*next;
 };
 
@@ -145,6 +146,10 @@ char	**get_command_argv(t_input *input);
 
 t_envp	*environ_to_list(char **environ);
 t_envp	*create_new_envp_node(char *str);
+
+void	print_envp_list(t_envp *envp);
+int		ft_strchr_index(char *str, char c);
+void	*free_envp_list(t_envp *node);
 
 char	**envp_list_to_arr(t_envp *envp);
 

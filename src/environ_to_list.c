@@ -6,52 +6,11 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/23 23:12:45 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 00:42:55 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_envp_list(t_envp *envp)
-{
-	while (envp)
-	{
-		printf("\e[0;31m%s:\e[0m\n", envp->str);
-		printf("id : %s\t\tvalue : %s\n", envp->id, envp->value);
-		envp = envp->next;
-	}
-}
-
-int		ft_strchr_index(char *str, char c)
-{
-	int		i;
-
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	if (str[i] == c)
-		return (i);
-	return (-1);
-}
-
-void	*free_envp_list(t_envp *node)
-{
-	t_envp	*next;
-
-	while (node)
-	{
-		next = node->next;
-		if (node->str)
-			free(node->str);
-		if (node->id)
-			free(node->id);
-		if (node->value)
-			free(node->value);
-		free(node);
-		node = next;
-	}
-	return (NULL);
-}
 
 char	*get_env_id(char *str, int equal_index)
 {
@@ -63,7 +22,6 @@ char	*get_env_id(char *str, int equal_index)
 	else
 		len = equal_index + 1;
 
-	printf("len %d\n", len);
 	tmp = (char *) malloc(len * sizeof(char));
 	if (!tmp)
 		return (NULL);
@@ -95,6 +53,7 @@ t_envp	*init_envp_node(void)
 	new_node = (t_envp *) malloc(1 * sizeof(t_envp));
 	if (!new_node)
 		return (NULL);
+	new_node->prev = NULL;
 	new_node->str = NULL;
 	new_node->id = NULL;
 	new_node->value = NULL;
@@ -147,6 +106,7 @@ t_envp	*environ_to_list(char **environ)
 			free_envp_list(head);
 			return (NULL);
 		}
+		current->next->prev = current;
 		current = current->next;
 		i++;
 	}
