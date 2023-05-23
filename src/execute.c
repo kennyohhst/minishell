@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 17:27:05 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/19 15:33:24 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   execute.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/23 21:19:36 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <errno.h>
 
 void	sighandle_proc(int sig)
 {
@@ -21,62 +22,98 @@ void	sighandle_proc(int sig)
 	}
 }
 
-static void	check_builtins(char **argv, char **envp)
+static int	check_builtins(t_program_data *data)
 {
+	char	**argv;
+
+	argv = data->command->argv;
+	if (!ft_strncmp("exit", argv[0], 5))
+	{
+		ft_free_str_arr(argv);
+		exit(0);
+	}
 	if (!ft_strncmp("echo", argv[0], 5))
-		echo(argv);
+		return (echo(argv));
 	if (!ft_strncmp("pwd", argv[0], 4))
-		pwd(argv);
-	if (!ft_strncmp("env", argv[0], 4))
-		env(argv, envp);
+		return (pwd(argv));
+	// if (!ft_strncmp("env", argv[0], 4))
+	// 	return (env(argv, envp));
 	if (!ft_strncmp("cd", argv[0], 3))
-		exit (cd(argv));
+		return (cd(argv));
+	if (!ft_strncmp("export", argv[0], 8))
+		return (export(data), 1);
+	return (-1);
 }
 
-static int	child_process(char **argv, char **envp)
+static int	child_process(t_program_data *data)
 {
-	char		*path;
+	char	**argv;
+	char	**envp;
+	char	*path;
 
-	check_builtins(argv, envp);
+	envp = envp_list_to_arr(data->envp);
+	if (!envp)
+		exit(1);
+	argv = data->command->argv;
+
+	if (check_builtins(data) != -1)
+		exit(2);
 	path = get_command_path(argv[0]);
 	if (!path)
 	{
-		printf("%s -> Unknown command, maybe a built in?\n", argv[0]);
-		ft_free_str_arr(argv);
+		printf("%s -> command not found\n", argv[0]);
 		exit (3);
 	}
 	return (execve(path, argv, envp));
 }
 
-static void	ft_free_command_list(t_command **cmd)
+static void	ft_free_current_command(t_program_data *data)
 {
 	t_command	*next;
 
-	next = (*cmd)->next;
-	ft_free_str_arr((*cmd)->argv);
+	next = data->command->next;
+	ft_free_str_arr(data->command->argv);
 	// free redirects
-	free(*cmd);
-	*cmd = next;
+	free(data->command);
+	data->command = next;
 }
 
-int	execute(t_program_data *data, t_command **cmd)
+int	execute(t_program_data *data)
 {
-	pid_t	pid;
+	pid_t			pid;
+	int				exit_code;
+	t_command		*cmd;
 
-	// for (int i = 0; argv[i]; i++)
-		// printf("argv[%d] = [%s]\n", i, argv[i]);
+	cmd = data->command;
 	signal(SIGINT, sighandle_proc);
-	signal(SIGINT, SIG_IGN);
+
+	if (!ft_strncmp("?", cmd->argv[0], 2))
+		return (printf("%d\n", data->exit_code));
+
+	if (!cmd->redirects)
+	{
+		exit_code = check_builtins(data);
+		if (exit_code != -1)
+		{
+			data->exit_code = exit_code;
+			return (1);
+		}
+	}
+
 	pid = fork();
 	if (pid == -1)
 		return (0);
 	if (pid == 0)
 	{
-		if (child_process((*cmd)->argv, data->envp) == -1)
+		if (child_process(data) == -1)
+		{
+			printf("WHY\n");
 			return (0);
+		}
 	}
+	// make sure child processes free all
 	else
-		wait(NULL);
-	ft_free_command_list(cmd);
+		waitpid(pid, &data->exit_code, 0);
+	ft_free_current_command(data);
 	return (1);
 }

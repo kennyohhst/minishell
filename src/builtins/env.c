@@ -6,13 +6,13 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 19:00:00 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 19:47:11 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/20 21:48:11 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env(char **argv, char **envp)
+int	env(char **argv, char **envp)
 {
 	int		i;
 
@@ -21,7 +21,8 @@ void	env(char **argv, char **envp)
 	while (envp[i])
 	{
 		write(1, envp[i], ft_strlen(envp[i]));
+		write(1, "\n", 1);
 		i++;
 	}
-	exit (0);
+	return (15);
 }

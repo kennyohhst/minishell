@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/17 22:27:17 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/23 20:27:15 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #define SINGLE_QUOTE 3
 #define STANDARD 4
 
-void	ft_free_list(t_input *list)
+void	ft_free_input_list(t_input *list)
 {
 	t_input	*tmp;
 
@@ -86,7 +86,7 @@ static int	check_mode(char c)
 	return (STANDARD);
 }
 
-void	create_list(t_input **cmd, char *str)
+void	create_input_list(t_input **cmd, char *str)
 {
 	int	err_check;
 	int	i;

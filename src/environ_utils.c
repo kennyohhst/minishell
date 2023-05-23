@@ -1,38 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   export.c                                           :+:    :+:            */
+/*   environ_utils.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/23 20:44:57 by opelser       ########   odam.nl         */
+/*   Created: 2023/05/23 20:24:02 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/23 21:19:17 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_no_args(t_program_data *data)
+int		envp_list_size(t_envp *envp)
 {
-	t_envp		*current;
-	
-	current = data->envp;
-	while (current)
+	int		count;
+
+	count = 0;
+	while (envp)
 	{
-		write(1, "declare -x", 11);
-		write(1, current->id, ft_strlen(current->id));
-		if (current->equal_index > 0)
-		{
-			write(1, "=\"", 1);
-			write(1, current->value, ft_strlen(current->value));
-		}
-		write(1, "\"\n", 2);
-		current = current->next;
+		count++;
+		envp = envp->next;
 	}
+	return (count);
 }
 
-void	export(t_program_data *data)
+char	**envp_list_to_arr(t_envp *envp)
 {
-	// if (!data->command->argv[1])
-	print_no_args(data);
+	int		len;
+	int		i;
+	char	**char_envp;
+
+	len = envp_list_size(envp);
+	char_envp = (char **) malloc((len + 1) * sizeof(char *));
+
+	i = 0;
+	while (envp)
+	{
+		char_envp[i] = envp->str;
+		envp = envp->next;
+		i++;
+	}
+	char_envp[i] = NULL;
+	return (char_envp);
 }

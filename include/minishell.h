@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/17 23:26:12 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/23 20:40:51 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,9 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include "../lib/libft/include/libft.h"
-#include <signal.h>
-#include <sys/wait.h>
-
-typedef struct	s_program_data t_program_data;
-
-struct s_program_data
-{
-	char		**envp;
-	int			exit_code;
-};
+# include <signal.h>
+# include <sys/wait.h>
+# include <stdbool.h>
 
 // types of tokens : should change the name of some of these 
 typedef enum e_token_type
@@ -76,11 +69,31 @@ struct s_command
 	t_command		*next;
 };
 
-//		~ list_functions.c
+typedef struct	s_environment_pointers t_envp;
 
-void	create_list(t_input **cmd, char *str);
+struct s_environment_pointers
+{
+	char	*str;
+	char	*id;
+	char	*value;
+	int		equal_index;
+	t_envp	*next;
+};
+
+typedef struct	s_program_data t_program_data;
+
+struct s_program_data
+{
+	t_envp		*envp;
+	t_command	*command;
+	int			exit_code;
+};
+
+//		~ create_input_list.c
+
+void	create_input_list(t_input **cmd, char *str);
 void	add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void	ft_free_list(t_input *list);
+void	ft_free_input_list(t_input *list);
 
 //		~ lexer.c
 
@@ -112,7 +125,7 @@ char	*get_command_path(char *command);
 
 //		~ execute.c
 
-int		execute(t_program_data *data, t_command **cmd);
+int		execute(t_program_data *data);
 
 //		~ signals.c
 
@@ -121,12 +134,16 @@ void	init_signals(void);
 //		~ builtins
 
 int		echo(char **argv);
-void	pwd(char **argv);
-void	env(char **argv, char **envp);
+int		pwd(char **argv);
+int		env(char **argv, char **envp);
 int		cd(char **argv);
+void	export(t_program_data *data);
 
 //		~ get_command_argv.c
 
 char	**get_command_argv(t_input *input);
+
+t_envp	*environ_to_list(char **environ);
+char	**envp_list_to_arr(t_envp *envp);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/08 21:08:18 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/10 17:23:39 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/20 21:31:17 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	echo(char **argv)
 	if (!argv[i])
 	{
 		write(1, "\n", 1);
-		exit (0);
+		return (0);
 	}
 	if (check_options(argv[1]))
 	{
@@ -54,5 +54,5 @@ int	echo(char **argv)
 	}
 	write(1, &newline, 1);
 	ft_free_str_arr(argv);
-	exit (0);
+	return (0);
 }

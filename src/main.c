@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/17 23:32:24 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/23 20:42:20 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static t_program_data	*init_program_data(void)
 	data = malloc(sizeof(t_program_data) * 1);
 	if (!data)
 		return (NULL);
-	data->envp = environ;
+	data->envp = environ_to_list(environ);
+	data->command = NULL;
 	data->exit_code = 0;
 	return (data);
 }
@@ -47,7 +48,6 @@ int	main(void)
 {
 	t_input			*tokenized_input;
 	t_program_data	*data;
-	t_command		*command_list;
 
 	// atexit(checkleaks);
 	data = init_program_data();
@@ -57,11 +57,11 @@ int	main(void)
 	{
 		init_signals();
 		tokenized_input = lexer();
-		command_list = parser(tokenized_input);
-		if (!command_list)
+		data->command = parser(tokenized_input);
+		if (!data->command)
 			continue ;
-		execute(data, &command_list);
-		ft_free_list(tokenized_input);
+		execute(data);
+		ft_free_input_list(tokenized_input);
 	}
 	list_check(tokenized_input);
 	return (0);
@@ -87,8 +87,6 @@ int main()
 		}
 		executor
 		{
-			transform current command to an argv
-			
 			if (builtin && no redirects)
 				execute in parent
 			else if (builtin)
