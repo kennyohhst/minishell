@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/23 20:40:51 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/23 21:32:59 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ void	export(t_program_data *data);
 char	**get_command_argv(t_input *input);
 
 t_envp	*environ_to_list(char **environ);
+t_envp	*create_new_envp_node(char *str);
+
 char	**envp_list_to_arr(t_envp *envp);
 
 #endif

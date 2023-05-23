@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/23 19:56:50 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/23 23:12:45 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int		ft_strchr_index(char *str, char c)
 	int		i;
 
 	i = 0;
-	if (!str)
-		return (-1);
 	while (str[i] && str[i] != c)
 		i++;
 	if (str[i] == c)
@@ -55,14 +53,38 @@ void	*free_envp_list(t_envp *node)
 	return (NULL);
 }
 
-char	*get_env_part(char *str, int len)
+char	*get_env_id(char *str, int equal_index)
 {
 	char	*tmp;
+	int		len;
 
+	if (equal_index == -1)
+		len = ft_strlen(str) + 1;
+	else
+		len = equal_index + 1;
+
+	printf("len %d\n", len);
 	tmp = (char *) malloc(len * sizeof(char));
 	if (!tmp)
 		return (NULL);
 	ft_strlcpy(tmp, str, len);
+	return (tmp);
+}
+
+char	*get_env_value(char *str, int equal_index)
+{
+	char	*tmp;
+	int		len;
+
+	if (equal_index <= 0)
+		return (ft_strdup(""));
+	else
+		len = ft_strlen(str) - equal_index + 1;
+
+	tmp = (char *) malloc(len * sizeof(char));
+	if (!tmp)
+		return (NULL);
+	ft_strlcpy(tmp, str + equal_index + 1, len);
 	return (tmp);
 }
 
@@ -84,27 +106,24 @@ t_envp	*init_envp_node(void)
 t_envp	*create_new_envp_node(char *str)
 {
 	t_envp	*new_node;
-	int		equal_sign;
+	int		equal_index;
 
 	new_node = init_envp_node();
 	if (!new_node)
 		return (NULL);
 
 	new_node->str = ft_strdup(str);
-	if (!str)
+	if (!new_node->str)
 		return (free_envp_list(new_node));
 
-	equal_sign = ft_strchr_index(str, '=') + 1;
-	if (equal_sign <= 0)
-		return (free_envp_list(new_node));
-	new_node->equal_index = equal_sign;
+	equal_index = ft_strchr_index(str, '=');
+	new_node->equal_index = equal_index;
 
-	new_node->id = get_env_part(str, equal_sign);
+	new_node->id = get_env_id(str, equal_index);
 	if (!new_node->id)
 		return (free_envp_list(new_node));
 
-	str += equal_sign;
-	new_node->value = get_env_part(str, ft_strlen(str) + 1);
+	new_node->value = get_env_value(str, equal_index);
 	if (!new_node->value)
 		return (free_envp_list(new_node));
 
