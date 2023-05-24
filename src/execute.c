@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/23 21:19:36 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 22:36:55 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	check_builtins(t_program_data *data)
 	if (!ft_strncmp("cd", argv[0], 3))
 		return (cd(argv));
 	if (!ft_strncmp("export", argv[0], 8))
-		return (export(data), 1);
+		return (ft_export(data), 1);
 	return (-1);
 }
 

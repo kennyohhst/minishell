@@ -6,17 +6,11 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 18:43:27 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 22:37:06 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	remove_from_envp_list(t_envp *node)
-{
-	node->next = NULL;
-	free_envp_list(node);
-}
 
 void	lst_add_back(t_envp *node, t_envp *new_node)
 {
@@ -28,26 +22,22 @@ void	lst_add_back(t_envp *node, t_envp *new_node)
 	new_node->prev = node;
 }
 
-void	insert_in_envp_list(t_envp *node, t_envp *new_node)
+bool	is_input_valid(t_envp *node)
 {
-	new_node->next = node->next;
-	node->next = new_node;
-	new_node->prev = node;
+	if (node->equal_index == 0)
+	{
+		free_envp_list(node);
+		printf("not a valid identifier\n");
+		return (false);
+	}
+	return (true);
 }
 
-t_envp	*check_node(t_envp *head, t_envp *new_node)
+t_envp	*check_duplicate(t_envp *head, t_envp *new_node)
 {
 	t_envp	*node;
 
 	node = head;
-	if (new_node->equal_index == 0)
-	{
-		//handle wrong input
-		new_node->prev->next = NULL;
-		free_envp_list(new_node);
-		printf("not a valid identifier\n");
-		return (NULL);
-	}
 	while (node)
 	{
 		if (!ft_strcmp(node->id, new_node->id))
@@ -77,18 +67,37 @@ void	print_no_args(t_program_data *data)
 	}
 }
 
-t_envp	*get_head(t_envp	*node_in_list)
+void	add_node_to_envp_list(t_program_data *data, t_envp *new)
 {
-	while (node_in_list->prev)
-		node_in_list = node_in_list->prev;
-	return (node_in_list);
+	t_envp	*old;
+
+	old = check_duplicate(data->envp, new);
+	if (!old)
+	{
+		// write(1, "waddupp Ole", 11);
+		lst_add_back(data->envp, new);
+		return ;
+	}
+	if (old->prev)
+	{
+		old->prev->next = new;
+		new->prev = old->prev;
+	}
+	else
+		data->envp = new;
+	if (old->next)
+	{
+		old->next->prev = new;
+		new->next = old->next;
+	}
+	old->next = NULL;
+	free_envp_list(old);
 }
 
-void	export(t_program_data *data)
+void	ft_export(t_program_data *data)
 {
 	int		i;
 	t_envp	*new_node;
-	t_envp	*tmp;
 
 	if (!data->command->argv[1])
 	{
@@ -102,31 +111,11 @@ void	export(t_program_data *data)
 		new_node = create_new_envp_node(data->command->argv[i]);
 		if (!new_node)
 		{
-			// handle null return
 			printf("create new envp node returned (null)\n");
 			return ;
 		}
-		tmp = check_node(data->envp, new_node);
-		if (!tmp)
-			lst_add_back(data->envp, new_node); // what if fails check
-		else
-		{
-			if (!tmp->prev)
-				data->envp = new_node;
-			else
-			{
-				tmp->prev->next = new_node;
-				new_node->prev = tmp->prev;
-			}
-			if (!tmp->next)
-				new_node->next = NULL;
-			else
-			{
-				tmp->next->prev = new_node;
-				new_node->next = tmp->next;
-			}
-			remove_from_envp_list(tmp);
-		}
+		if (is_input_valid(new_node) == true)
+			add_node_to_envp_list(data, new_node);
 		i++;
 	}
 }

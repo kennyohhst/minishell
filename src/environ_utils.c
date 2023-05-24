@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 20:24:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/23 23:19:56 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 22:16:03 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,6 @@ void	print_envp_list(t_envp *envp)
 		printf("id : %s\t\tvalue : %s\n", envp->id, envp->value);
 		envp = envp->next;
 	}
-}
-
-int		ft_strchr_index(char *str, char c)
-{
-	int		i;
-
-	i = 0;
-	if (!str)
-		return (-1);
-	while (str[i] && str[i] != c)
-		i++;
-	if (str[i] == c)
-		return (i);
-	return (-1);
 }
 
 void	*free_envp_list(t_envp *node)
