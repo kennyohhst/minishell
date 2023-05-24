@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 00:42:55 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 15:02:09 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*get_env_value(char *str, int equal_index)
 	tmp = (char *) malloc(len * sizeof(char));
 	if (!tmp)
 		return (NULL);
-	ft_strlcpy(tmp, str + equal_index + 1, len);
+  	ft_strlcpy(tmp, str + equal_index + 1, len);
 	return (tmp);
 }
 
