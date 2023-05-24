@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 22:37:06 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 23:22:24 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_envp	*check_duplicate(t_envp *head, t_envp *new_node)
 	return (NULL);
 }
 
-void	print_no_args(t_program_data *data)
+void	print_no_args(t_data *data)
 {
 	t_envp		*current;
 	
@@ -67,7 +67,7 @@ void	print_no_args(t_program_data *data)
 	}
 }
 
-void	add_node_to_envp_list(t_program_data *data, t_envp *new)
+void	add_node_to_envp_list(t_data *data, t_envp *new)
 {
 	t_envp	*old;
 
@@ -94,7 +94,7 @@ void	add_node_to_envp_list(t_program_data *data, t_envp *new)
 	free_envp_list(old);
 }
 
-void	ft_export(t_program_data *data)
+void	ft_export(t_data *data)
 {
 	int		i;
 	t_envp	*new_node;

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/24 22:36:46 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 23:22:24 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ struct s_environment_pointers
 	t_envp	*next;
 };
 
-typedef struct	s_program_data t_program_data;
+typedef struct	s_program_data t_data;
 
 struct s_program_data
 {
@@ -126,7 +126,7 @@ char	*get_command_path(char *command);
 
 //		~ execute.c
 
-int		execute(t_program_data *data);
+int		execute(t_data *data);
 
 //		~ signals.c
 
@@ -140,9 +140,10 @@ char	**get_command_argv(t_input *input);
 
 int		echo(char **argv);
 int		pwd(char **argv);
-int		env(char **argv, char **envp);
+void	env(t_envp *envp);
 int		cd(char **argv);
-void	ft_export(t_program_data *data);
+void	ft_export(t_data *data);
+void	unset(t_data *data);
 
 //		~ environment
 

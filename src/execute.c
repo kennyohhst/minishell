@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 22:36:55 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 23:30:51 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	sighandle_proc(int sig)
 	}
 }
 
-static int	check_builtins(t_program_data *data)
+static int	check_builtins(t_data *data)
 {
 	char	**argv;
 
@@ -36,16 +36,18 @@ static int	check_builtins(t_program_data *data)
 		return (echo(argv));
 	if (!ft_strncmp("pwd", argv[0], 4))
 		return (pwd(argv));
-	// if (!ft_strncmp("env", argv[0], 4))
-	// 	return (env(argv, envp));
+	if (!ft_strncmp("env", argv[0], 4))
+		return (env(data->envp), 4);
 	if (!ft_strncmp("cd", argv[0], 3))
 		return (cd(argv));
 	if (!ft_strncmp("export", argv[0], 8))
-		return (ft_export(data), 1);
+		return (ft_export(data), 6);
+	if (!ft_strncmp("unset", argv[0], 6))
+		return (unset(data), 7);
 	return (-1);
 }
 
-static int	child_process(t_program_data *data)
+static int	child_process(t_data *data)
 {
 	char	**argv;
 	char	**envp;
@@ -67,7 +69,7 @@ static int	child_process(t_program_data *data)
 	return (execve(path, argv, envp));
 }
 
-static void	ft_free_current_command(t_program_data *data)
+static void	ft_free_current_command(t_data *data)
 {
 	t_command	*next;
 
@@ -78,7 +80,7 @@ static void	ft_free_current_command(t_program_data *data)
 	data->command = next;
 }
 
-int	execute(t_program_data *data)
+int	execute(t_data *data)
 {
 	pid_t			pid;
 	int				exit_code;

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/23 20:42:20 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/24 23:22:24 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static void	list_check(t_input *tokenized_input)
 	}
 }
 
-static t_program_data	*init_program_data(void)
+static t_data	*init_data(void)
 {
 	extern char		**environ;
-	t_program_data	*data;
+	t_data	*data;
 	
-	data = malloc(sizeof(t_program_data) * 1);
+	data = malloc(sizeof(t_data) * 1);
 	if (!data)
 		return (NULL);
 	data->envp = environ_to_list(environ);
@@ -47,10 +47,10 @@ void	checkleaks(void)
 int	main(void)
 {
 	t_input			*tokenized_input;
-	t_program_data	*data;
+	t_data	*data;
 
 	// atexit(checkleaks);
-	data = init_program_data();
+	data = init_data();
 	if (!data)
 		return (1);
 	while (1)

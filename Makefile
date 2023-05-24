@@ -41,6 +41,7 @@ SRC_FILES :=	main.c							\
 				builtins/env.c					\
 				builtins/pwd.c					\
 				builtins/export.c				\
+				builtins/unset.c				\
 \
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
