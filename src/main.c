@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 19:15:02 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/05/25 22:35:04 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	main(void)
 		tokenized_input = lexer();
 	
 		expander(tokenized_input);
-		list_check(tokenized_input);
 		data->command = parser(tokenized_input);
 		if (!data->command)
 			continue ;
@@ -67,6 +66,7 @@ int	main(void)
 		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!
+	list_check(tokenized_input);
 	return (0);
 }
 

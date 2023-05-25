@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 19:11:14 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/05/25 22:50:08 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ char	**get_command_argv(t_input *input);
 
 //		~ builtins
 
-int		echo(char **argv);
-int		pwd(char **argv);
+void	echo(char **argv);
+int		pwd(void);
 void	env(t_envp *envp);
 int		cd(char **argv);
 void	ft_export(t_data *data);

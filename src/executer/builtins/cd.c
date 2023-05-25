@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 20:09:42 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/21 23:51:44 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/25 22:11:56 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ static int	cd_home(void)
 {
 	char	*home;
 
-	home = getenv("HOME");
-	write(1, home, ft_strlen(home));
-	write(1, "\n", 1);
+	home = getenv("HOME");		// get home from my envp list
+	printf("%s\n", home);
 	if (chdir(home) == -1)
 		return (2);
 	return (0);

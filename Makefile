@@ -32,7 +32,7 @@ SRC_FILES :=	main.c							\
 \
 				parser/parser.c					\
 				parser/get_command_argv.c		\
-				parser/expander.c						\
+				parser/expander.c				\
 \
 				executer/execute.c				\
 				executer/get_command_path.c		\

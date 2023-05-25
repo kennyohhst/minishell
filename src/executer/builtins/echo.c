@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/08 21:08:18 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/25 19:13:22 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   echo.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/08 21:08:18 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/25 21:35:21 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_options(char *options)
+static bool	is_valid_option(char *options)
 {
 	int		i;
 
@@ -28,7 +28,7 @@ static int	check_options(char *options)
 	return (1);
 }
 
-int	echo(char **argv)
+void	echo(char **argv)
 {
 	char	newline;
 	int		i;
@@ -38,21 +38,20 @@ int	echo(char **argv)
 	if (!argv[i])
 	{
 		write(1, "\n", 1);
-		return (0);
+		return ;
 	}
-	if (check_options(argv[1]))
+	if (is_valid_option(argv[1]) == true)
 	{
 		newline = '\0';
 		i++;
 	}
 	while (argv[i])
 	{
-		write(1, argv[i], ft_strlen(argv[i]));
+		printf("%s", argv[i]);
 		if (argv[i + 1])
 			write(1, " ", 1);
 		i++;
 	}
-	write(1, &newline, 1);
-	ft_free_str_arr(argv);
-	return (0);
+	printf("%c", newline);
+	return ;
 }

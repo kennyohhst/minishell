@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_command_path.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/03 20:43:02 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/20 17:53:17 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   get_command_path.c                                 :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
+/*   Updated: 2023/05/25 22:14:29 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*get_command_path(char *command)
 	char	*paths;
 	char	*command_path;
 
-	paths = getenv("PATH");
+	paths = getenv("PATH");	// get envp from envp list
 	if (!paths)
 		return (NULL);
 	split_paths = ft_split(paths, ':');

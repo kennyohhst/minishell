@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 23:22:24 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/25 21:30:50 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,10 @@ void	print_no_args(t_data *data)
 	current = data->envp;
 	while (current)
 	{
-		write(1, "declare -x ", 12);
-		write(1, current->id, ft_strlen(current->id));
+		printf("declare -x %s", current->id);
 		if (current->equal_index > 0)
-		{
-			write(1, "=\"", 2);
-			write(1, current->value, ft_strlen(current->value));
-			write(1, "\"", 1);
-		}
-		write(1, "\n", 1);
+			printf("=\"%s\'", current->value);
+		printf("\n");
 		current = current->next;
 	}
 }
@@ -74,7 +69,6 @@ void	add_node_to_envp_list(t_data *data, t_envp *new)
 	old = check_duplicate(data->envp, new);
 	if (!old)
 	{
-		// write(1, "waddupp Ole", 11);
 		lst_add_back(data->envp, new);
 		return ;
 	}
