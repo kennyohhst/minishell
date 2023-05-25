@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 18:24:47 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:15:02 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ static void	list_check(t_input *tokenized_input)
 	}
 }
 
-static t_program_data	*init_program_data(void)
+static t_data	*init_data(void)
 {
 	extern char		**environ;
-	t_program_data	*data;
+	t_data	*data;
 	
-	data = malloc(sizeof(t_program_data) * 1);
+	data = malloc(sizeof(t_data) * 1);
 	if (!data)
 		return (NULL);
-	data->envp = environ;
+	data->envp = environ_to_list(environ);
+	data->command = NULL;
 	data->exit_code = 0;
 	return (data);
 }
@@ -45,12 +46,11 @@ void	checkleaks(void)
 
 int	main(void)
 {
-	t_input			*tokenized_input;
-	t_program_data	*data;
-	t_command		*command_list;
+	t_input		*tokenized_input;
+	t_data		*data;
 
 	// atexit(checkleaks);
-	data = init_program_data();
+	data = init_data();
 	if (!data)
 		return (1);
 	while (1)
@@ -60,12 +60,13 @@ int	main(void)
 	
 		expander(tokenized_input);
 		list_check(tokenized_input);
-		command_list = parser(tokenized_input);
-		if (!command_list)
+		data->command = parser(tokenized_input);
+		if (!data->command)
 			continue ;
-		execute(data, &command_list);
-		ft_free_list(tokenized_input);
+		execute(data);
+		ft_free_input_list(tokenized_input);
 	}
+	// ft_free_data(data); // free everything!!!!
 	return (0);
 }
 
@@ -89,8 +90,6 @@ int main()
 		}
 		executor
 		{
-			transform current command to an argv
-			
 			if (builtin && no redirects)
 				execute in parent
 			else if (builtin)

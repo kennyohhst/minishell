@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:08:18 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/21 17:50:55 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:13:22 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	echo(char **argv)
 	if (!argv[i])
 	{
 		write(1, "\n", 1);
-		exit (0);
+		return (0);
 	}
 	if (check_options(argv[1]))
 	{
@@ -54,5 +54,5 @@ int	echo(char **argv)
 	}
 	write(1, &newline, 1);
 	ft_free_str_arr(argv);
-	exit (0);
+	return (0);
 }

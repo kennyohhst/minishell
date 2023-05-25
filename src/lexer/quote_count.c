@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 14:45:33 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:08:18 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static int	quote_count(char *str, char quote_type)
 	int		i;
 	int		count;
 
-	if (!str)
-		return (0);
 	count = 0;
 	i = 0;
 	while (str[i])
@@ -34,7 +32,7 @@ static int	quote_count(char *str, char quote_type)
 
 int	check_quotes(char *str)
 {
-	int	i;
+	int		i;
 
 	if (!str)
 		return (0);

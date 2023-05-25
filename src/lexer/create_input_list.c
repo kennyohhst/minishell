@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_functions.c                                   :+:      :+:    :+:   */
+/*   create_input_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/20 17:53:46 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:07:11 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #define SINGLE_QUOTE 3
 #define STANDARD 4
 
-void	ft_free_list(t_input *list)
+void	ft_free_input_list(t_input *list)
 {
 	t_input	*tmp;
 
@@ -86,7 +86,7 @@ static int	check_mode(char c)
 	return (STANDARD);
 }
 
-void	create_list(t_input **cmd, char *str)
+void	create_input_list(t_input **cmd, char *str)
 {
 	int	err_check;
 	int	i;

@@ -20,21 +20,30 @@ LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
 SRC_FILES :=	main.c							\
+				environ_to_list.c				\
+				environ_utils.c					\
+				signals.c						\
+\
 				lexer/lexer.c					\
 				lexer/quote_count.c				\
 				lexer/tokens.c					\
 				lexer/valid_pipe_check.c		\
-				parser.c						\
-				get_command_argv.c				\
-				list_functions.c				\
-				get_command_path.c				\
-				execute.c						\
-				signals.c						\
-				builtins/cd.c					\
-				builtins/echo.c					\
-				builtins/env.c					\
-				builtins/pwd.c					\
-				expander.c						\
+				lexer/create_input_list.c		\
+\
+				parser/parser.c					\
+				parser/get_command_argv.c		\
+				parser/expander.c						\
+\
+				executer/execute.c				\
+				executer/get_command_path.c		\
+\
+				executer/builtins/cd.c			\
+				executer/builtins/echo.c		\
+				executer/builtins/env.c			\
+				executer/builtins/pwd.c			\
+				executer/builtins/export.c		\
+				executer/builtins/unset.c		\
+\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
@@ -60,8 +69,10 @@ $(LIB):
 
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
-	@mkdir -p obj/builtins
 	@mkdir -p obj/lexer
+	@mkdir -p obj/parser
+	@mkdir -p obj/executer
+	@mkdir -p obj/executer/builtins
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
 
 open: $(NAME)

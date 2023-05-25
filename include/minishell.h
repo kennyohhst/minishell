@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/20 17:47:13 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:11:14 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,9 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include "../lib/libft/include/libft.h"
-#include <signal.h>
-#include <sys/wait.h>
-
-typedef struct	s_program_data t_program_data;
-
-struct s_program_data
-{
-	char		**envp;
-	int			exit_code;
-};
+# include <signal.h>
+# include <sys/wait.h>
+# include <stdbool.h>
 
 typedef enum e_type
 {
@@ -75,11 +68,32 @@ struct s_command
 	t_command		*next;
 };
 
-//		~ list_functions.c
+typedef struct	s_environment_pointers t_envp;
 
-void	create_list(t_input **cmd, char *str);
+struct s_environment_pointers
+{
+	char	*str;
+	char	*id;
+	char	*value;
+	int		equal_index;
+	t_envp	*prev;
+	t_envp	*next;
+};
+
+typedef struct	s_program_data t_data;
+
+struct s_program_data
+{
+	t_envp		*envp;
+	t_command	*command;
+	int			exit_code;
+};
+
+//		~ create_input_list.c
+
+void	create_input_list(t_input **cmd, char *str);
 void	add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void	ft_free_list(t_input *list);
+void	ft_free_input_list(t_input *list);
 
 //		~ lexer.c
 
@@ -113,21 +127,33 @@ char	*get_command_path(char *command);
 
 //		~ execute.c
 
-int		execute(t_program_data *data, t_command **cmd);
+int		execute(t_data *data);
 
 //		~ signals.c
 
 void	init_signals(void);
 
-//		~ builtins
-
-int		echo(char **argv);
-void	pwd(char **argv);
-void	env(char **argv, char **envp);
-int		cd(char **argv);
-
 //		~ get_command_argv.c
 
 char	**get_command_argv(t_input *input);
+
+//		~ builtins
+
+int		echo(char **argv);
+int		pwd(char **argv);
+void	env(t_envp *envp);
+int		cd(char **argv);
+void	ft_export(t_data *data);
+void	unset(t_data *data);
+
+//		~ environment
+
+t_envp	*environ_to_list(char **environ);
+t_envp	*create_new_envp_node(char *str);
+char	*get_env_value(char *str, int equal_index);
+void	print_envp_list(t_envp *envp);
+int		ft_strchr_index(char *str, char c);
+void	*free_envp_list(t_envp *node);
+char	**envp_list_to_arr(t_envp *envp);
 
 #endif
