@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/21 20:04:50 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 14:45:33 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,12 @@ static int	quote_count(char *str, char quote_type)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\\')
-		{
-			i += 2;
-			continue ;
-		}
 		if (str[i] == quote_type)
 			count++;
 		i++;
 	}
 	if ((count % 2) != 0)
-	{
 		write(1, "unclosed quotes\n", 17);
-		// exit(0);
-	}
 	return (i);
 }
 

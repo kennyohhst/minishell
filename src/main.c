@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/21 17:53:39 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 18:24:47 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	main(void)
 		init_signals();
 		tokenized_input = lexer();
 	
-		list_check(tokenized_input);
 		expander(tokenized_input);
+		list_check(tokenized_input);
 		command_list = parser(tokenized_input);
 		if (!command_list)
 			continue ;

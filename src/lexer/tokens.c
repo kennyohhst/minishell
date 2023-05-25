@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/21 20:12:23 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/25 14:46:28 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,31 +55,16 @@ int	d_quotes_token(t_input **cmd, char *str)
 {
 	int	i;
 	int	e_var;
-	char	*temp;
-	int	back_slash;
-
-	back_slash = 1;
+	
 	e_var = 0;
 	i = 1;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '$')
 			e_var++;
-		if (str[i] == '\\' && str[i+1] == 34)
-		{
-			back_slash++;
-			temp  = ft_substr(str, 0, i);
-			printf("temp = %s\n", temp);
-			// printf("str = %s\n", str+(i+1));
-			str = ft_strjoin(ft_strtrim(temp, "\\"), str+(i+1));
-			printf("str after trim = %s\n", str);
-			// printf("this is i %d\n", i);
-			i++;
-			
-		}
 		if (str[i] == 34 && i != 1 && e_var == 0)
 			return (add_nodes(cmd, NULL
-					, ft_substr(str, 1, i - 1), DQ_STRING), (i + back_slash));
+					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
 		else if (str[i] == 34 && i != 1 && e_var > 0)
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), DQE_STRING), (i + 1));
