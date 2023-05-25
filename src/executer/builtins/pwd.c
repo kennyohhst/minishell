@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 17:03:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/20 21:31:34 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/25 18:33:45 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	pwd(char **argv)
 {
 	char	cwd[256];
 
+	write(2, "Jonas zegt hoi :)\n", 18);
 	ft_free_str_arr(argv);
 	if (!getcwd(cwd, 256))
 	{

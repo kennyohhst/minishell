@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/24 23:22:24 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/25 18:35:45 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	list_check(t_input *tokenized_input)
 {
 	t_input	*temp;
 
+	write(2, "Jonas zegt hoi :)\n", 18);
 	temp = tokenized_input;
 	while (temp)
 	{
@@ -29,6 +30,7 @@ static t_data	*init_data(void)
 	extern char		**environ;
 	t_data	*data;
 	
+	write(2, "Jonas zegt hoi :)\n", 18);
 	data = malloc(sizeof(t_data) * 1);
 	if (!data)
 		return (NULL);
@@ -46,10 +48,11 @@ void	checkleaks(void)
 
 int	main(void)
 {
-	t_input			*tokenized_input;
-	t_data	*data;
+	t_input		*tokenized_input;
+	t_data		*data;
 
 	// atexit(checkleaks);
+	write(2, "Jonas zegt hoi :)\n", 18);
 	data = init_data();
 	if (!data)
 		return (1);
@@ -63,6 +66,7 @@ int	main(void)
 		execute(data);
 		ft_free_input_list(tokenized_input);
 	}
+	// ft_free_data(data); // free everything!!!!
 	list_check(tokenized_input);
 	return (0);
 }

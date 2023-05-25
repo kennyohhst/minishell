@@ -33,15 +33,15 @@ SRC_FILES :=	main.c							\
 				parser/parser.c					\
 				parser/get_command_argv.c		\
 \
-				execute.c						\
-				get_command_path.c				\
+				executer/execute.c				\
+				executer/get_command_path.c		\
 \
-				builtins/cd.c					\
-				builtins/echo.c					\
-				builtins/env.c					\
-				builtins/pwd.c					\
-				builtins/export.c				\
-				builtins/unset.c				\
+				executer/builtins/cd.c			\
+				executer/builtins/echo.c		\
+				executer/builtins/env.c			\
+				executer/builtins/pwd.c			\
+				executer/builtins/export.c		\
+				executer/builtins/unset.c		\
 \
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
@@ -68,9 +68,10 @@ $(LIB):
 
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
-	@mkdir -p obj/builtins
 	@mkdir -p obj/lexer
 	@mkdir -p obj/parser
+	@mkdir -p obj/executer
+	@mkdir -p obj/executer/builtins
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
 
 open: $(NAME)
