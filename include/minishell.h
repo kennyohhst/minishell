@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/26 14:56:00 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/26 17:00:45 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,141 +18,64 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
-# include "../lib/libft/include/libft.h"
 # include <signal.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+# include "../lib/libft/include/libft.h"
+# include "declarations.h"
+# include "colors.h"
 
-typedef enum e_type
-{
-	PIPE_1,
-	PIPE_2,
-	O_RED_1,
-	O_RED_2,
-	I_RED_1,
-	I_RED_2,
-	E_VARIABLE,
-	DQ_STRING,
-	DQE_STRING,
-	SQ_STRING,
-	STRING
-}		t_token_type;
+// ======= init ============================================================= //
 
-// this is what the lexer should return :
-typedef struct	s_input t_input;
+void		create_input_list(t_input **cmd, char *str);
+void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
+void		ft_free_input_list(t_input *list);
+void		init_signals(void);
 
-struct s_input
-{
-	char			*str;
-	t_token_type	token_type;
-	t_input			*next;
-};
+// ======== env utils ======================================================= //
 
-// this is what the parser should make out of the lexer tokenized list :
-typedef struct	s_redirect t_redirect;
+t_envp		*environ_to_list(char **environ);
+t_envp		*create_new_envp_node(char *str);
+void		print_envp_list(t_envp *envp);
+int			ft_strchr_index(char *str, char c);
+void		*free_envp_list(t_envp *node);
+char		**envp_list_to_arr(t_envp *envp);
 
-struct s_redirect 
-{
-	char			*name; // this is the name of the files or the delimiter after the redirect, so like "cat > [outfile]"
-	t_token_type	type;
-	t_redirect		*next;
-};
+// ======= lexer ============================================================ //
 
-// this is what parse should return :
-typedef struct	s_command t_command;
+t_input		*lexer(void);
+int			check_quotes(char *str);
 
-struct s_command
-{
-	char			**argv;
-	t_redirect		*redirects;
-	t_command		*next;
-};
+// ======= lexer/tokens ===================================================== //
 
-typedef struct	s_environment_pointers t_envp;
+int			p_d_token(t_input **cmd, char *str, int i, char c);
+int			e_var_token(t_input **cmd, char *str);
+int			d_quotes_token(t_input **cmd, char *str);
+int			s_quotes_token(t_input **cmd, char *str);
+int			std_token(t_input **cmd, char *str);
+t_input 	*expander(t_input *token);
 
-struct s_environment_pointers
-{
-	char	*str;
-	char	*id;
-	char	*value;
-	int		equal_index;
-	t_envp	*prev;
-	t_envp	*next;
-};
+// ======== valid_pipe_check.c ============================================== //
 
-typedef struct	s_program_data t_data;
+int			valid_pipe_check(char *str);
 
-struct s_program_data
-{
-	t_envp		*envp;
-	t_command	*command;
-	int			exit_code;
-};
-
-//		~ create_input_list.c
-
-void	create_input_list(t_input **cmd, char *str);
-void	add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void	ft_free_input_list(t_input *list);
-
-//		~ lexer.c
-
-t_input	*lexer(void);
-
-//		~ quote_count.c
-
-int		check_quotes(char *str);
-
-//		~ tokens.c
-
-int		p_d_token(t_input **cmd, char *str, int i, char c);
-int		e_var_token(t_input **cmd, char *str);
-int		d_quotes_token(t_input **cmd, char *str);
-int		s_quotes_token(t_input **cmd, char *str);		
-int		std_token(t_input **cmd, char *str);
-t_input *expander(t_input *token);
-
-
-//		~ valid_pipe_check.c
-
-int		valid_pipe_check(char *str);
-
-//		~ parser.c
+// ======== parser ========================================================== //
 
 t_command	*parser(t_input *tokens);
+char		**get_command_argv(t_input *input);
 
-//		~ get_command_path.c
+// ========= executer ======================================================= //
 
-char	*get_command_path(char *command);
+int			execute(t_data *data);
+char		*get_command_path(char *command);
 
-//		~ execute.c
+// ======== executor/builtins =============================================== //
 
-int		execute(t_data *data);
-
-//		~ signals.c
-
-void	init_signals(void);
-
-//		~ get_command_argv.c
-
-char	**get_command_argv(t_input *input);
-
-//		~ builtins
-
-void	echo(char **argv);
-int		pwd(void);
-void	env(t_envp *envp);
-int		cd(char **argv);
-void	ft_export(t_data *data);
-void	unset(t_data *data);
-
-//		~ environment
-
-t_envp	*environ_to_list(char **environ);
-t_envp	*create_new_envp_node(char *str);
-void	print_envp_list(t_envp *envp);
-int		ft_strchr_index(char *str, char c);
-void	*free_envp_list(t_envp *node);
-char	**envp_list_to_arr(t_envp *envp);
+void		echo(char **argv);
+int			pwd(void);
+void		env(t_envp *envp);
+int			cd(char **argv);
+void		ft_export(t_data *data);
+void		unset(t_data *data);
 
 #endif

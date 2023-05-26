@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/26 15:31:39 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/26 17:04:46 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ bool	is_input_valid(t_envp *old, t_envp *new)
 {
 	if (new->equal_index == 0 || !ft_isalpha((int) new->id[0]))
 	{
-		free_envp_list(new);
 		printf("not a valid identifier\n");
 		return (false);
 	}
