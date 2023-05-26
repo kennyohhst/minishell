@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/26 15:19:59 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/26 15:24:51 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ t_envp	*create_new_envp_node(char *str)
 	if (equal_index == -1)
 		return (new_node);
 	new_node->value = get_env_value(str + equal_index + 1);
-	printf("val : [%s]\n", new_node->value);
 
 	return (new_node);
 }
