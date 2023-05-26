@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/25 21:30:50 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/26 15:18:03 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,20 @@ void	lst_add_back(t_envp *node, t_envp *new_node)
 	new_node->prev = node;
 }
 
-bool	is_input_valid(t_envp *node)
+bool	is_input_valid(t_envp *old, t_envp *new)
 {
-	if (node->equal_index == 0)
+	if (new->equal_index == 0)
 	{
-		free_envp_list(node);
+		free_envp_list(new);
 		printf("not a valid identifier\n");
 		return (false);
 	}
+	if (!old)
+		return (true);
+	printf("old id %s\n", old->id);
+	printf("old val %s\n", old->value);
+	if (old->value && !new->value)
+		return (false);
 	return (true);
 }
 
@@ -56,17 +62,14 @@ void	print_no_args(t_data *data)
 	{
 		printf("declare -x %s", current->id);
 		if (current->equal_index > 0)
-			printf("=\"%s\'", current->value);
+			printf("=\"%s\"", current->value);
 		printf("\n");
 		current = current->next;
 	}
 }
 
-void	add_node_to_envp_list(t_data *data, t_envp *new)
+void	add_node_to_envp_list(t_data *data, t_envp *old, t_envp *new)
 {
-	t_envp	*old;
-
-	old = check_duplicate(data->envp, new);
 	if (!old)
 	{
 		lst_add_back(data->envp, new);
@@ -92,6 +95,7 @@ void	ft_export(t_data *data)
 {
 	int		i;
 	t_envp	*new_node;
+	t_envp	*old_node;
 
 	if (!data->command->argv[1])
 	{
@@ -108,8 +112,11 @@ void	ft_export(t_data *data)
 			printf("create new envp node returned (null)\n");
 			return ;
 		}
-		if (is_input_valid(new_node) == true)
-			add_node_to_envp_list(data, new_node);
+		old_node = check_duplicate(data->envp, new_node);
+		if (is_input_valid(old_node, new_node) == true)
+			add_node_to_envp_list(data, old_node, new_node);
+		else
+			free_envp_list(new_node);
 		i++;
 	}
 }

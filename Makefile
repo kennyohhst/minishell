@@ -20,8 +20,8 @@ LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
 SRC_FILES :=	main.c							\
-				environ_to_list.c				\
-				environ_utils.c					\
+				env_list_create.c				\
+				env_list_utils.c				\
 				signals.c						\
 \
 				lexer/lexer.c					\

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   environ_to_list.c                                  :+:    :+:            */
+/*   env_list_create.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 22:16:15 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/26 15:19:59 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ char	*get_env_id(char *str, int equal_index)
 	return (tmp);
 }
 
-char	*get_env_value(char *str, int equal_index)
+static char	*get_env_value(char *str)
 {
 	char	*tmp;
 	int		len;
 
-	if (equal_index <= 0)
+	if (!str[0])
 		return (ft_strdup(""));
 	else
-		len = ft_strlen(str) - equal_index + 1;
+		len = ft_strlen(str) + 1;
 
 	tmp = (char *) malloc(len * sizeof(char));
 	if (!tmp)
 		return (NULL);
-  	ft_strlcpy(tmp, str + equal_index + 1, len);
+	ft_strlcpy(tmp, str, len);
 	return (tmp);
 }
 
@@ -82,9 +82,10 @@ t_envp	*create_new_envp_node(char *str)
 	if (!new_node->id)
 		return (free_envp_list(new_node));
 
-	new_node->value = get_env_value(str, equal_index);
-	if (!new_node->value)
-		return (free_envp_list(new_node));
+	if (equal_index == -1)
+		return (new_node);
+	new_node->value = get_env_value(str + equal_index + 1);
+	printf("val : [%s]\n", new_node->value);
 
 	return (new_node);
 }

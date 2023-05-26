@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/25 22:50:08 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/26 14:56:00 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ void	unset(t_data *data);
 
 t_envp	*environ_to_list(char **environ);
 t_envp	*create_new_envp_node(char *str);
-char	*get_env_value(char *str, int equal_index);
 void	print_envp_list(t_envp *envp);
 int		ft_strchr_index(char *str, char c);
 void	*free_envp_list(t_envp *node);
