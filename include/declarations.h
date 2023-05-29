@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/26 16:43:50 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/29 20:31:01 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ struct s_environment_pointers
 	char	*str;
 	char	*id;
 	char	*value;
-	int		equal_index;
+	int		equal;
+	int		plus;
 	t_envp	*prev;
 	t_envp	*next;
 };

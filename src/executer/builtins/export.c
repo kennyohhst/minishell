@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/26 17:04:46 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/29 22:07:17 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,35 @@ void	lst_add_back(t_envp *node, t_envp *new_node)
 	new_node->prev = node;
 }
 
+void	concat_value_if_plus(t_envp *new, t_envp *old)
+{
+	char	*tmp;
+
+	if (new->plus <= 0 || !old)
+		return ;
+	tmp = ft_strjoin(old->value, new->value);
+	free(new->value);
+	new->value = tmp;
+}
+
 bool	is_input_valid(t_envp *old, t_envp *new)
 {
-	if (new->equal_index == 0 || !ft_isalpha((int) new->id[0]))
+	int		i;
+
+	if (new->equal == 0)
 	{
-		printf("not a valid identifier\n");
+		printf("export: '%s': not a valid identifier\n", new->str);
 		return (false);
+	}
+	i = 0;
+	while (new->id[i])
+	{
+		if (!ft_isalpha((int) new->id[i]))
+		{
+			printf("export: '%s': not a valid identifier\n", new->str);
+			return (false);
+		}
+		i++;
 	}
 	if (old && (old->value && !new->value))
 		return (false);
@@ -56,7 +79,7 @@ void	print_no_args(t_data *data)
 	while (current)
 	{
 		printf("declare -x %s", current->id);
-		if (current->equal_index > 0)
+		if (current->equal > 0)
 			printf("=\"%s\"", current->value);
 		printf("\n");
 		current = current->next;
@@ -71,17 +94,13 @@ void	add_node_to_envp_list(t_data *data, t_envp *old, t_envp *new)
 		return ;
 	}
 	if (old->prev)
-	{
 		old->prev->next = new;
-		new->prev = old->prev;
-	}
 	else
 		data->envp = new;
 	if (old->next)
-	{
 		old->next->prev = new;
-		new->next = old->next;
-	}
+	new->prev = old->prev;
+	new->next = old->next;
 	old->next = NULL;
 	free_envp_list(old);
 }
@@ -89,8 +108,8 @@ void	add_node_to_envp_list(t_data *data, t_envp *old, t_envp *new)
 void	ft_export(t_data *data)
 {
 	int		i;
-	t_envp	*new_node;
-	t_envp	*old_node;
+	t_envp	*new;
+	t_envp	*old;
 
 	if (!data->command->argv[1])
 	{
@@ -101,17 +120,18 @@ void	ft_export(t_data *data)
 	i = 1;
 	while (data->command->argv[i])
 	{
-		new_node = create_new_envp_node(data->command->argv[i]);
-		if (!new_node)
+		new = create_new_envp_node(data->command->argv[i]);
+		if (!new)
 		{
 			printf("create new envp node returned (null)\n");
 			return ;
 		}
-		old_node = check_duplicate(data->envp, new_node);
-		if (is_input_valid(old_node, new_node) == true)
-			add_node_to_envp_list(data, old_node, new_node);
+		old = check_duplicate(data->envp, new);
+		concat_value_if_plus(new, old);
+		if (is_input_valid(old, new) == true)
+			add_node_to_envp_list(data, old, new);
 		else
-			free_envp_list(new_node);
+			free_envp_list(new);
 		i++;
 	}
 }
