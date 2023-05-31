@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/29 22:07:17 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/30 18:06:46 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	concat_value_if_plus(t_envp *new, t_envp *old)
 	if (new->plus <= 0 || !old)
 		return ;
 	tmp = ft_strjoin(old->value, new->value);
+	if (!tmp)
+		tmp = ft_strdup("");
 	free(new->value);
 	new->value = tmp;
 }

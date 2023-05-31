@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/29 22:11:12 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/31 19:59:33 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,15 @@ static bool	is_builtin(t_data *data)
 	argv = data->command->argv;
 	if (!ft_strncmp("exit", argv[0], 5))
 		exit(0);
+	if (!ft_strncmp("?", argv[0], 2))	// this needs to happen in parser
+		return (printf("%d\n", data->exit_code), true);
 	else if (!ft_strncmp("echo", argv[0], 5))
 		return (echo(argv), true);
 	else if (!ft_strncmp("pwd", argv[0], 4))
 		return (pwd(), true);
 	else if (!ft_strncmp("env", argv[0], 4))
 		return (env(data->envp), true);
-	else if (!ft_strncmp("cd", argv[0], 3))		// not returning correctly yet
+	else if (!ft_strncmp("cd", argv[0], 3))
 		return (cd(argv), true);
 	else if (!ft_strncmp("export", argv[0], 8))
 		return (ft_export(data), true);
@@ -82,16 +84,11 @@ static int	execute_in_child(t_data *data)
 
 int	execute(t_data *data)
 {
-	pid_t			pid;
-	t_command		*cmd;
+	pid_t	pid;
 
-	cmd = data->command;
 	signal(SIGINT, sighandle_proc);
 
-	if (!ft_strncmp("?", cmd->argv[0], 2))
-		return (printf("%d\n", data->exit_code));
-
-	if (!cmd->redirects && is_builtin(data) == true)
+	if (!data->command->redirects && is_builtin(data) == true)
 	{
 		ft_free_current_command(data);
 		return (0);
