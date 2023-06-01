@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 19:11:14 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/26 17:38:56 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int		e_var_token(t_input **cmd, char *str);
 int		d_quotes_token(t_input **cmd, char *str);
 int		s_quotes_token(t_input **cmd, char *str);		
 int		std_token(t_input **cmd, char *str);
-t_input *expander(t_input *token);
+t_input *expander(t_input *token, t_data *data);
 
 
 //		~ valid_pipe_check.c
@@ -120,6 +120,8 @@ int		valid_pipe_check(char *str);
 //		~ parser.c
 
 t_command	*parser(t_input *tokens);
+int			list_length(t_input *input);
+
 
 //		~ get_command_path.c
 
@@ -135,7 +137,7 @@ void	init_signals(void);
 
 //		~ get_command_argv.c
 
-char	**get_command_argv(t_input *input);
+char	**get_command_argv(t_input *input, t_command **command);
 
 //		~ builtins
 

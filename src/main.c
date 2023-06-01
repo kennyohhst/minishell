@@ -6,12 +6,39 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 19:15:02 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/29 16:20:51 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	test_data(t_data *data)
+{
+	int i = 0;
+	
+	if (!data)
+		return ;
+	while (data->command)
+	{
+		i = 0;
+		while (data->command->argv && data->command->argv[i])
+		{
+			printf("argv:	%s\n", data->command->argv[i]);
+			i++;
+		}
+		if (data->command->redirects)
+		{
+			printf("rtype:	%u\n", data->command->redirects->type);
+			printf("rname:	%s\n", data->command->redirects->name);
+		}
+		if (data->command->next != NULL)
+		{
+			data->command = data->command->next;
+			continue ;
+		}
+		data->command = data->command->next;
+	}
+}
 static void	list_check(t_input *tokenized_input)
 {
 	t_input	*temp;
@@ -55,17 +82,21 @@ int	main(void)
 		return (1);
 	while (1)
 	{
+		int f = 0;
+		if (f)
+			printf("bla\n");
 		init_signals();
 		tokenized_input = lexer();
 	
-		expander(tokenized_input);
-		list_check(tokenized_input);
+		expander(tokenized_input, data);
 		data->command = parser(tokenized_input);
+		test_data(data);
 		if (!data->command)
 			continue ;
 		execute(data);
 		ft_free_input_list(tokenized_input);
 	}
+	list_check(tokenized_input);
 	// ft_free_data(data); // free everything!!!!
 	return (0);
 }

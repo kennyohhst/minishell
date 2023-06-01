@@ -6,11 +6,29 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 18:58:08 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/05/26 16:23:02 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_getenv(char *str, t_envp *envp)
+{
+	char	*temp;
+	
+	if (!str)
+		return (NULL);
+	while (envp)
+	{
+		if (!ft_strcmp(str, envp->id))
+		{
+			temp = ft_strdup(envp->value);
+			return (temp);
+		}
+		envp = envp->next;
+	}
+	return (NULL);
+}
 
 int	count_env(char *str)
 {
@@ -21,9 +39,9 @@ int	count_env(char *str)
 	i = 0;
 	while (str[i])
 	{
-		i++;
 		if (str[i] == '$')
 			x++;
+		i++;
 	}
 	return (x);
 }
@@ -50,25 +68,7 @@ int	env_end_count(char	*str)
 	return (0);
 }
 
-char	*bla(char const *s, unsigned int start, size_t len)
-{
-	char			*ptr;
-	const size_t	s_len = ft_strlen(s);
-
-	if (!s)
-		return (NULL);
-	if (start >= s_len)
-		return (ft_strdup(""));
-	if (len > (s_len - start))
-		len = s_len - start;
-	ptr = malloc((len + 1) * sizeof(char));
-	if (!ptr)
-		return (NULL);
-	ft_strlcpy(ptr, s + start, len + 1);
-	return (ptr);
-}
-
-char	*replace_env(char *str)
+char	*replace_env(char *str, t_data *data)
 {
 	char	*temp;
 	int		i;
@@ -81,7 +81,7 @@ char	*replace_env(char *str)
 		if (str[i] == '$')
 		{
 			temp = ft_substr(str, 0, i);
-			temp = ft_strjoin(temp, getenv(bla(str, i+1, (end_env-i-1))));
+			temp = ft_strjoin(temp, ft_getenv(ft_substr(str, i+1,(end_env-i-1)), data->envp));
 			if ((int) ft_strlen(str) != end_env)
 			{
 				temp = ft_strjoin(temp, str+end_env);
@@ -94,7 +94,7 @@ char	*replace_env(char *str)
 	return (free(str), temp);
 }
 
-t_input *expander(t_input *token)
+t_input *expander(t_input *token, t_data *data)
 {
 	char *temp;
 	int	i;
@@ -103,20 +103,20 @@ t_input *expander(t_input *token)
 	{
 		if (token->token_type == E_VARIABLE)
 		{
-			temp = getenv((ft_strchr(token->str, '$') + 1));
+			temp = ft_getenv((ft_strchr(token->str, '$') + 1), data->envp);
 			if (temp)
 			{
 				free(token->str);
 				token->str = ft_strdup(temp);
+				token->token_type = STRING;
 			}
 		}
 		if (token->token_type == DQE_STRING)
 		{
 			i = count_env(token->str);
 			while (i--)
-			{
-				token->str = replace_env(token->str);		
-			}
+				token->str = replace_env(token->str, data);
+			token->token_type = DQ_STRING;
 		}
 		token = token->next;
 	}
