@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:43:09 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/26 17:38:42 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/02 17:11:30 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ void	redirects(t_command **command, t_input *input)
 		return ;
 	while (input)
 	{
-		if (input->token_type == PIPE_1)
-			(*command)->redirects->type = PIPE_1;
-		if (input->token_type == PIPE_2)
-			(*command)->redirects->type = PIPE_2;
-		if (input->token_type == I_RED_1)
-			(*command)->redirects->type = I_RED_1;
-		if (input->token_type == O_RED_2)
-			(*command)->redirects->type = O_RED_2;
+		if (input->token_type == PIPE)
+			(*command)->redirects->type = PIPE;
+		if (input->token_type == OR)
+			(*command)->redirects->type = OR;
+		if (input->token_type == INPUT_REDIRECT)
+			(*command)->redirects->type = INPUT_REDIRECT;
+		if (input->token_type == APPEND)
+			(*command)->redirects->type = APPEND;
 	}
 }
 

@@ -6,17 +6,92 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:53:38 by opelser           #+#    #+#             */
-/*   Updated: 2023/06/01 19:40:06 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/02 21:38:41 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	malloc_node(t_command **cmd, t_command *temp)
+void	malloc_redirects_node(t_redirect **red, int type)
+{
+	t_redirect	*new;
+ 	t_redirect *temp;
+	
+	new = malloc(sizeof(t_redirect));
+	new->name = NULL;
+	new->type = (t_token_type) type;
+	if (!new)
+		return ;
+	temp = (*red);
+	if (temp)
+	{
+		while(temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+		new->next = NULL;
+	}
+	else
+	{
+		new->next = NULL;
+		(*red) = new;
+	}
+}
+
+int	encounter_out_red(char *str, t_command **cmd, int type)
+{
+	t_command	*temp;
+	
+	temp = (*cmd);
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->argv = NULL;
+	if (str)
+		temp->redirects->name = ft_strdup(str);
+	else
+		temp->redirects->name = NULL;
+	temp->redirects->type = type;
+	temp->redirects->next = NULL;
+	temp->next = NULL;
+	return (1);
+}
+
+t_input	*redirect_type(t_input *token, t_redirect **red, int type)
+{
+	t_redirect	*temp;
+
+	if (!token)
+		return (NULL);
+	malloc_redirects_node(red, type);
+	if (!(*red))
+		return (NULL);
+	temp = (*red);
+	while (temp->next)
+		temp = temp ->next;
+	if (token)
+	{
+		if (token->token_type >= 2 && token->token_type <= 5)
+		{
+			token = token->next;
+			if (token && token->token_type == STRING)
+			{
+				temp->name = ft_strdup(token->str);
+				token = token->next;
+			}
+		}
+	}
+	if (token && token->token_type >= 2 && token->token_type <= 5)
+		return (redirect_type(token, &temp, token->token_type));
+	return (token);
+}
+
+
+void	malloc_command_node(t_command **cmd, t_command *temp)
 {
 	t_command	*new;
 
 	new = malloc(sizeof(t_command));
+	new->redirects = NULL;
+	new->argv = NULL;
 	if (!new)
 		return ;
 	temp = (*cmd);
@@ -61,7 +136,7 @@ void	encounter_pipe(t_command **command)
 		temp = temp->next;
 	temp->argv = NULL;
 	temp->redirects->name = NULL;
-	temp->redirects->type = PIPE_1;
+	temp->redirects->type = PIPE;
 	temp->redirects->next = NULL;
 	temp->next = NULL;
 }
@@ -75,7 +150,7 @@ t_input	*pipe_type(t_input *token, t_command **command)
 		temp = temp->next;
 	while (token)
 	{
-		if (token->token_type == PIPE_1)
+		if (token->token_type == PIPE)
 		{
 			temp->redirects = malloc(sizeof(t_redirect));
 			encounter_pipe(&temp);
@@ -116,28 +191,31 @@ t_input	*string_type(t_input *token, t_command **command)
 
 
 
-t_command	*type_check(t_input *token, t_command **command)
+t_command	*type_check(t_input *token, t_command **command, t_command *temp)
 {
-	t_command	*temp;
 	while (token)
 	{
-		malloc_node(command, NULL);
+		malloc_command_node(command, NULL);
 		if (!(*command))
 			return (NULL);
 		temp = (*command);
 		while (temp->next != NULL)
 			temp = temp->next;
-		
-		if (token->token_type == STRING)
+		if (token->token_type > 6)
 		{
 			token = string_type(token, &temp);
 			continue ;
 		}
-		token = pipe_type(token, &temp);
-		// output_redirect_type();	// >
-		// append_operator_type();	// >>
-		// input_redirection_type(); // <
-		// here_doc_type(); // <<
+		if (token->token_type == PIPE)
+		{
+			token = pipe_type(token, &temp);
+			continue;
+		}
+		if (token->token_type >= 2 && token->token_type <= 5)
+		{
+			token = redirect_type(token, &temp->redirects, token->token_type);
+			continue;
+		}
 	}
 	return (*command);
 }
@@ -149,68 +227,7 @@ t_command	*parser(t_input	*token)
 	
 	if (!token)
 		return (NULL);
-	command = NULL;	
-	command = type_check(token, &command);
+	command = NULL;
+	command = type_check(token, &command, NULL);
 	return (command);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// static t_command	*create_new_node(t_input *tokens)
-// {
-// 	t_command	*command;
-
-// 	command = malloc(sizeof(t_command));
-// 	if (!command)
-// 		return (NULL);
-	
-// 	//it takes all the >6 types and pushes into argv
-// 	//if < 6, returns the argv, but do we want that?
-
-// 	get_command_argv(tokens, &command);
-// 	printf("command->redirects:	%u\n", command->redirects->type);
-// 	if (!command->argv)
-// 	{
-// 		free(command);
-// 		return (NULL);
-// 	}
-// 	command->redirects = NULL;
-// 	command->next = NULL;
-// 	return (command);
-// }
-
-// t_command	*parser(t_input *tokens)
-// {
-// 	t_command	*command;
-
-// 	if (!tokens)
-// 		return (NULL);
-// 	command = create_new_node(tokens);
-// 	if (!command)
-// 		return (NULL);
-// 	return (command);
-// }

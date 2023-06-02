@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/29 16:20:51 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/02 21:29:11 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	test_data(t_data *data)
 {
 	int i = 0;
+	int x = 0;
 	
 	if (!data)
 		return ;
@@ -26,10 +27,34 @@ void	test_data(t_data *data)
 			printf("argv:	%s\n", data->command->argv[i]);
 			i++;
 		}
-		if (data->command->redirects)
+		while (data->command->redirects)
 		{
-			printf("rtype:	%u\n", data->command->redirects->type);
-			printf("rname:	%s\n", data->command->redirects->name);
+			if (data->command->redirects->type == PIPE)
+				printf("PIPE\n");
+			else if (data->command->redirects->type == OR)
+				printf("OR\n");
+			else if (data->command->redirects->type == INPUT_REDIRECT)
+				printf("INPUT_REDIRECT	%d\n", x);
+			else if (data->command->redirects->type == HERE_DOC)
+				printf("HERE_DOC	%d\n", x);
+			else if (data->command->redirects->type == OUTPUT_REDIRECT)
+				printf("OUTPUT_REDIRECT	%d\n", x);
+			else if (data->command->redirects->type == APPEND)
+				printf("APPEND	%d\n", x);
+			else if (data->command->redirects->type == E_VARIABLE)
+				printf("E_VARIABLE\n");
+			else if (data->command->redirects->type == DQ_STRING)
+				printf("DQ_STRING\n");
+			else if (data->command->redirects->type == DQE_STRING)
+				printf("DQE_STRING\n");
+			else if (data->command->redirects->type == SQ_STRING)
+				printf("SQ_STRING\n");
+			else if (data->command->redirects->type == STRING)
+				printf("STRING\n");
+			if (data->command->redirects->name != NULL)
+				printf("rname:	%s\n", data->command->redirects->name);
+			data->command->redirects = data->command->redirects->next;
+			x++;
 		}
 		if (data->command->next != NULL)
 		{

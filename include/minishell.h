@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/26 17:38:56 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/02 17:11:30 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@
 
 typedef enum e_type
 {
-	PIPE_1,
-	PIPE_2,
-	O_RED_1,
-	O_RED_2,
-	I_RED_1,
-	I_RED_2,
+	PIPE,
+	OR,
+	OUTPUT_REDIRECT,
+	APPEND,
+	INPUT_REDIRECT,
+	HERE_DOC,
 	E_VARIABLE,
 	DQ_STRING,
 	DQE_STRING,
