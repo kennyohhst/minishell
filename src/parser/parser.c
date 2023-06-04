@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:53:38 by opelser           #+#    #+#             */
-/*   Updated: 2023/06/02 21:38:41 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/04 16:24:51 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,16 +204,16 @@ t_command	*type_check(t_input *token, t_command **command, t_command *temp)
 		if (token->token_type > 6)
 		{
 			token = string_type(token, &temp);
-			continue ;
-		}
-		if (token->token_type == PIPE)
+			if (token && token->token_type >= 2 && token->token_type <= 5)
+			{
+				token = redirect_type(token, &temp->redirects, token->token_type);
+				continue;
+			}
+			continue;
+		}			
+		if (token && token->token_type == PIPE)
 		{
 			token = pipe_type(token, &temp);
-			continue;
-		}
-		if (token->token_type >= 2 && token->token_type <= 5)
-		{
-			token = redirect_type(token, &temp->redirects, token->token_type);
 			continue;
 		}
 	}

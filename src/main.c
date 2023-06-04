@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/06/02 21:29:11 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/04 16:46:56 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,21 +107,18 @@ int	main(void)
 		return (1);
 	while (1)
 	{
-		int f = 0;
-		if (f)
-			printf("bla\n");
 		init_signals();
 		tokenized_input = lexer();
 	
 		expander(tokenized_input, data);
 		data->command = parser(tokenized_input);
-		test_data(data);
 		if (!data->command)
 			continue ;
 		execute(data);
 		ft_free_input_list(tokenized_input);
 	}
 	list_check(tokenized_input);
+		// test_data(data);
 	// ft_free_data(data); // free everything!!!!
 	return (0);
 }
