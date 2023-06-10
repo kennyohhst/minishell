@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/06/02 17:11:30 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/10 16:57:33 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct	s_input t_input;
 struct s_input
 {
 	char			*str;
+	bool			spaces;
 	t_token_type	token_type;
 	t_input			*next;
 };

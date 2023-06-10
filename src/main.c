@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/06/04 16:46:56 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/10 20:49:25 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,33 @@ void	test_data(t_data *data)
 		data->command = data->command->next;
 	}
 }
-static void	list_check(t_input *tokenized_input)
+
+static const char *g_token_id[] = {
+	[PIPE] = "PIPE",	
+	[OR] = "OR",	
+	[OUTPUT_REDIRECT] = "OUTPUT_REDIR",
+	[APPEND] = "APPEND",
+	[INPUT_REDIRECT] = "INPUT_REDIR",
+	[HERE_DOC] = "HERE_DOC",
+	[E_VARIABLE] = "E_VAR",
+	[DQ_STRING] = "DQ_STR",
+	[DQE_STRING] = "DQ_ENV_STR",
+	[SQ_STRING] = "SQ_STR",
+	[STRING] = "STR"
+};
+
+void	list_check(t_input *tokenized_input)
 {
 	t_input	*temp;
 
 	temp = tokenized_input;
 	while (temp)
 	{
-		printf("%s\t\t\t\t\t :\t%d\n", temp->str, temp->token_type);
+		printf("%s\t\t\t\t\t :\t[%.2d] => %s", temp->str, temp->token_type, g_token_id[temp->token_type]);
+		if (temp->spaces)
+			printf(" true\n");
+		else
+			printf(" false\n");
 		temp = temp->next;
 	}
 }
@@ -109,16 +128,16 @@ int	main(void)
 	{
 		init_signals();
 		tokenized_input = lexer();
+		// list_check(tokenized_input);
 	
 		expander(tokenized_input, data);
 		data->command = parser(tokenized_input);
+		test_data(data);
 		if (!data->command)
 			continue ;
 		execute(data);
 		ft_free_input_list(tokenized_input);
 	}
-	list_check(tokenized_input);
-		// test_data(data);
 	// ft_free_data(data); // free everything!!!!
 	return (0);
 }
