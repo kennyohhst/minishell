@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/05/25 19:07:11 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/10 18:43:42 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this
 	if (!new)
 		exit(write(2, "Error\n", 6));
 	new->str = ft_strdup(str);
+	new->spaces = false;
 	free(str);
 	new->token_type = type;
 	temp = *cmd;
@@ -85,23 +86,37 @@ static int	check_mode(char c)
 		return (SINGLE_QUOTE);
 	return (STANDARD);
 }
+int	spaces(t_input **cmd, char *str, int i)
+{
+	while (str && str[i] && str[i] == ' ')
+	{	
+		i++;
+		while ((*cmd)->next != NULL)
+			(*cmd) = (*cmd)->next;
+		(*cmd)->spaces = true;
+	}
+	return (i);
+}
+
 
 void	create_input_list(t_input **cmd, char *str)
 {
 	int	err_check;
 	int	i;
 	int	mode;
+	t_input	*temp;
 
 	i = 0;
 	while (str[i])
 	{
-		while (str[i] == ' ')
-			i++;
+		i = spaces(&temp, str, i);
 		mode = check_mode(str[i]);			// check_mode has an error check but it's not used here, also checkmode doesnt check for >> and <<
 		err_check = assign_token(mode, cmd, (str + i));
 		if (err_check == -1)
 			return ;						// just returning doesn't tell the caller function that it's failed
 		else
 			i += err_check;
+		temp = (*cmd);
+		
 	}
 }

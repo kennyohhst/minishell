@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/05/25 14:46:28 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/06/10 17:00:19 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ int	p_d_token(t_input **cmd, char *str, int i, char c)
 		if (str[i] == c)
 		{
 			if (c == '|')
-				return (add_nodes(cmd, NULL, ft_substr(str, 0, 2), PIPE_2), 2);
+				return (add_nodes(cmd, NULL, ft_substr(str, 0, 2), OR), 2);
 			if (c == '>')
-				return (add_nodes(cmd, NULL, ft_substr(str, 0, 2), O_RED_2), 2);
-			return (add_nodes(cmd, NULL, ft_substr(str, 0, 2), I_RED_2), 2);
+				return (add_nodes(cmd, NULL, ft_substr(str, 0, 2), APPEND), 2);
+			return (add_nodes(cmd, NULL, ft_substr(str, 0, 2), HERE_DOC), 2);
 		}
 		else
 		{
 			if (c == '|')
-				return (add_nodes(cmd, NULL, ft_substr(str, 0, 1), PIPE_1), 1);
+				return (add_nodes(cmd, NULL, ft_substr(str, 0, 1), PIPE), 1);
 			if (c == '<')
-				return (add_nodes(cmd, NULL, ft_substr(str, 0, 1), I_RED_1), 1);
-			return (add_nodes(cmd, NULL, ft_substr(str, 0, 1), O_RED_1), 1);
+				return (add_nodes(cmd, NULL, ft_substr(str, 0, 1), INPUT_REDIRECT), 1);
+			return (add_nodes(cmd, NULL, ft_substr(str, 0, 1), OUTPUT_REDIRECT), 1);
 		}
 	}
 	return (-1);
@@ -87,19 +87,58 @@ int	s_quotes_token(t_input **cmd, char *str)
 	}
 	return (-1);
 }
+void	remove_quotes(char *str, char c)
+{
+	int i = 0;
+	int x = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+		{
+			while (str[i] != '\0')
+			{
+				ft_memset(str+i, str[i+1], 1);
+				i++;
+				x++;
+			}
+			i = i - x;
+			x = 0;
+		}
+		i++;
+	}
+}
+int	check_env(char *str)
+{
+	int i;
+
+	i = 1;
+	while (str && str[i] && str[i] != '\"')
+	{
+		if (str[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	std_token(t_input **cmd, char *str)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (str[i] != '\0')
 	{
 		i++;
-		if (str[i] == ' ' || str[i] == '\0' 
-			|| str[i] == '|' || str[i] == '>' || str[i] == '<'
-			|| str[i] == '$' || str[i] == '\"' || str[i] == '\'')
+		if (str[i] == ' ' || str[i] == '\0' || str[i] == '|' || str[i] == '>' || str[i] == '<' || str[i] == '$')
 			return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
+		else if (str[i] == '\"' || str[i] == '\'')
+		{
+			if (check_env(str+i))
+				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
+			remove_quotes(str, str[i]);
+		}
+			// add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING);
+			// return (i);
 	}
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/05/26 17:00:45 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/10 21:15:09 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,12 @@ char		**envp_list_to_arr(t_envp *envp);
 t_input		*lexer(void);
 int			check_quotes(char *str);
 
-// ======= lexer/tokens ===================================================== //
-
 int			p_d_token(t_input **cmd, char *str, int i, char c);
 int			e_var_token(t_input **cmd, char *str);
 int			d_quotes_token(t_input **cmd, char *str);
-int			s_quotes_token(t_input **cmd, char *str);
+int			s_quotes_token(t_input **cmd, char *str);		
 int			std_token(t_input **cmd, char *str);
-t_input 	*expander(t_input *token);
+t_input		*expander(t_input *token, t_data *data);
 
 // ======== valid_pipe_check.c ============================================== //
 
@@ -62,7 +60,7 @@ int			valid_pipe_check(char *str);
 // ======== parser ========================================================== //
 
 t_command	*parser(t_input *tokens);
-char		**get_command_argv(t_input *input);
+char		**get_command_argv(t_input *input, t_command **command);
 
 // ========= executer ======================================================= //
 

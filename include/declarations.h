@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/30 21:15:48 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/10 21:16:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 
 typedef enum e_type
 {
-	PIPE_1,
-	PIPE_2,
-	O_RED_1,
-	O_RED_2,
-	I_RED_1,
-	I_RED_2,
+	PIPE,
+	OR,
+	OUTPUT_REDIRECT,
+	APPEND,
+	INPUT_REDIRECT,
+	HERE_DOC,
 	E_VARIABLE,
 	DQ_STRING,
 	DQE_STRING,
@@ -38,6 +38,7 @@ typedef struct	s_input t_input;
 struct s_input
 {
 	char			*str;
+	bool			spaces;
 	t_token_type	token_type;
 	t_input			*next;
 };
