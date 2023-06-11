@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/wait.h>
 
 int	orig;
 
@@ -43,6 +44,8 @@ void	execute_command(char **argv, int fd_in, int fd_out)
 		exit(1);
 	}
 	waitpid(pid, &status, 0);
+	close(fd_in);
+	close(fd_out);
 	printf("exit status: %d\n\n", status);
 }
 
@@ -50,20 +53,21 @@ int		main(void)
 {
 	char	*argv1[3] = {"/bin/cat", "test.c", NULL};
 	char	*argv2[3] = {"/usr/bin/wc", "-l", NULL};
-	// char	*argv3[3] = {"/bin/cat", "-e", NULL};
+	char	*argv3[3] = {"/bin/cat", "-e", NULL};
 	int		fd[2];
+	int		fd2[2];
 	int		pid;
 
 	orig = dup(1);
 
 	if (pipe(fd) == -1)
 		exit(1);
+	if (pipe(fd2) == -1)
+		exit(1);
 
 	execute_command(argv1, -1, fd[1]);
-	close(fd[1]);
-	execute_command(argv2, fd[0], -1);
-
-	close(fd[0]);
+	execute_command(argv2, fd[0], fd2[1]);
+	execute_command(argv3, fd2[0], -1);
 
 	dup2(orig, 1);
 	close(orig);
