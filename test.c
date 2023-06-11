@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/30 21:40:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/11 16:38:44 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/11 16:43:59 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	execute_command(char **argv, int fd_in, int fd_out)
 	int		pid;
 	int		status;
 
-	// printf("in: %d | out: %d\n", fd_in, fd_out);
 	printf("started child process\noutput:\n");
 	pid = fork();
 	if (pid == -1)
@@ -39,14 +38,12 @@ void	execute_command(char **argv, int fd_in, int fd_out)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out >= 0)
 			dup2(fd_out, STDOUT_FILENO);
-		close_if_valid(fd_in);
-		close_if_valid(fd_out);
+		close_pipe(fd_in, fd_out);
 		execv(argv[0], argv);
 		printf("execve error\n");
 		exit(1);
 	}
-	close_if_valid(fd_in);
-	close_if_valid(fd_out);
+	close_pipe(fd_in, fd_out);
 	waitpid(pid, &status, 0);
 	printf("exit status: %d\n\n", status);
 }
