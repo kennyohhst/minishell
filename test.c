@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/30 21:40:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/11 01:21:09 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/11 13:58:37 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include <sys/wait.h>
 
 int	orig;
+
+void	close_if_valid(int fd)
+{
+	if (fd >= 0)
+		close(fd);
+}
 
 void	execute_command(char **argv, int fd_in, int fd_out)
 {
@@ -30,22 +36,18 @@ void	execute_command(char **argv, int fd_in, int fd_out)
 	else if (pid == 0)
 	{
 		if (fd_in >= 0)
-		{
 			dup2(fd_in, STDIN_FILENO);
-			close(fd_in);
-		}
 		if (fd_out >= 0)
-		{
 			dup2(fd_out, STDOUT_FILENO);
-			close(fd_out);
-		}
+		close_if_valid(fd_in);
+		close_if_valid(fd_out);
 		execv(argv[0], argv);
 		printf("execve error\n");
 		exit(1);
 	}
 	waitpid(pid, &status, 0);
-	close(fd_in);
-	close(fd_out);
+	close_if_valid(fd_in);
+	close_if_valid(fd_out);
 	printf("exit status: %d\n\n", status);
 }
 
