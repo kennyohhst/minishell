@@ -6,14 +6,11 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/30 21:40:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/11 16:43:59 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/12 01:17:46 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/wait.h>
+#include "pipes.h"
 
 void	close_pipe(int fd_in, int fd_out)
 {
@@ -25,10 +22,12 @@ void	close_pipe(int fd_in, int fd_out)
 
 void	execute_command(char **argv, int fd_in, int fd_out)
 {
-	int		pid;
-	int		status;
+	int			pid;
+	int			status;
+	static int	count = 1;
 
-	printf("started child process\noutput:\n");
+	printf("started child process %d\noutput:\n", count);
+	count++;
 	pid = fork();
 	if (pid == -1)
 		exit(1);
@@ -50,28 +49,26 @@ void	execute_command(char **argv, int fd_in, int fd_out)
 
 int		main(void)
 {
-	char	*argv1[3] = {"/bin/cat", "test.c", NULL};
-	char	*argv2[3] = {"/usr/bin/wc", "-l", NULL};
-	char	*argv3[3] = {"/bin/cat", "-e", NULL};
-	char	**argvs[4] = {argv1, argv2, argv3, NULL};
+	t_command	*cmds;
 	int		fd[2];
 	int		fd2[2];
-	int		pid;
-	int		i = 1;
+
+	cmds = init_cmds();
 
 	if (pipe(fd) == -1)
 		exit(1);
 	if (pipe(fd2) == -1)
 		exit(1);
 
-	execute_command(argvs[0], -1, fd[1]);
-	while(argvs[i + 1])
+	execute_command(cmds->argv, -1, fd[1]);
+	cmds = cmds->next;
+	while(cmds->next)
 	{
-		execute_command(argvs[i], fd[0], fd2[1]);
-		i++;
+		execute_command(cmds->argv, fd[0], fd2[1]);
+		cmds = cmds->next;
 	}
-	execute_command(argvs[i], fd2[0], -1);
+	execute_command(cmds->argv, fd2[0], -1);
 
-	return (69);
+	return (0);
 }
 
