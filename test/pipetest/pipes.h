@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/12 00:28:26 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/12 00:34:39 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/12 16:32:09 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPES_H
 
 # include "declarations.h"
+# include "colors.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>

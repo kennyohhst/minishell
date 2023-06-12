@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/12 00:29:30 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/12 00:33:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/12 16:30:39 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ t_command	*init_cmds(void)
 	char	*argv1[3] = {"/bin/cat", "test.c", NULL};
 	char	*argv2[3] = {"/usr/bin/wc", "-l", NULL};
 	char	*argv3[3] = {"/bin/cat", "-e", NULL};
-	char	**argvs[4] = {argv1, argv2, argv3, NULL};
+	char	*argv4[3] = {"/bin/cat", "-e", NULL};
+	char	*argv5[3] = {"/bin/cat", "-e", NULL};
+	char	**argvs[6] = {argv1, argv2, argv3, argv4, argv5, NULL};
 
 	cmds = new_cmd_node(argvs[0]);
 	head = cmds;
