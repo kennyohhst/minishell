@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/04 17:27:05 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/31 19:59:33 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/14 23:14:17 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	execute_in_child(t_data *data)
 	path = get_command_path(argv[0]);
 	if (!path)
 	{
-		printf("%s -> command not found\n", argv[0]);
+		printf("minishell -> %s -> command not found\n", argv[0]);
 		exit (3);
 	}
 	return (execve(path, argv, envp));
@@ -88,7 +88,7 @@ int	execute(t_data *data)
 
 	signal(SIGINT, sighandle_proc);
 
-	if (!data->command->redirects && is_builtin(data) == true)
+	if (!data->command->next && is_builtin(data) == true)
 	{
 		ft_free_current_command(data);
 		return (0);
@@ -98,7 +98,7 @@ int	execute(t_data *data)
 	if (pid == -1)
 		return (0);
 	if (pid == 0)
-		execute_in_child(data);			// make sure child processes free all
+		execute_in_child(data);
 	else
 		waitpid(pid, &data->exit_code, 0);
 	ft_free_current_command(data);

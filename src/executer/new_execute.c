@@ -1,16 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   test.c                                             :+:    :+:            */
+/*   new_execute.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/30 21:40:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/14 18:25:48 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/14 23:30:18 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipes.h"
+#include "minishell.h"
+#include <errno.h>
+
+void	sighandle_proc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		signal(SIGINT, sighandle_proc);
+	}
+}
+
+static void	ft_free_current_command(t_data *data)
+{
+	t_command	*next;
+
+	next = data->command->next;
+	ft_free_str_arr(data->command->argv);
+	free(data->command);
+	data->command = next;
+}
 
 void	close_pipe(int fd_in, int fd_out)
 {
@@ -20,10 +40,11 @@ void	close_pipe(int fd_in, int fd_out)
 		close(fd_out);
 }
 
-int	execute_command(char **argv, int fd_in, int fd_out)
+int	execute_command(char **argv, char **envp, int fd_in, int fd_out)
 {
 	int			pid;
 	int			status;
+	char		*path;
 	static int	count = 1;
 
 	printf(C_GREEN"in %d \t\t out %d\n"C_RESET, fd_in, fd_out);
@@ -31,6 +52,13 @@ int	execute_command(char **argv, int fd_in, int fd_out)
 	printf(C_YELLOW"command: \"%s %s\"\n"C_RESET, argv[0], argv[1]);
 	printf(C_CYAN"output"C_RESET"\n");
 	count++;
+
+	path = get_command_path(argv[0]);
+	if (!path)
+	{
+		printf("minishell -> %s -> command not found\n", argv[0]);
+		return (127);
+	}
 	pid = fork();
 	if (pid == -1)
 		exit(1);
@@ -41,7 +69,7 @@ int	execute_command(char **argv, int fd_in, int fd_out)
 		if (fd_out >= 0)
 			dup2(fd_out, STDOUT_FILENO);
 		close_pipe(fd_in, fd_out);
-		execv(argv[0], argv);
+		execve(path, argv, envp);
 		printf("execve error\n");
 		exit(1);
 	}
@@ -51,35 +79,38 @@ int	execute_command(char **argv, int fd_in, int fd_out)
 	return (status);
 }
 
-void	pipe_loop(t_command *cmd)
+void	pipe_loop(t_data *data)
 {
-	int		fd1[2];
-	int		fd2[2];
+	char		**envp;
+	int			fd1[2];
+	int			fd2[2];
 
 	if (pipe(fd1) == -1)
 		exit(1);
 
+	envp = envp_list_to_arr(data->envp);
+	if (!envp)
+		exit(1);
 	dup2(STDIN_FILENO, fd1[0]);
 	close(fd1[1]);
-	while (cmd->next)
+	while (data->command && data->command->next)
 	{
 		if (pipe(fd2) == -1)
 			exit(1);
-		execute_command(cmd->argv, fd1[0], fd2[1]);
+		execute_command(data->command->argv, envp, fd1[0], fd2[1]);
 		dup2(fd2[0], fd1[0]);
 		close(fd2[0]);
-		cmd = cmd->next;
+		ft_free_current_command(data);
 	}
-	execute_command(cmd->argv, fd1[0], -1);
+	if (data->command)
+		execute_command(data->command->argv, envp, fd1[0], -1);
 }
 
-int		main(void)
+int	execute(t_data *data)
 {
-	t_command	*cmds;
-
-	cmds = init_cmds();
-	pipe_loop(cmds);
-
-	return (0);
+	signal(SIGINT, sighandle_proc);
+	pipe_loop(data);
+	return (1);
 }
+
 

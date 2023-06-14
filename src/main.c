@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/06/10 21:18:18 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/14 17:11:57 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	main(void)
 		// list_check(tokenized_input);
 		expander(tokenized_input, data);
 		data->command = parser(tokenized_input);
-		test_data(data);
+		// test_data(data);
 		if (!data->command)
 			continue ;
 		execute(data);

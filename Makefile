@@ -34,7 +34,7 @@ SRC_FILES :=	main.c							\
 				parser/get_command_argv.c		\
 				parser/expander.c				\
 \
-				executer/execute.c				\
+				executer/new_execute.c			\
 				executer/get_command_path.c		\
 \
 				executer/builtins/cd.c			\
@@ -44,6 +44,7 @@ SRC_FILES :=	main.c							\
 				executer/builtins/export.c		\
 				executer/builtins/unset.c		\
 \
+				# executer/execute.c			\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/06/10 21:15:09 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/14 23:16:42 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int			valid_pipe_check(char *str);
 // ======== parser ========================================================== //
 
 t_command	*parser(t_input *tokens);
+int			list_length(t_input *input);
 char		**get_command_argv(t_input *input, t_command **command);
 
 // ========= executer ======================================================= //
