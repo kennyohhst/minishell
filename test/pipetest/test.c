@@ -6,11 +6,38 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/30 21:40:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/14 18:25:48 by opelser       ########   odam.nl         */
+/*   Updated: 2023/06/30 18:37:57 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
+#include <fcntl.h>
+
+void	redirect(char **argv, t_redirect *redirect)
+{
+	int		fd;
+	int		pid;
+
+	pid = fork();
+	if (pid == -1)
+		exit(1);
+	if (pid == 0)
+	{
+		fd = open(redirect->name, O_CREAT | O_WRONLY, 0777);
+		if (fd == -1)
+		{
+			perror(C_BOLD""C_RED"open error\n"C_RESET);
+			exit(2);
+		}
+		dup2(fd, STDOUT_FILENO);
+		close (fd);
+		if (!redirect->next)
+			execv(argv[0], argv);
+		exit (3);
+	}
+	else
+		waitpid(pid, NULL, 0);
+}
 
 void	close_pipe(int fd_in, int fd_out)
 {
@@ -63,6 +90,11 @@ void	pipe_loop(t_command *cmd)
 	close(fd1[1]);
 	while (cmd->next)
 	{
+		while (cmd->redirects)
+		{
+			redirect(cmd->argv, cmd->redirects);
+			cmd->redirects = cmd->redirects->next;
+		}
 		if (pipe(fd2) == -1)
 			exit(1);
 		execute_command(cmd->argv, fd1[0], fd2[1]);
@@ -73,11 +105,26 @@ void	pipe_loop(t_command *cmd)
 	execute_command(cmd->argv, fd1[0], -1);
 }
 
+t_redirect	*new_redirect_node(char *name, t_token_type type)
+{
+	t_redirect *node;
+
+	node = (t_redirect *) calloc(1, sizeof(t_redirect));
+	node->name = name;
+	node->type = type;
+	node->next = NULL;
+	return (node);
+}
+
 int		main(void)
 {
 	t_command	*cmds;
+	// t_command	*third;
 
 	cmds = init_cmds();
+	// third = cmds->next->next;
+	cmds->redirects = new_redirect_node("output.txt", OUTPUT_REDIRECT);
+	cmds->redirects->next = new_redirect_node("no.txt", OUTPUT_REDIRECT);
 	pipe_loop(cmds);
 
 	return (0);
