@@ -6,37 +6,24 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/30 21:40:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/30 18:37:57 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/10 20:29:56 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 #include <fcntl.h>
 
-void	redirect(char **argv, t_redirect *redirect)
+int	redirect(t_redirect *redirect)
 {
 	int		fd;
-	int		pid;
 
-	pid = fork();
-	if (pid == -1)
-		exit(1);
-	if (pid == 0)
+	fd = open(redirect->name, O_CREAT | O_WRONLY, 0770);
+	if (fd == -1)
 	{
-		fd = open(redirect->name, O_CREAT | O_WRONLY, 0777);
-		if (fd == -1)
-		{
-			perror(C_BOLD""C_RED"open error\n"C_RESET);
-			exit(2);
-		}
-		dup2(fd, STDOUT_FILENO);
-		close (fd);
-		if (!redirect->next)
-			execv(argv[0], argv);
-		exit (3);
+		perror(C_BOLD""C_RED"open error\n"C_RESET);
+		exit(2);
 	}
-	else
-		waitpid(pid, NULL, 0);
+	return (fd);
 }
 
 void	close_pipe(int fd_in, int fd_out)
@@ -53,8 +40,8 @@ int	execute_command(char **argv, int fd_in, int fd_out)
 	int			status;
 	static int	count = 1;
 
-	printf(C_GREEN"in %d \t\t out %d\n"C_RESET, fd_in, fd_out);
 	printf(C_GREEN"started child process %d\n"C_RESET, count);
+	printf(C_GREEN"in %d \t\t out %d\n"C_RESET, fd_in, fd_out);
 	printf(C_YELLOW"command: \"%s %s\"\n"C_RESET, argv[0], argv[1]);
 	printf(C_CYAN"output"C_RESET"\n");
 	count++;
@@ -90,13 +77,10 @@ void	pipe_loop(t_command *cmd)
 	close(fd1[1]);
 	while (cmd->next)
 	{
-		while (cmd->redirects)
-		{
-			redirect(cmd->argv, cmd->redirects);
-			cmd->redirects = cmd->redirects->next;
-		}
 		if (pipe(fd2) == -1)
 			exit(1);
+		if (cmd->redirects)
+			dup2(redirect(cmd->redirects), fd2[1]);
 		execute_command(cmd->argv, fd1[0], fd2[1]);
 		dup2(fd2[0], fd1[0]);
 		close(fd2[0]);
@@ -105,28 +89,20 @@ void	pipe_loop(t_command *cmd)
 	execute_command(cmd->argv, fd1[0], -1);
 }
 
-t_redirect	*new_redirect_node(char *name, t_token_type type)
-{
-	t_redirect *node;
-
-	node = (t_redirect *) calloc(1, sizeof(t_redirect));
-	node->name = name;
-	node->type = type;
-	node->next = NULL;
-	return (node);
-}
-
 int		main(void)
 {
 	t_command	*cmds;
-	// t_command	*third;
 
 	cmds = init_cmds();
-	// third = cmds->next->next;
 	cmds->redirects = new_redirect_node("output.txt", OUTPUT_REDIRECT);
-	cmds->redirects->next = new_redirect_node("no.txt", OUTPUT_REDIRECT);
 	pipe_loop(cmds);
 
 	return (0);
 }
 
+
+/*
+	make a function that gets the correct fds
+	set correct fd in struct
+	execute command
+*/

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/12 00:29:30 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/12 16:30:39 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/10 20:29:52 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ t_command	*new_cmd_node(char **argv)
 	return (cmd);
 }
 
+t_redirect	*new_redirect_node(char *name, t_token_type type)
+{
+	t_redirect *node;
+
+	node = (t_redirect *) calloc(1, sizeof(t_redirect));
+	node->name = name;
+	node->type = type;
+	node->next = NULL;
+	return (node);
+}
+
 t_command	*init_cmds(void)
 {
 	t_command	*cmds;
@@ -66,5 +77,6 @@ t_command	*init_cmds(void)
 		cmds->next = new_cmd_node(argvs[i]);
 		cmds = cmds->next;
 	}
+	head->redirects = new_redirect_node("output.txt", OUTPUT_REDIRECT);
 	return (head);
 }
