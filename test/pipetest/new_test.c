@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/10 21:24:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/11 19:39:05 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,26 @@ t_redirect	*get_last_of_type(t_redirect *redirect, t_token_type type)
 	return (last);
 }
 
-void	create_output_files(t_redirect *redirect)
+void	create_output_files(t_command *cmd)
 {
+	t_redirect	*output;
 	int		fd;
 
-	while (redirect)
+	while (cmd)
 	{
-		if (redirect->type == OUTPUT_REDIRECT)
+		output = cmd->output;
+		while (output)
 		{
-			fd = open(redirect->name, O_CREAT | O_WRONLY, 0644);
-			if (fd == -1)
-				return ;
-			close(fd);
+			if (output->type == OUTPUT_REDIRECT)
+			{
+				fd = open(output->name, O_CREAT | O_WRONLY, 0644);
+				if (fd == -1)
+					return ;
+				close(fd);
+			}
+			output = output->next;
 		}
-		redirect = redirect->next;
+		cmd = cmd->next;
 	}
 }
 
@@ -99,38 +105,34 @@ void	dup_to_standard_fd(int pipe_fd[2], t_redirect *redirect)
 	}
 }
 
+int	handle_redirects(t_command *cmd)
+{
+	t_redirect	*input;
+	t_redirect	*output;
+
+	input = get_last_of_type(cmd->input, INPUT_REDIRECT);
+	if (set_redirect_fd(input, INPUT_REDIRECT) == -1)
+		return (-1);
+
+	output = get_last_of_type(cmd->output, OUTPUT_REDIRECT);
+	if (set_redirect_fd(output, OUTPUT_REDIRECT) == -1)
+		return (-1);
+	return (1);
+}
+
 int	execute(t_command *cmd)
 {
-	t_redirect	*redirects;
-	t_command	*current;
-	t_redirect	*last[2];
-	int			fd[2];
+	// set up pipes
 
-	while (current)
-	{
-		create_output_files(current->redirects);
-		current = current->next;
-	}
-
-	last[0] = get_last_of_type(cmd->redirects, INPUT_REDIRECT);
-	if (set_redirect_fd(last[0], INPUT_REDIRECT) == -1)
-		return (-1);
-
-	last[1] = get_last_of_type(cmd->redirects, OUTPUT_REDIRECT);
-	if (set_redirect_fd(last[1], OUTPUT_REDIRECT) == -1)
-		return (-1);
-
+	create_output_files(cmd);
+	handle_redirects(cmd);
 	if (!cmd->next)
 	{
-		dup_to_standard_fd(NULL, last[0]);
-		dup_to_standard_fd(NULL, last[1]);
+		dup_to_standard_fd(NULL, get_last_of_type(cmd->input, INPUT_REDIRECT));
+		dup_to_standard_fd(NULL, get_last_of_type(cmd->output, OUTPUT_REDIRECT));
+		execv(cmd->argv[0], cmd->argv);
 		return (1);
 	}
-
-	if (pipe(fd) == -1)
-		return (-1);
-	dup_to_standard_fd(fd, last[0]);
-	dup_to_standard_fd(fd, last[1]);
 	return (1);
 }
 
@@ -139,6 +141,7 @@ int		main(void)
 	t_command	*cmds;
 
 	cmds = init_cmds();
+	cmds->next = NULL;
 	execute(cmds);
 
 	return (0);

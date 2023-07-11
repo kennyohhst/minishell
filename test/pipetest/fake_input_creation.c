@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/12 00:29:30 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/10 20:29:52 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/11 19:07:36 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ t_command	*new_cmd_node(char **argv)
 
 	cmd = (t_command *) calloc(1, sizeof(t_command));
 	cmd->argv = copy_2d_arr(argv);
-	cmd->redirects = NULL;
-	cmd->next = NULL;
+	cmd->input = NULL;
+	cmd->output = NULL;
+	cmd->output = NULL;
+	cmd->heredoc = false;
 	return (cmd);
 }
 
@@ -63,7 +65,7 @@ t_command	*init_cmds(void)
 {
 	t_command	*cmds;
 	t_command	*head;
-	char	*argv1[3] = {"/bin/cat", "test.c", NULL};
+	char	*argv1[3] = {"/bin/cat", "-e", NULL};
 	char	*argv2[3] = {"/usr/bin/wc", "-l", NULL};
 	char	*argv3[3] = {"/bin/cat", "-e", NULL};
 	char	*argv4[3] = {"/bin/cat", "-e", NULL};
@@ -77,6 +79,7 @@ t_command	*init_cmds(void)
 		cmds->next = new_cmd_node(argvs[i]);
 		cmds = cmds->next;
 	}
-	head->redirects = new_redirect_node("output.txt", OUTPUT_REDIRECT);
+	head->input = new_redirect_node("input.txt", INPUT_REDIRECT);
+	head->output = new_redirect_node("output.txt", OUTPUT_REDIRECT);
 	return (head);
 }
