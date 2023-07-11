@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/11 19:39:05 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/11 22:41:35 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_redirect	*get_last_of_type(t_redirect *redirect, t_token_type type)
 void	create_output_files(t_command *cmd)
 {
 	t_redirect	*output;
-	int		fd;
+	int			fd;
 
 	while (cmd)
 	{
@@ -54,21 +54,14 @@ void	create_output_files(t_command *cmd)
 
 /**	
  * @brief Sets the fd field in redirect 
- * @return -1 for error, 0 if it's not the last node of this type, 1 for succes
+ * @return -1 on error or 1 on succes
 */
 int	set_redirect_fd(t_redirect *redirect, t_token_type type)
 {
 	int		fd;
 
 	fd = 0;
-	if (!redirect)
-	{
-		if (type == INPUT_REDIRECT)
-			fd = STDIN_FILENO;
-		else if (type == OUTPUT_REDIRECT)
-			fd = STDOUT_FILENO;
-	}
-	else if (type == INPUT_REDIRECT)
+	if (type == INPUT_REDIRECT)
 		fd = open(redirect->name, O_RDONLY);
 	else if (type == OUTPUT_REDIRECT)
 		fd = open(redirect->name, O_WRONLY);
@@ -81,58 +74,78 @@ int	set_redirect_fd(t_redirect *redirect, t_token_type type)
 	return (1);
 }
 
-/*******************************************************************************
- * @brief	A function that dups the needed file descriptors 
- * 			onto STDIN and STDOUT
- * @param	pipe_fd		The file descriptors of the current pipe or 0 if there is none
- * @param	redirect	The redirect struct that contains the current fd and type
-*******************************************************************************/
-void	dup_to_standard_fd(int pipe_fd[2], t_redirect *redirect)
+void	close_pipe(int fd_in, int fd_out)
 {
-	if (redirect->type == INPUT_REDIRECT)
-	{
-		if (redirect->fd == STDIN_FILENO && pipe_fd)
-			dup2(pipe_fd[0], STDIN_FILENO);
-		else
-			dup2(redirect->fd, STDIN_FILENO);
-	}
-	else if (redirect->type == OUTPUT_REDIRECT)
-	{
-		if (redirect->fd == STDOUT_FILENO && pipe_fd)
-			dup2(pipe_fd[1], STDOUT_FILENO);
-		else
-			dup2(redirect->fd, STDOUT_FILENO);
-	}
+	if (fd_in >= 0)
+		close(fd_in);
+	if (fd_out >= 0)
+		close(fd_out);
 }
 
-int	handle_redirects(t_command *cmd)
+int run_command(char **argv, int fd_in, int fd_out)
 {
-	t_redirect	*input;
-	t_redirect	*output;
+	int pid;
 
-	input = get_last_of_type(cmd->input, INPUT_REDIRECT);
-	if (set_redirect_fd(input, INPUT_REDIRECT) == -1)
+	pid = fork();
+	if (pid == -1)
 		return (-1);
+	else if (pid == 0)
+	{
+		if (fd_in >= 0)
+			dup2(fd_in, STDIN_FILENO);
+		if (fd_out >= 0)
+			dup2(fd_out, STDOUT_FILENO);
+		close_pipe(fd_in, fd_out);
+		execv(argv[0], argv);
+		exit(1);
+	}
+	close_pipe(fd_in, fd_out);
+	waitpid(pid, NULL, 0);
+	return (1);
+}
 
-	output = get_last_of_type(cmd->output, OUTPUT_REDIRECT);
-	if (set_redirect_fd(output, OUTPUT_REDIRECT) == -1)
-		return (-1);
+int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
+{
+	t_redirect	*tmp_redirect;
+
+	if (cmd->input)
+	{
+		close(*fd_in);
+		tmp_redirect = get_last_of_type(cmd->input, INPUT_REDIRECT);
+		if (set_redirect_fd(tmp_redirect, INPUT_REDIRECT) == -1)
+			return (-1);
+		*fd_in = tmp_redirect->fd;
+	}
+	if (cmd->output)
+	{
+		close(*fd_out);
+		tmp_redirect = get_last_of_type(cmd->output, OUTPUT_REDIRECT);
+		if (set_redirect_fd(tmp_redirect, OUTPUT_REDIRECT) == -1)
+			return (-1);
+		*fd_out = tmp_redirect->fd;
+	}
 	return (1);
 }
 
 int	execute(t_command *cmd)
 {
-	// set up pipes
+	int fd_in;
+	int new_pipe[2];
 
 	create_output_files(cmd);
-	handle_redirects(cmd);
-	if (!cmd->next)
+	fd_in = dup(STDIN_FILENO); // open new fd pointing to STDIN
+	while (cmd->next)
 	{
-		dup_to_standard_fd(NULL, get_last_of_type(cmd->input, INPUT_REDIRECT));
-		dup_to_standard_fd(NULL, get_last_of_type(cmd->output, OUTPUT_REDIRECT));
-		execv(cmd->argv[0], cmd->argv);
-		return (1);
+		if (pipe(new_pipe) == -1)
+			return (-1);
+		if (set_fds(cmd, &fd_in, &new_pipe[1]) == -1)
+			return (-1);
+		run_command(cmd->argv, fd_in, new_pipe[1]); // run command with fd_in being STDIN or the previous pipes read end and new pipes write end
+		dup2(new_pipe[0], fd_in); // set fd_in to new pipes read end
+		close(new_pipe[0]); // close new pipes read end
+		cmd = cmd->next;
 	}
+	run_command(cmd->argv, fd_in, -1); // run command with the output going to STDOUT
 	return (1);
 }
 
@@ -141,8 +154,7 @@ int		main(void)
 	t_command	*cmds;
 
 	cmds = init_cmds();
-	cmds->next = NULL;
-	execute(cmds);
-
+	if (execute(cmds) == -1)
+		return (1);
 	return (0);
 }

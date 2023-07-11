@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/12 00:29:30 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/11 19:07:36 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/11 22:42:15 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_command	*init_cmds(void)
 	char	*argv1[3] = {"/bin/cat", "-e", NULL};
 	char	*argv2[3] = {"/usr/bin/wc", "-l", NULL};
 	char	*argv3[3] = {"/bin/cat", "-e", NULL};
-	char	*argv4[3] = {"/bin/cat", "-e", NULL};
+	char	*argv4[3] = {"/usr/bin/wc", "-l", NULL};
 	char	*argv5[3] = {"/bin/cat", "-e", NULL};
 	char	**argvs[6] = {argv1, argv2, argv3, argv4, argv5, NULL};
 
@@ -81,5 +81,10 @@ t_command	*init_cmds(void)
 	}
 	head->input = new_redirect_node("input.txt", INPUT_REDIRECT);
 	head->output = new_redirect_node("output.txt", OUTPUT_REDIRECT);
+	head->output->next = new_redirect_node("PLS.txt", OUTPUT_REDIRECT);
+
+	
+	head->next->output = new_redirect_node("second.txt", OUTPUT_REDIRECT);
+	head->next->output->next = new_redirect_node("third.txt", OUTPUT_REDIRECT);
 	return (head);
 }
