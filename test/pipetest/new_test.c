@@ -6,27 +6,18 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/11 22:41:35 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/12 15:30:44 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 #include <fcntl.h>
 
-t_redirect	*get_last_of_type(t_redirect *redirect, t_token_type type)
+t_redirect	*get_last_node(t_redirect *redirect)
 {
-	t_redirect	*last;
-
-	if (!redirect)
-		return (NULL);
-	last = NULL;
-	while (redirect)
-	{
-		if (redirect->type == type)
-			last = redirect;
+	while (redirect->next)
 		redirect = redirect->next;
-	}
-	return (last);
+	return (redirect);
 }
 
 void	create_output_files(t_command *cmd)
@@ -39,13 +30,10 @@ void	create_output_files(t_command *cmd)
 		output = cmd->output;
 		while (output)
 		{
-			if (output->type == OUTPUT_REDIRECT)
-			{
-				fd = open(output->name, O_CREAT | O_WRONLY, 0644);
-				if (fd == -1)
-					return ;
-				close(fd);
-			}
+			fd = open(output->name, O_CREAT | O_WRONLY, 0644);
+			if (fd == -1)
+				return ;
+			close(fd);
 			output = output->next;
 		}
 		cmd = cmd->next;
@@ -65,6 +53,8 @@ int	set_redirect_fd(t_redirect *redirect, t_token_type type)
 		fd = open(redirect->name, O_RDONLY);
 	else if (type == OUTPUT_REDIRECT)
 		fd = open(redirect->name, O_WRONLY);
+	else if (type == APPEND)
+		fd = open(redirect->name, O_WRONLY | O_APPEND);
 	if (fd == -1)
 	{
 		perror(C_BOLD""C_RED"open error\n"C_RESET);
@@ -106,23 +96,23 @@ int run_command(char **argv, int fd_in, int fd_out)
 
 int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
 {
-	t_redirect	*tmp_redirect;
+	t_redirect	*last_redirect;
 
 	if (cmd->input)
 	{
 		close(*fd_in);
-		tmp_redirect = get_last_of_type(cmd->input, INPUT_REDIRECT);
-		if (set_redirect_fd(tmp_redirect, INPUT_REDIRECT) == -1)
+		last_redirect = get_last_node(cmd->input);
+		if (set_redirect_fd(last_redirect, last_redirect->type) == -1)
 			return (-1);
-		*fd_in = tmp_redirect->fd;
+		*fd_in = last_redirect->fd;
 	}
 	if (cmd->output)
 	{
 		close(*fd_out);
-		tmp_redirect = get_last_of_type(cmd->output, OUTPUT_REDIRECT);
-		if (set_redirect_fd(tmp_redirect, OUTPUT_REDIRECT) == -1)
+		last_redirect = get_last_node(cmd->output);
+		if (set_redirect_fd(last_redirect, last_redirect->type) == -1)
 			return (-1);
-		*fd_out = tmp_redirect->fd;
+		*fd_out = last_redirect->fd;
 	}
 	return (1);
 }
