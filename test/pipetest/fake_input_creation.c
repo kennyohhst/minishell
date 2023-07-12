@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/12 00:29:30 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/12 16:00:15 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/12 17:51:55 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_command	*new_cmd_node(char **argv)
 	cmd->input = NULL;
 	cmd->output = NULL;
 	cmd->output = NULL;
-	cmd->heredoc = false;
 	return (cmd);
 }
 
@@ -79,11 +78,11 @@ t_command	*init_cmds(void)
 		cmds->next = new_cmd_node(argvs[i]);
 		cmds = cmds->next;
 	}
-	head->input = new_redirect_node("input.txt", INPUT_REDIRECT);
-	head->output = new_redirect_node("output.txt", OUTPUT_REDIRECT);
-	head->output->next = new_redirect_node("PLS.txt", APPEND);
+	// head->input = new_redirect_node("EOF", HERE_DOC);
+	// head->output = new_redirect_node("output.txt", OUTPUT_REDIRECT);
+	// head->output->next = new_redirect_node("PLS.txt", APPEND);
 
-	head->next->output = new_redirect_node("second.txt", APPEND);
-	head->next->output->next = new_redirect_node("third.txt", OUTPUT_REDIRECT);
+	// head->next->output = new_redirect_node("second.txt", APPEND);
+	// head->next->output->next = new_redirect_node("third.txt", OUTPUT_REDIRECT);
 	return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/11 19:11:08 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/12 16:26:02 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ struct s_command
 	char			**argv; // The argument vector for the current command
 	t_redirect		*input; // A list of input redirects for the current command
 	t_redirect		*output; // A list of output redirects for the current command
-	t_redirect		*heredoc; // A list of heredocs for the current command
 	t_command		*next;
 };
 

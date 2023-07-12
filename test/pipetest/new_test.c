@@ -6,12 +6,13 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/12 15:30:44 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/12 16:42:56 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 #include <fcntl.h>
+#include "../../lib/libft/include/libft.h"
 
 t_redirect	*get_last_node(t_redirect *redirect)
 {
@@ -40,17 +41,43 @@ void	create_output_files(t_command *cmd)
 	}
 }
 
+/** @return A file descriptor to the created heredoc file or -1 on failure */
+int		heredoc(char *delim)
+{
+	int		fd[2];
+	char	*str;
+
+	if (pipe(fd) == -1)
+		return (-1);
+
+	write(STDOUT_FILENO, "> ", 2);
+	str = get_next_line(STDIN_FILENO);
+	while (str && ft_strncmp(delim, str, ft_strlen(str) - 1))
+	{
+		write(fd[1], str, ft_strlen(str));
+		free(str);
+		write(STDOUT_FILENO, "> ", 2);
+		str = get_next_line(STDIN_FILENO);
+	}
+	close (fd[1]);
+	return (fd[0]);
+}
+
 /**	
  * @brief Sets the fd field in redirect 
  * @return -1 on error or 1 on succes
 */
-int	set_redirect_fd(t_redirect *redirect, t_token_type type)
+int	set_redirect_fd(t_redirect *redirect)
 {
-	int		fd;
+	int				fd;
+	t_token_type	type;
 
 	fd = 0;
+	type = redirect->type;
 	if (type == INPUT_REDIRECT)
 		fd = open(redirect->name, O_RDONLY);
+	else if (type == HERE_DOC)
+		fd = heredoc(redirect->name);
 	else if (type == OUTPUT_REDIRECT)
 		fd = open(redirect->name, O_WRONLY);
 	else if (type == APPEND)
@@ -74,7 +101,8 @@ void	close_pipe(int fd_in, int fd_out)
 
 int run_command(char **argv, int fd_in, int fd_out)
 {
-	int pid;
+	int		pid;
+	int		status;
 
 	pid = fork();
 	if (pid == -1)
@@ -87,11 +115,11 @@ int run_command(char **argv, int fd_in, int fd_out)
 			dup2(fd_out, STDOUT_FILENO);
 		close_pipe(fd_in, fd_out);
 		execv(argv[0], argv);
-		exit(1);
+		return (-1);
 	}
 	close_pipe(fd_in, fd_out);
-	waitpid(pid, NULL, 0);
-	return (1);
+	waitpid(pid, &status, 0);
+	return (status);
 }
 
 int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
@@ -102,7 +130,7 @@ int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
 	{
 		close(*fd_in);
 		last_redirect = get_last_node(cmd->input);
-		if (set_redirect_fd(last_redirect, last_redirect->type) == -1)
+		if (set_redirect_fd(last_redirect) == -1)
 			return (-1);
 		*fd_in = last_redirect->fd;
 	}
@@ -110,7 +138,7 @@ int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
 	{
 		close(*fd_out);
 		last_redirect = get_last_node(cmd->output);
-		if (set_redirect_fd(last_redirect, last_redirect->type) == -1)
+		if (set_redirect_fd(last_redirect) == -1)
 			return (-1);
 		*fd_out = last_redirect->fd;
 	}
