@@ -6,13 +6,17 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/12 16:42:56 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/17 15:48:54 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 #include <fcntl.h>
 #include "../../lib/libft/include/libft.h"
+#include <sys/wait.h>
+#include <sys/errno.h>
+
+int	g_exit;
 
 t_redirect	*get_last_node(t_redirect *redirect)
 {
@@ -64,7 +68,7 @@ int		heredoc(char *delim)
 }
 
 /**	
- * @brief Sets the fd field in redirect 
+ * @brief Sets the fd field in the given redirect node
  * @return -1 on error or 1 on succes
 */
 int	set_redirect_fd(t_redirect *redirect)
@@ -99,10 +103,9 @@ void	close_pipe(int fd_in, int fd_out)
 		close(fd_out);
 }
 
-int run_command(char **argv, int fd_in, int fd_out)
+pid_t run_command(char **argv, int fd_in, int fd_out)
 {
-	int		pid;
-	int		status;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
@@ -115,11 +118,12 @@ int run_command(char **argv, int fd_in, int fd_out)
 			dup2(fd_out, STDOUT_FILENO);
 		close_pipe(fd_in, fd_out);
 		execv(argv[0], argv);
-		return (-1);
+		dprintf(2, "exit code = %d : %s\n", errno, strerror(errno));
+		close_pipe(fd_in, fd_out);
+		exit(errno);
 	}
 	close_pipe(fd_in, fd_out);
-	waitpid(pid, &status, 0);
-	return (status);
+	return (pid);
 }
 
 int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
@@ -147,8 +151,8 @@ int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
 
 int	execute(t_command *cmd)
 {
-	int fd_in;
-	int new_pipe[2];
+	int		fd_in;
+	int		new_pipe[2];
 
 	create_output_files(cmd);
 	fd_in = dup(STDIN_FILENO); // open new fd pointing to STDIN
@@ -158,8 +162,8 @@ int	execute(t_command *cmd)
 			return (-1);
 		if (set_fds(cmd, &fd_in, &new_pipe[1]) == -1)
 			return (-1);
-		run_command(cmd->argv, fd_in, new_pipe[1]); // run command with fd_in being STDIN or the previous pipes read end and new pipes write end
-		dup2(new_pipe[0], fd_in); // set fd_in to new pipes read end
+		cmd->pid = run_command(cmd->argv, fd_in, new_pipe[1]); // run command with fd_in being STDIN or the previous pipes read end and new pipes write end
+		fd_in = dup(new_pipe[0]); // set fd_in to new pipes read end
 		close(new_pipe[0]); // close new pipes read end
 		cmd = cmd->next;
 	}
@@ -170,9 +174,21 @@ int	execute(t_command *cmd)
 int		main(void)
 {
 	t_command	*cmds;
+	int			w_status;
 
 	cmds = init_cmds();
 	if (execute(cmds) == -1)
 		return (1);
+	while (cmds)
+	{
+		waitpid(cmds->pid, &w_status, 0);
+		cmds = cmds->next;
+	}
+	if (WIFEXITED(w_status))
+		g_exit = WEXITSTATUS(w_status);
+	else
+		g_exit = 128 + WTERMSIG(w_status);
+
+	printf("exit code = %d\n\n\n", g_exit);
 	return (0);
 }
