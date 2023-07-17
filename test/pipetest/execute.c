@@ -6,94 +6,16 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/17 15:48:54 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/17 16:06:01 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 #include <fcntl.h>
-#include "../../lib/libft/include/libft.h"
 #include <sys/wait.h>
 #include <sys/errno.h>
 
 int	g_exit;
-
-t_redirect	*get_last_node(t_redirect *redirect)
-{
-	while (redirect->next)
-		redirect = redirect->next;
-	return (redirect);
-}
-
-void	create_output_files(t_command *cmd)
-{
-	t_redirect	*output;
-	int			fd;
-
-	while (cmd)
-	{
-		output = cmd->output;
-		while (output)
-		{
-			fd = open(output->name, O_CREAT | O_WRONLY, 0644);
-			if (fd == -1)
-				return ;
-			close(fd);
-			output = output->next;
-		}
-		cmd = cmd->next;
-	}
-}
-
-/** @return A file descriptor to the created heredoc file or -1 on failure */
-int		heredoc(char *delim)
-{
-	int		fd[2];
-	char	*str;
-
-	if (pipe(fd) == -1)
-		return (-1);
-
-	write(STDOUT_FILENO, "> ", 2);
-	str = get_next_line(STDIN_FILENO);
-	while (str && ft_strncmp(delim, str, ft_strlen(str) - 1))
-	{
-		write(fd[1], str, ft_strlen(str));
-		free(str);
-		write(STDOUT_FILENO, "> ", 2);
-		str = get_next_line(STDIN_FILENO);
-	}
-	close (fd[1]);
-	return (fd[0]);
-}
-
-/**	
- * @brief Sets the fd field in the given redirect node
- * @return -1 on error or 1 on succes
-*/
-int	set_redirect_fd(t_redirect *redirect)
-{
-	int				fd;
-	t_token_type	type;
-
-	fd = 0;
-	type = redirect->type;
-	if (type == INPUT_REDIRECT)
-		fd = open(redirect->name, O_RDONLY);
-	else if (type == HERE_DOC)
-		fd = heredoc(redirect->name);
-	else if (type == OUTPUT_REDIRECT)
-		fd = open(redirect->name, O_WRONLY);
-	else if (type == APPEND)
-		fd = open(redirect->name, O_WRONLY | O_APPEND);
-	if (fd == -1)
-	{
-		perror(C_BOLD""C_RED"open error\n"C_RESET);
-		return (-1);
-	}
-	redirect->fd = fd;
-	return (1);
-}
 
 void	close_pipe(int fd_in, int fd_out)
 {
@@ -126,29 +48,6 @@ pid_t run_command(char **argv, int fd_in, int fd_out)
 	return (pid);
 }
 
-int	set_fds(t_command *cmd, int *fd_in, int *fd_out)
-{
-	t_redirect	*last_redirect;
-
-	if (cmd->input)
-	{
-		close(*fd_in);
-		last_redirect = get_last_node(cmd->input);
-		if (set_redirect_fd(last_redirect) == -1)
-			return (-1);
-		*fd_in = last_redirect->fd;
-	}
-	if (cmd->output)
-	{
-		close(*fd_out);
-		last_redirect = get_last_node(cmd->output);
-		if (set_redirect_fd(last_redirect) == -1)
-			return (-1);
-		*fd_out = last_redirect->fd;
-	}
-	return (1);
-}
-
 int	execute(t_command *cmd)
 {
 	int		fd_in;
@@ -160,7 +59,7 @@ int	execute(t_command *cmd)
 	{
 		if (pipe(new_pipe) == -1)
 			return (-1);
-		if (set_fds(cmd, &fd_in, &new_pipe[1]) == -1)
+		if (handle_redirects(cmd, &fd_in, &new_pipe[1]) == -1)
 			return (-1);
 		cmd->pid = run_command(cmd->argv, fd_in, new_pipe[1]); // run command with fd_in being STDIN or the previous pipes read end and new pipes write end
 		fd_in = dup(new_pipe[0]); // set fd_in to new pipes read end
