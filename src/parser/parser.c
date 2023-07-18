@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:53:38 by opelser           #+#    #+#             */
-/*   Updated: 2023/06/04 16:24:51 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/07/18 22:04:15 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ int	encounter_out_red(char *str, t_command **cmd, int type)
 	return (1);
 }
 
-t_input	*redirect_type(t_input *token, t_redirect **red, int type)
+
+
+t_input	*i_redirect_type(t_input *token, t_redirect **red, int type)
 {
 	t_redirect	*temp;
 
@@ -69,7 +71,7 @@ t_input	*redirect_type(t_input *token, t_redirect **red, int type)
 		temp = temp ->next;
 	if (token)
 	{
-		if (token->token_type >= 2 && token->token_type <= 5)
+		if (token->token_type >= 4 && token->token_type <= 5)
 		{
 			token = token->next;
 			if (token && token->token_type == STRING)
@@ -79,8 +81,37 @@ t_input	*redirect_type(t_input *token, t_redirect **red, int type)
 			}
 		}
 	}
-	if (token && token->token_type >= 2 && token->token_type <= 5)
-		return (redirect_type(token, &temp, token->token_type));
+	if (token && token->token_type >= 4 && token->token_type <= 5)
+		return (i_redirect_type(token, &temp, token->token_type));
+	return (token);
+}
+
+t_input	*o_redirect_type(t_input *token, t_redirect **red, int type)
+{
+	t_redirect	*temp;
+
+	if (!token)
+		return (NULL);
+	malloc_redirects_node(red, type);
+	if (!(*red))
+		return (NULL);
+	temp = (*red);
+	while (temp->next)
+		temp = temp ->next;
+	if (token)
+	{
+		if (token->token_type >= 2 && token->token_type <= 3)
+		{
+			token = token->next;
+			if (token && token->token_type == STRING)
+			{
+				temp->name = ft_strdup(token->str);
+				token = token->next;
+			}
+		}
+	}
+	if (token && token->token_type >= 2 && token->token_type <= 3)
+		return (o_redirect_type(token, &temp, token->token_type));
 	return (token);
 }
 
@@ -91,6 +122,8 @@ void	malloc_command_node(t_command **cmd, t_command *temp)
 
 	new = malloc(sizeof(t_command));
 	new->redirects = NULL;
+	new->input_redirect = NULL;
+	new->output_redirect = NULL;
 	new->argv = NULL;
 	if (!new)
 		return ;
@@ -200,21 +233,17 @@ t_command	*type_check(t_input *token, t_command **command, t_command *temp)
 			return (NULL);
 		temp = (*command);
 		while (temp->next != NULL)
-			temp = temp->next;
-		if (token->token_type > 6)
-		{
+			temp = temp->next;		
+		if (token->token_type == PIPE)
+			token = token->next;
+		if (token->token_type >= 6)
 			token = string_type(token, &temp);
-			if (token && token->token_type >= 2 && token->token_type <= 5)
-			{
-				token = redirect_type(token, &temp->redirects, token->token_type);
-				continue;
-			}
-			continue;
-		}			
-		if (token && token->token_type == PIPE)
+		while (token && token->token_type >= 2 && token->token_type <= 5 )
 		{
-			token = pipe_type(token, &temp);
-			continue;
+			if (token && (token->token_type == 2 || token->token_type == 3 ))
+				token = o_redirect_type(token, &temp->output_redirect, token->token_type);
+			if (token && (token->token_type == 4 || token->token_type == 5 ))
+				token = i_redirect_type(token, &temp->input_redirect, token->token_type);
 		}
 	}
 	return (*command);

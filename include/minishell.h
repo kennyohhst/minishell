@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/06/10 16:57:33 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/07/18 22:08:08 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ struct s_command
 {
 	char			**argv;
 	t_redirect		*redirects;
+	t_redirect		*output_redirect;
+	t_redirect		*input_redirect;
 	t_command		*next;
 };
 
@@ -89,6 +91,13 @@ struct s_program_data
 	t_command	*command;
 	int			exit_code;
 };
+
+//		~ test (remove later)
+void	test_data(t_data *data);
+void	list_check(t_input *tokenized_input);
+
+
+
 
 //		~ create_input_list.c
 
@@ -114,12 +123,14 @@ int		std_token(t_input **cmd, char *str);
 t_input *expander(t_input *token, t_data *data);
 
 
+
 //		~ valid_pipe_check.c
 
 int		valid_pipe_check(char *str);
 
 //		~ parser.c
 
+int			valid_input_check(t_input *token, t_input *temp);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
 

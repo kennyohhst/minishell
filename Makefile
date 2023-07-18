@@ -29,7 +29,9 @@ SRC_FILES :=	main.c							\
 				lexer/tokens.c					\
 				lexer/valid_pipe_check.c		\
 				lexer/create_input_list.c		\
+				../test/test_parse.c			\
 \
+				parser/input_check_parse.c		\
 				parser/parser.c					\
 				parser/get_command_argv.c		\
 				parser/expander.c						\
