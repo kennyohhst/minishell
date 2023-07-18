@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   environ_to_list.c                                  :+:    :+:            */
+/*   env_list_create.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 22:16:15 by opelser       ########   odam.nl         */
+/*   Updated: 2023/05/29 20:34:08 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env_id(char *str, int equal_index)
+char	*get_env_id(char *str, int equal, int plus)
 {
 	char	*tmp;
 	int		len;
 
-	if (equal_index == -1)
+	if (plus > 0)
+		equal -= 1;
+	if (equal == -1)
 		len = ft_strlen(str) + 1;
 	else
-		len = equal_index + 1;
+		len = equal + 1;
 
 	tmp = (char *) malloc(len * sizeof(char));
 	if (!tmp)
@@ -29,20 +31,20 @@ char	*get_env_id(char *str, int equal_index)
 	return (tmp);
 }
 
-char	*get_env_value(char *str, int equal_index)
+static char	*get_env_value(char *str)
 {
 	char	*tmp;
 	int		len;
 
-	if (equal_index <= 0)
+	if (!str[0])
 		return (ft_strdup(""));
 	else
-		len = ft_strlen(str) - equal_index + 1;
+		len = ft_strlen(str) + 1;
 
 	tmp = (char *) malloc(len * sizeof(char));
 	if (!tmp)
 		return (NULL);
-  	ft_strlcpy(tmp, str + equal_index + 1, len);
+	ft_strlcpy(tmp, str, len);
 	return (tmp);
 }
 
@@ -57,36 +59,35 @@ t_envp	*init_envp_node(void)
 	new_node->str = NULL;
 	new_node->id = NULL;
 	new_node->value = NULL;
-	new_node->equal_index = 0;
+	new_node->equal = 0;
 	new_node->next = NULL;
 	return (new_node);
 }
 
 t_envp	*create_new_envp_node(char *str)
 {
-	t_envp	*new_node;
-	int		equal_index;
+	t_envp	*new;
 
-	new_node = init_envp_node();
-	if (!new_node)
+	new = init_envp_node();
+	if (!new)
 		return (NULL);
 
-	new_node->str = ft_strdup(str);
-	if (!new_node->str)
-		return (free_envp_list(new_node));
+	new->str = ft_strdup(str);
+	if (!new->str)
+		return (free_envp_list(new));
 
-	equal_index = ft_strchr_index(str, '=');
-	new_node->equal_index = equal_index;
+	new->equal = ft_strchr_index(str, '=');
+	new->plus = ft_strchr_index(str, '+');
 
-	new_node->id = get_env_id(str, equal_index);
-	if (!new_node->id)
-		return (free_envp_list(new_node));
+	new->id = get_env_id(str, new->equal, new->plus);
+	if (!new->id)
+		return (free_envp_list(new));
 
-	new_node->value = get_env_value(str, equal_index);
-	if (!new_node->value)
-		return (free_envp_list(new_node));
+	if (new->equal == -1)
+		return (new);
+	new->value = get_env_value(str + new->equal + 1);
 
-	return (new_node);
+	return (new);
 }
 
 t_envp	*environ_to_list(char **environ)

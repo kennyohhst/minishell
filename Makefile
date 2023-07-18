@@ -20,8 +20,8 @@ LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
 SRC_FILES :=	main.c							\
-				environ_to_list.c				\
-				environ_utils.c					\
+				env_list_create.c				\
+				env_list_utils.c				\
 				signals.c						\
 \
 				lexer/lexer.c					\
@@ -34,9 +34,9 @@ SRC_FILES :=	main.c							\
 				parser/input_check_parse.c		\
 				parser/parser.c					\
 				parser/get_command_argv.c		\
-				parser/expander.c						\
+				parser/expander.c				\
 \
-				executer/execute.c				\
+				executer/new_execute.c			\
 				executer/get_command_path.c		\
 \
 				executer/builtins/cd.c			\
@@ -46,6 +46,7 @@ SRC_FILES :=	main.c							\
 				executer/builtins/export.c		\
 				executer/builtins/unset.c		\
 \
+				# executer/execute.c			\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
@@ -63,7 +64,7 @@ all: ${NAME}
 
 $(NAME): $(OBJ) $(LIB)
 	@printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
-	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -I /Users/$(USER)/.brew/opt/readline/include -L/Users/$(USER)/.brew/opt/readline/lib
+	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
 	@printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 $(LIB):

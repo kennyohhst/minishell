@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/07/18 22:08:08 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/07/18 22:27:43 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
-# include "../lib/libft/include/libft.h"
 # include <signal.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+# include "../lib/libft/include/libft.h"
+# include "declarations.h"
+# include "colors.h"
 
 typedef enum e_type
 {
@@ -107,67 +109,55 @@ void	ft_free_input_list(t_input *list);
 
 //		~ lexer.c
 
-t_input	*lexer(void);
+void		create_input_list(t_input **cmd, char *str);
+void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
+void		ft_free_input_list(t_input *list);
+void		init_signals(void);
 
-//		~ quote_count.c
+// ======== env utils ======================================================= //
 
-int		check_quotes(char *str);
+t_envp		*environ_to_list(char **environ);
+t_envp		*create_new_envp_node(char *str);
+void		print_envp_list(t_envp *envp);
+int			ft_strchr_index(char *str, char c);
+void		*free_envp_list(t_envp *node);
+char		**envp_list_to_arr(t_envp *envp);
 
-//		~ tokens.c
+// ======= lexer ============================================================ //
 
-int		p_d_token(t_input **cmd, char *str, int i, char c);
-int		e_var_token(t_input **cmd, char *str);
-int		d_quotes_token(t_input **cmd, char *str);
-int		s_quotes_token(t_input **cmd, char *str);		
-int		std_token(t_input **cmd, char *str);
-t_input *expander(t_input *token, t_data *data);
+t_input		*lexer(void);
+int			check_quotes(char *str);
 
+int			p_d_token(t_input **cmd, char *str, int i, char c);
+int			e_var_token(t_input **cmd, char *str);
+int			d_quotes_token(t_input **cmd, char *str);
+int			s_quotes_token(t_input **cmd, char *str);		
+int			std_token(t_input **cmd, char *str);
+t_input		*expander(t_input *token, t_data *data);
 
+// ======== valid_pipe_check.c ============================================== //
 
-//		~ valid_pipe_check.c
+int			valid_pipe_check(char *str);
 
-int		valid_pipe_check(char *str);
-
-//		~ parser.c
+// ======== parser ========================================================== //
 
 int			valid_input_check(t_input *token, t_input *temp);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
+char		**get_command_argv(t_input *input, t_command **command);
 
+// ========= executer ======================================================= //
 
-//		~ get_command_path.c
+int			execute(t_data *data);
+char		*get_command_path(char *command);
 
-char	*get_command_path(char *command);
+// ======== executor/builtins =============================================== //
 
-//		~ execute.c
-
-int		execute(t_data *data);
-
-//		~ signals.c
-
-void	init_signals(void);
-
-//		~ get_command_argv.c
-
-char	**get_command_argv(t_input *input, t_command **command);
-
-//		~ builtins
-
-int		echo(char **argv);
-int		pwd(char **argv);
-void	env(t_envp *envp);
-int		cd(char **argv);
-void	ft_export(t_data *data);
-void	unset(t_data *data);
-
-//		~ environment
-
-t_envp	*environ_to_list(char **environ);
-t_envp	*create_new_envp_node(char *str);
-char	*get_env_value(char *str, int equal_index);
-void	print_envp_list(t_envp *envp);
-int		ft_strchr_index(char *str, char c);
-void	*free_envp_list(t_envp *node);
-char	**envp_list_to_arr(t_envp *envp);
+void		echo(char **argv);
+int			pwd(void);
+void		env(t_envp *envp);
+int			cd(char **argv);
+void		ft_export(t_data *data);
+void		unset(t_data *data);
 
 #endif

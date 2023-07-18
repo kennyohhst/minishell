@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/07/18 22:05:12 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/07/18 22:28:20 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,19 @@ t_input	*lexer(void)
 	t_input		*input_list;
 
 	input_list = NULL;
-	raw_input = readline("\e[1;33mC Shell >>\033[0m "); // if in put window too small, it overwrites the message
-	// raw_input = readline("C Shell >> ");
+	raw_input = readline(C_YELLOW""C_BOLD"︻╦╤─ "C_RESET);
+	// raw_input = readline(C_YELLOW""C_BOLD"▬▬ι═══════> "C_RESET); // if in put window too small, it overwrites the message
+	// raw_input = readline(C_YELLOW""C_BOLD"()==[:::::::::::::> "C_RESET);
+	// raw_input = readline(C_YELLOW""C_BOLD"C Shell >> "C_RESET);
 	exit_check(raw_input);
-	if (raw_input[0] == '\0')
-	{
-		free(raw_input);
-		return (NULL);
-	}
+	// if (raw_input[0] == '\0')
+	// {
+	// 	free(raw_input);
+	// 	return (NULL);
+	// }
 	add_history(raw_input);
-	if (check_quotes(raw_input))			// only checks for the first quote symbol you find, so ["string" 'string2] should be wrong but passes your check
-		create_input_list(&input_list, raw_input);				// 		also why do you modulo
+	if (check_quotes(raw_input))
+		create_input_list(&input_list, raw_input);
 	free(raw_input);
 	return (input_list);
 }
