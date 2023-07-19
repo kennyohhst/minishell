@@ -6,11 +6,11 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 15:51:53 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/17 15:59:48 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/19 14:50:52 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipes.h"
+#include "minishell.h"
 #include "../../lib/libft/include/libft.h"
 
 /** @return A file descriptor to the created heredoc file or -1 on failure */

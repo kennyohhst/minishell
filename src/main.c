@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/07/18 22:28:04 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/07/19 14:58:22 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,23 @@ void	checkleaks(void)
 	system("leaks -q minishell");
 }
 
+void	set_exit_code(t_data *data)
+{
+	t_command	*cmds;
+	int			w_status;
+
+	cmds = data->command;
+	while (cmds)
+	{
+		waitpid(cmds->pid, &w_status, 0);
+		cmds = cmds->next;
+	}
+	if (WIFEXITED(w_status))
+		data->exit_code = WEXITSTATUS(w_status);
+	else
+		data->exit_code = 128 + WTERMSIG(w_status);
+}
+
 int	main(void)
 {
 	t_input		*tokenized_input;
@@ -45,15 +62,16 @@ int	main(void)
 	{
 		init_signals();
 		tokenized_input = lexer();
-		if (!valid_input_check(tokenized_input, NULL))
-			continue ;
+		// if (!valid_input_check(tokenized_input, NULL))
+		// 	continue ;
 		// list_check(tokenized_input);
 		expander(tokenized_input, data);
 		data->command = parser(tokenized_input);
 		// test_data(data);
 		if (!data->command)
 			continue ;
-		execute(data);
+		execute(data->command);
+		set_exit_code(data);
 		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!

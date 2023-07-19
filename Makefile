@@ -29,24 +29,17 @@ SRC_FILES :=	main.c							\
 				lexer/tokens.c					\
 				lexer/valid_pipe_check.c		\
 				lexer/create_input_list.c		\
-				../test/test_parse.c			\
 \
+				parser/list_length.c			\
 				parser/input_check_parse.c		\
 				parser/parser.c					\
-				parser/get_command_argv.c		\
 				parser/expander.c				\
 \
-				executer/new_execute.c			\
-				executer/get_command_path.c		\
+				executor/execute.c				\
+				executor/heredoc.c				\
+				executor/redirects.c			\
+				executor/get_command_path.c		\
 \
-				executer/builtins/cd.c			\
-				executer/builtins/echo.c		\
-				executer/builtins/env.c			\
-				executer/builtins/pwd.c			\
-				executer/builtins/export.c		\
-				executer/builtins/unset.c		\
-\
-				# executer/execute.c			\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
@@ -74,8 +67,8 @@ $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@mkdir -p obj
 	@mkdir -p obj/lexer
 	@mkdir -p obj/parser
-	@mkdir -p obj/executer
-	@mkdir -p obj/executer/builtins
+	@mkdir -p obj/executor
+	@mkdir -p obj/executor/builtins
 	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
 
 open: $(NAME)

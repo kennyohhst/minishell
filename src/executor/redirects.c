@@ -6,11 +6,11 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 15:53:15 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/17 16:08:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/19 14:50:51 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipes.h"
+#include "minishell.h"
 #include <fcntl.h>
 
 static t_redirect	*get_last_node(t_redirect *redirect)

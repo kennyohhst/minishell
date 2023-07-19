@@ -6,12 +6,15 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/10 21:16:32 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/18 23:13:26 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DECLARATIONS_H
 # define DECLARATIONS_H
+
+#include <stdbool.h>
+#include <sys/types.h>
 
 // ======== enums =========================================================== //
 
@@ -43,13 +46,13 @@ struct s_input
 	t_input			*next;
 };
 
-// this is what the parser should make out of the lexer tokenized list :
 typedef struct	s_redirect t_redirect;
 
 struct s_redirect 
 {
-	char			*name; // this is the name of the files or the delimiter after the redirect, so like "cat > [outfile]"
-	t_token_type	type;
+	t_token_type	type; // The token type i.e. output redirect
+	int				fd; // The file descriptor
+	char			*name; // The name of the file to redirect to or the delimiter for heredocs
 	t_redirect		*next;
 };
 
@@ -58,8 +61,10 @@ typedef struct	s_command t_command;
 
 struct s_command
 {
-	char			**argv;
-	t_redirect		*redirects;
+	char			**argv; // The argument vector for the current command
+	t_redirect		*input; // A list of input redirects for the current command
+	t_redirect		*output; // A list of output redirects for the current command
+	pid_t			pid;
 	t_command		*next;
 };
 
@@ -67,11 +72,11 @@ typedef struct	s_environment_pointers t_envp;
 
 struct s_environment_pointers
 {
-	char	*str;
-	char	*id;
-	char	*value;
-	int		equal;
-	int		plus;
+	char	*str; // The complete string
+	char	*id; // The first part of the string, before the =
+	char	*value; // The second part of the string, after the =
+	int		equal; // The position of the = in the string, or -1 if there is none
+	int		plus; // The position of the + in the string, or -1 if there is none
 	t_envp	*prev;
 	t_envp	*next;
 };
@@ -80,9 +85,9 @@ typedef struct	s_program_data t_data;
 
 struct s_program_data
 {
-	t_envp		*envp;
-	t_command	*command;
-	int			exit_code;
+	t_envp		*envp; // The environment environment list, formatted as a linked list
+	t_command	*command; // The current command the program is working on
+	int			exit_code; // The last received exit code of a program or function
 };
 
 // ======== ASCII =========================================================== //

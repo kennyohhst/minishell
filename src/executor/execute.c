@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   new_test.c                                         :+:    :+:            */
+/*   execute.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/17 16:06:01 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/19 14:50:53 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipes.h"
+#include "minishell.h"
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <sys/errno.h>
@@ -68,26 +68,4 @@ int	execute(t_command *cmd)
 	}
 	run_command(cmd->argv, fd_in, -1); // run command with the output going to STDOUT
 	return (1);
-}
-
-int		main(void)
-{
-	t_command	*cmds;
-	int			w_status;
-
-	cmds = init_cmds();
-	if (execute(cmds) == -1)
-		return (1);
-	while (cmds)
-	{
-		waitpid(cmds->pid, &w_status, 0);
-		cmds = cmds->next;
-	}
-	if (WIFEXITED(w_status))
-		g_exit = WEXITSTATUS(w_status);
-	else
-		g_exit = 128 + WTERMSIG(w_status);
-
-	printf("exit code = %d\n\n\n", g_exit);
-	return (0);
 }
