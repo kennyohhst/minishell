@@ -6,29 +6,11 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 20:27:18 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/06/10 21:20:41 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/26 22:23:38 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*ft_getenv(char *str, t_envp *envp)
-{
-	char	*temp;
-	
-	if (!str)
-		return (NULL);
-	while (envp)
-	{
-		if (!ft_strcmp(str, envp->id))
-		{
-			temp = ft_strdup(envp->value);
-			return (temp);
-		}
-		envp = envp->next;
-	}
-	return (NULL);
-}
 
 int	count_env(char *str)
 {
@@ -81,7 +63,7 @@ char	*replace_env(char *str, t_data *data)
 		if (str[i] == '$')
 		{
 			temp = ft_substr(str, 0, i);
-			temp = ft_strjoin(temp, ft_getenv(ft_substr(str, i+1,(end_env-i-1)), data->envp));
+			temp = ft_strjoin(temp, ft_getenv(data->envp, ft_substr(str, i+1,(end_env-i-1))));
 			if ((int) ft_strlen(str) != end_env)
 			{
 				temp = ft_strjoin(temp, str+end_env);
@@ -103,7 +85,7 @@ t_input *expander(t_input *token, t_data *data)
 	{
 		if (token->token_type == E_VARIABLE)
 		{
-			temp = ft_getenv((ft_strchr(token->str, '$') + 1), data->envp);
+			temp = ft_getenv(data->envp, ft_strchr(token->str, '$') + 1);
 			if (temp)
 			{
 				free(token->str);

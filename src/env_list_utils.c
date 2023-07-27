@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   environ_utils.c                                    :+:    :+:            */
+/*   env_list_utils.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 20:24:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 22:16:03 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/26 22:21:01 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_envp_list(t_envp *envp)
+char	*ft_getenv(t_envp *envp_list, char *id)
 {
-	while (envp)
+	if (!id)
+		return (NULL);
+	while (envp_list)
 	{
-		printf("\e[0;31m%s:\e[0m\n", envp->str);
-		printf("id : %s\t\tvalue : %s\n", envp->id, envp->value);
-		envp = envp->next;
+		if (!ft_strcmp(id, envp_list->id))
+			return (envp_list->value);
+		envp_list = envp_list->next;
 	}
+	return (NULL);
 }
 
 void	*free_envp_list(t_envp *node)

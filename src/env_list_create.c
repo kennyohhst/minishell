@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/29 20:34:08 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/26 22:20:17 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,5 @@ t_envp	*environ_to_list(char **environ)
 		current = current->next;
 		i++;
 	}
-	// print_envp_list(head);
 	return (head);
 }

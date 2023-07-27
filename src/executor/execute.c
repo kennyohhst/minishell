@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/19 14:50:53 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/27 15:27:18 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ pid_t run_command(char **argv, int fd_in, int fd_out)
 			dup2(fd_out, STDOUT_FILENO);
 		close_pipe(fd_in, fd_out);
 		execv(argv[0], argv);
-		dprintf(2, "exit code = %d : %s\n", errno, strerror(errno));
+		perror(argv[0]);
 		close_pipe(fd_in, fd_out);
 		exit(errno);
 	}
@@ -48,11 +48,21 @@ pid_t run_command(char **argv, int fd_in, int fd_out)
 	return (pid);
 }
 
-int	execute(t_command *cmd)
+int	execute(t_command *cmd, t_envp *envp_list)
 {
+	char	*path;
 	int		fd_in;
 	int		new_pipe[2];
 
+	path = get_command_path(cmd->argv[0], envp_list);
+	if (!path)
+	{
+		dprintf(STDERR_FILENO, "minishell: %s: command not found\n", cmd->argv[0]);
+		return (-1);
+	}
+	free(cmd->argv[0]);
+	cmd->argv[0] = path;
+	printf("path = %s\n", path);
 	create_output_files(cmd);
 	fd_in = dup(STDIN_FILENO); // open new fd pointing to STDIN
 	while (cmd->next)

@@ -6,24 +6,19 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/19 14:58:22 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/27 15:10:39 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_data	*init_data(void)
+static void	init_data(t_data *data)
 {
 	extern char		**environ;
-	t_data	*data;
-	
-	data = malloc(sizeof(t_data) * 1);
-	if (!data)
-		return (NULL);
+
 	data->envp = environ_to_list(environ);
 	data->command = NULL;
 	data->exit_code = 0;
-	return (data);
 }
 
 void	checkleaks(void)
@@ -52,12 +47,10 @@ void	set_exit_code(t_data *data)
 int	main(void)
 {
 	t_input		*tokenized_input;
-	t_data		*data;
+	t_data		data;
 
 	// atexit(checkleaks);
-	data = init_data();
-	if (!data)
-		return (1);
+	init_data(&data);
 	while (1)
 	{
 		init_signals();
@@ -65,13 +58,13 @@ int	main(void)
 		// if (!valid_input_check(tokenized_input, NULL))
 		// 	continue ;
 		// list_check(tokenized_input);
-		expander(tokenized_input, data);
-		data->command = parser(tokenized_input);
-		// test_data(data);
-		if (!data->command)
+		expander(tokenized_input, &data);
+		data.command = parser(tokenized_input);
+		if (!data.command)
 			continue ;
-		execute(data->command);
-		set_exit_code(data);
+		// test_data(data);
+		execute(data.command, data.envp);
+		set_exit_code(&data);
 		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!

@@ -6,13 +6,13 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/25 22:14:29 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/27 15:29:28 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_path(char **paths)
+static char	*access_paths(char **paths)
 {
 	int		i;
 
@@ -48,16 +48,18 @@ static char	*get_command_location(char *command, char **paths)
 		i++;
 	}
 	free(command);
-	return (get_path(paths));
+	return (access_paths(paths));
 }
 
-char	*get_command_path(char *command)
+char	*get_command_path(char *command, t_envp *envp_list)
 {
 	char	**split_paths;
 	char	*paths;
 	char	*command_path;
 
-	paths = getenv("PATH");	// get envp from envp list
+	if (!ft_strncmp("../", command, 3) || !ft_strncmp("./", command, 2))
+		return (ft_strdup(command));
+	paths = ft_getenv(envp_list, "PATH");	// get envp from envp list
 	if (!paths)
 		return (NULL);
 	split_paths = ft_split(paths, ':');
@@ -66,10 +68,7 @@ char	*get_command_path(char *command)
 	command_path = get_command_location(command, split_paths);
 	if (!command_path)
 		return (ft_free_str_arr(split_paths), NULL);
-	command = malloc(ft_strlen(command_path) + 1);
-	if (!command)
-		return (ft_free_str_arr(split_paths), NULL);
-	ft_strlcpy(command, command_path, ft_strlen(command_path) + 1);
+	command = ft_strdup(command_path);
 	ft_free_str_arr(split_paths);
 	return (command);
 }

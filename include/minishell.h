@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/18 23:24:40 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/26 22:28:27 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@
 # include "colors.h"
 
 //		~ test (remove later)
-void	test_data(t_data *data);
-void	list_check(t_input *tokenized_input);
+void		test_data(t_data *data);
+void		list_check(t_input *tokenized_input);
 
 //		~ create_input_list.c
 
-void	create_input_list(t_input **cmd, char *str);
-void	add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void	ft_free_input_list(t_input *list);
+void		create_input_list(t_input **cmd, char *str);
+void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
+void		ft_free_input_list(t_input *list);
 
 //		~ lexer.c
 
@@ -46,10 +46,9 @@ void		init_signals(void);
 
 t_envp		*environ_to_list(char **environ);
 t_envp		*create_new_envp_node(char *str);
-void		print_envp_list(t_envp *envp);
-int			ft_strchr_index(char *str, char c);
 void		*free_envp_list(t_envp *node);
 char		**envp_list_to_arr(t_envp *envp);
+char		*ft_getenv(t_envp *envp_list, char *id);
 
 // ======= lexer ============================================================ //
 
@@ -72,12 +71,12 @@ int			valid_pipe_check(char *str);
 int			valid_input_check(t_input *token, t_input *temp);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
-char		**get_command_argv(t_input *input, t_command **command);
+char		*get_command_path(char *command, t_envp *envp_list);
 
 // ========= executer ======================================================= //
 
 // execute.c
-int			execute(t_command *cmd);
+int			execute(t_command *cmd, t_envp *envp_list);
 
 // simulate_input.c
 t_command	*init_cmds(void);
