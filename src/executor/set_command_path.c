@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/27 17:31:21 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/28 18:09:18 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*get_command_location(char *command, char **paths)
 	return (tmp);
 }
 
-int		set_command_path(t_command *cmd_struct, t_envp *envp_list)
+int	set_command_path(t_command *cmd_struct, t_envp *envp_list)
 {
 	char	*command;
 	char	*paths;
@@ -87,6 +87,7 @@ int		set_command_path(t_command *cmd_struct, t_envp *envp_list)
 		return (4);
 	}
 
+	free(command);
 	free(cmd_struct->argv[0]);
 	cmd_struct->argv[0] = command_path;
 	ft_free_str_arr(split_paths);

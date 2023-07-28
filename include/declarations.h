@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/18 23:13:26 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/28 18:03:54 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ struct s_input
 	char			*str;
 	bool			spaces;
 	t_token_type	token_type;
+
 	t_input			*next;
 };
 
@@ -53,6 +54,7 @@ struct s_redirect
 	t_token_type	type; // The token type i.e. output redirect
 	int				fd; // The file descriptor
 	char			*name; // The name of the file to redirect to or the delimiter for heredocs
+
 	t_redirect		*next;
 };
 
@@ -62,9 +64,12 @@ typedef struct	s_command t_command;
 struct s_command
 {
 	char			**argv; // The argument vector for the current command
+
 	t_redirect		*input; // A list of input redirects for the current command
 	t_redirect		*output; // A list of output redirects for the current command
+
 	pid_t			pid;
+
 	t_command		*next;
 };
 
@@ -73,10 +78,13 @@ typedef struct	s_environment_pointers t_envp;
 struct s_environment_pointers
 {
 	char	*str; // The complete string
+
 	char	*id; // The first part of the string, before the =
 	char	*value; // The second part of the string, after the =
+
 	int		equal; // The position of the = in the string, or -1 if there is none
 	int		plus; // The position of the + in the string, or -1 if there is none
+
 	t_envp	*prev;
 	t_envp	*next;
 };
