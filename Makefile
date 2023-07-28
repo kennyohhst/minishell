@@ -38,7 +38,7 @@ SRC_FILES :=	main.c							\
 				executor/execute.c				\
 				executor/heredoc.c				\
 				executor/redirects.c			\
-				executor/get_command_path.c		\
+				executor/set_command_path.c		\
 \
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))

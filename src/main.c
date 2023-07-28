@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/27 15:10:39 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/28 15:45:08 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	main(void)
 		// test_data(data);
 		execute(data.command, data.envp);
 		set_exit_code(&data);
+		// printf("\n\nexit code: %d\n", data.exit_code); // test print exit code
 		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!

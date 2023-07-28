@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/26 22:28:27 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/27 17:23:28 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,11 @@ int			valid_pipe_check(char *str);
 int			valid_input_check(t_input *token, t_input *temp);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
-char		*get_command_path(char *command, t_envp *envp_list);
 
 // ========= executer ======================================================= //
+
+// set_command_path.c
+int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 
 // execute.c
 int			execute(t_command *cmd, t_envp *envp_list);
