@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/28 16:21:15 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/28 17:00:15 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <sys/errno.h>
-#define READ 0
-#define WRITE 1
 
 void	close_pipe(int fd_in, int fd_out)
 {
@@ -34,14 +32,19 @@ void	close_pipe(int fd_in, int fd_out)
  * 					doesn't hang
  * @return (pid_t) The pid of the child process created
  */
-static pid_t run_command(t_command *cmd, t_envp *envp, 
+static int run_command(t_command *cmd, t_envp *envp, 
 	int fd_in, int fd_out, int pipe_read)
 {
 	pid_t	pid;
 
+	if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
+		return (-1);	// doesn't close all fds on fail, should it?
 	pid = fork();
 	if (pid == -1)
+	{
+		perror("fork");
 		return (-1);
+	}
 	else if (pid == 0)
 	{
 		if (set_command_path(cmd, envp) != 0)
@@ -61,31 +64,31 @@ static pid_t run_command(t_command *cmd, t_envp *envp,
 		exit(errno);
 	}
 	close_pipe(fd_in, fd_out);
-	return (pid);
+	cmd->pid = pid;
+	return (1);
 }
 
 int	execute(t_command *cmd, t_envp *envp_list)
 {
 	int		fd_in;
-	int		new_pipe[2];
+	int		pipe_fd[2];
 
-	create_output_files(cmd);
-	fd_in = dup(STDIN_FILENO); // open new fd pointing to STDIN
+	fd_in = dup(STDIN_FILENO);
 	if (fd_in == -1)
 		dprintf(STDERR_FILENO, "minishell: failed to dup STDIN\n");
 	while (cmd->next)
 	{
-		if (pipe(new_pipe) == -1)
+		if (pipe(pipe_fd) == -1)
 		{
 			dprintf(STDERR_FILENO, "minishell: pipe syscall failed\n");
 			return (-1);
 		}
-		if (handle_redirects(cmd, &fd_in, &new_pipe[1]) == -1)
+		if (run_command(cmd, envp_list, fd_in, pipe_fd[1], pipe_fd[0]) == -1)
 			return (-1);
-		cmd->pid = run_command(cmd, envp_list, fd_in, new_pipe[1], new_pipe[0]); // run command with fd_in being STDIN or the previous pipes read end and new pipes write end
-		fd_in = new_pipe[0];
+		fd_in = pipe_fd[0];
 		cmd = cmd->next;
 	}
-	cmd->pid = run_command(cmd, envp_list, fd_in, -1, -1); // run command with the output going to STDOUT
+	if (run_command(cmd, envp_list, fd_in, -1, -1))
+		return (-1);
 	return (1);
 }

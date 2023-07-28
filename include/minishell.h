@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/27 17:23:28 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/28 17:00:26 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ t_command	*init_cmds(void);
 int			heredoc(char *delim);
 
 // redirect.c
-void		create_output_files(t_command *cmd);
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
 
 
