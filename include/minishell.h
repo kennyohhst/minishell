@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/30 00:24:07 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 01:04:52 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
 bool	is_builtin(char **argv);
 int		handle_builtin(t_command *cmd, t_envp *envp, int fd_in, int fd_out);
 
-int		echo(char **argv);
+int		echo(char **argv, int fd_out);
+int		pwd(int fd_out);
 
 
 #endif

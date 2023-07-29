@@ -6,21 +6,22 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 17:03:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/25 22:49:25 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 01:05:44 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	pwd(void)
+int	pwd(int fd_out)
 {
-	char	cwd[256];
+	char	cwd[1024];
 
-	if (!getcwd(cwd, 256))
+	if (!getcwd(cwd, 1024))
 	{
 		perror("getcwd failed");
 		return (1);
 	}
-	printf("%s\n", cwd);
+	if (dprintf(fd_out, "%s\n", cwd) == -1)
+		return (1);
 	return (0);
 }
