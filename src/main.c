@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/28 15:45:08 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/29 23:57:05 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,15 @@ void	set_exit_code(t_data *data)
 	cmds = data->command;
 	while (cmds)
 	{
-		waitpid(cmds->pid, &w_status, 0);
+		if (cmds->pid > 0)
+			waitpid(cmds->pid, &w_status, 0);
+		else
+			w_status = cmds->pid;
 		cmds = cmds->next;
 	}
-	if (WIFEXITED(w_status))
+	if (w_status <= 0)
+		data->exit_code = w_status * -1;
+	else if (WIFEXITED(w_status))
 		data->exit_code = WEXITSTATUS(w_status);
 	else
 		data->exit_code = 128 + WTERMSIG(w_status);
@@ -55,8 +60,8 @@ int	main(void)
 	{
 		init_signals();
 		tokenized_input = lexer();
-		// if (!valid_input_check(tokenized_input, NULL))
-		// 	continue ;
+		if (!valid_input_check(tokenized_input, NULL))
+			continue ;
 		// list_check(tokenized_input);
 		expander(tokenized_input, &data);
 		data.command = parser(tokenized_input);

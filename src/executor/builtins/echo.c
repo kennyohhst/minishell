@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/08 21:08:18 by opelser       #+#    #+#                 */
-/*   Updated: 2023/06/10 21:18:56 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 00:19:43 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static bool	is_valid_option(char *options)
 	return (1);
 }
 
-void	echo(char **argv)
+int	echo(char **argv)
 {
 	char	newline;
 	int		i;
@@ -37,8 +37,9 @@ void	echo(char **argv)
 	i = 1;
 	if (!argv[i])
 	{
-		write(1, "\n", 1);
-		return ;
+		if (printf("\n") == -1)
+			return (-1);
+		return (0);
 	}
 	if (is_valid_option(argv[1]) == true)
 	{
@@ -48,10 +49,10 @@ void	echo(char **argv)
 	while (argv[i])
 	{
 		printf("%s", argv[i]);
-		if (argv[i + 1])
-			write(1, " ", 1);
+		if (argv[i + 1] && printf(" ") == -1)
+			return (-1);
 		i++;
 	}
 	printf("%c", newline);
-	return ;
+	return (0);
 }

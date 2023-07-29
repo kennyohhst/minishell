@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/28 18:11:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 00:23:13 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 #define USE_STANDARD_FD -1
 
-void	close_pipe(int fd_in, int fd_out)
+void	close_fds(int fd_in, int fd_out)
 {
 	if (fd_in >= 0)
 		close(fd_in);
@@ -36,7 +36,7 @@ static void	child_process(t_command *cmd, t_envp *envp, int fd_in, int fd_out)
 		dprintf(STDERR_FILENO, "minishell: dup2 failed to set fd_in\n");
 	if (fd_out >= 0 && dup2(fd_out, STDOUT_FILENO) == -1)
 		dprintf(STDERR_FILENO, "minishell: dup2 failed to set fd_out\n");
-	close_pipe(fd_in, fd_out);
+	close_fds(fd_in, fd_out);
 	execve(cmd->argv[0], cmd->argv, envp_list_to_arr(envp));
 	perror(cmd->argv[0]);
 	exit(errno);
@@ -46,9 +46,7 @@ static void	child_process(t_command *cmd, t_envp *envp, int fd_in, int fd_out)
  * @param cmd The current command node
  * @param envp The current envp list
  * @param fd_in File descriptor to read from
- * @param fd_out File descriptor to write to
- * @param pipe_read File descriptor of the pipe to close in the child so it
- * 					doesn't hang
+ * @param pipe_fd File descriptors of the current pipe
  * @return (pid_t) The pid of the child process created
  */
 static int	run_command(t_command *cmd, t_envp *envp, int fd_in, int pipe_fd[2])
@@ -59,6 +57,10 @@ static int	run_command(t_command *cmd, t_envp *envp, int fd_in, int pipe_fd[2])
 	fd_out = USE_STANDARD_FD;
 	if (pipe_fd)
 		fd_out = pipe_fd[1];
+	if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
+		return (-1); // doesn't close all fds on fail, should it?
+	if (is_builtin(cmd->argv) == true)
+		return (handle_builtin(cmd, envp, fd_in, fd_out)); // same here
 	pid = fork();
 	if (pid == -1)
 	{
@@ -69,11 +71,9 @@ static int	run_command(t_command *cmd, t_envp *envp, int fd_in, int pipe_fd[2])
 	{
 		if (pipe_fd)
 			close(pipe_fd[0]);
-		if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
-			return (-1); // doesn't close all fds on fail, should it?
 		child_process(cmd, envp, fd_in, fd_out);
 	}
-	close_pipe(fd_in, fd_out);
+	close_fds(fd_in, fd_out);
 	cmd->pid = pid;
 	return (1);
 }

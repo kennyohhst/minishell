@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   input_check_parse.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/18 18:53:30 by kkalika           #+#    #+#             */
-/*   Updated: 2023/07/18 22:13:05 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   input_check_parse.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/18 18:53:30 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/07/29 18:53:00 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ int	next_check(t_input **token)
 	}
 	return (0);
 }
-
-// int if_else(t_input **token)
-// {
-
-// }
 
 int	valid_input_check(t_input *token, t_input *temp)
 {

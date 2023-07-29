@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/28 17:00:26 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 00:24:07 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int			list_length(t_input *input);
 int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 
 // execute.c
+void		close_fds(int fd_in, int fd_out);
 int			execute(t_command *cmd, t_envp *envp_list);
 
 // simulate_input.c
@@ -88,6 +89,13 @@ int			heredoc(char *delim);
 
 // redirect.c
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
+
+// ========= executer/builtins=============================================== //
+
+bool	is_builtin(char **argv);
+int		handle_builtin(t_command *cmd, t_envp *envp, int fd_in, int fd_out);
+
+int		echo(char **argv);
 
 
 #endif

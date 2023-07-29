@@ -40,6 +40,8 @@ SRC_FILES :=	main.c							\
 				executor/redirects.c			\
 				executor/set_command_path.c		\
 \
+				executor/builtins/builtins.c	\
+				executor/builtins/echo.c		\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
