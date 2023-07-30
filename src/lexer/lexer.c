@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/07/30 16:02:49 by code             ###   ########.fr       */
+/*   Updated: 2023/07/30 18:08:18 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	exit_check(char *raw_input)
 {
 	if (!raw_input)
 	{
-		printf("\e[1A");
-		printf("minishell >> exit\n");
+		// printf("\e[1A");
+		printf("exit\n");
 		exit(0);
 	}
 }
