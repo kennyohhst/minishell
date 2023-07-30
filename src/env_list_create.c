@@ -6,37 +6,35 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 15:56:29 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 17:57:06 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_id(char *str, int equal, int plus)
+static char	*get_env_id(char *str)
 {
-	char	*tmp;
-	int		len;
+	int			equal;
+	int			len;
 
-	if (plus > 0)
-		equal -= 1;
+	equal = ft_strchr_index(str, '=');
+	len = ft_strlen(str);
+
 	if (equal == -1)
-		len = ft_strlen(str) + 1;
-	else
-		len = equal + 1;
-
-	tmp = (char *) malloc(len * sizeof(char));
-	if (!tmp)
-		return (NULL);
-	ft_strlcpy(tmp, str, len);
-	return (tmp);
+		return (ft_strdup(str));
+	if (str[equal - 1] == '+')
+		equal -= 1;
+	return (ft_substr(str, 0, equal));
 }
 
 static char	*get_env_value(char *str)
 {
-	if (!str[0])
-		return (ft_strdup(""));
+	int			equal;
 
-	return (ft_strdup(str));
+	equal = ft_strchr_index(str, '=');
+	if (equal == -1)
+		return (NULL);
+	return (ft_strdup(str + equal));
 }
 
 t_envp	*init_envp_node(void)
@@ -50,7 +48,6 @@ t_envp	*init_envp_node(void)
 	new_node->str = NULL;
 	new_node->id = NULL;
 	new_node->value = NULL;
-	new_node->equal = 0;
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -62,27 +59,19 @@ t_envp	*create_new_envp_node(char *str)
 	new = init_envp_node();
 	if (!new)
 		return (NULL);
-
 	new->str = ft_strdup(str);
 	if (!new->str)
 	{
 		free_envp_list(new);
 		return (NULL);
 	}
-
-	new->equal = ft_strchr_index(str, '=');
-	new->plus = ft_strchr_index(str, '+');
-
-	new->id = get_env_id(str, new->equal, new->plus);
+	new->id = get_env_id(str);
 	if (!new->id)
 	{
 		free_envp_list(new);
 		return (NULL);
 	}
-
-	if (new->equal == -1)
-		return (new);
-	new->value = get_env_value(str + new->equal + 1);
+	new->value = get_env_value(str);
 	return (new);
 }
 
