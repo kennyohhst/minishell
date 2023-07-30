@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   lexer.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/27 15:30:51 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
+/*   Updated: 2023/07/30 16:02:49 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_input	*lexer(void)
 	// raw_input = readline(C_YELLOW""C_BOLD"C Shell >> "C_RESET);
 	raw_input = readline("minishell >> ");
 	exit_check(raw_input);
-	add_history(raw_input);
+	if (raw_input && *raw_input)
+		add_history(raw_input);
 	if (check_quotes(raw_input))
 		create_input_list(&input_list, raw_input);
 	free(raw_input);
