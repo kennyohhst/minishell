@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/30 15:53:13 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 21:50:36 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 
 // execute.c
 void		close_fds(int fd_in, int fd_out);
-int			execute(t_command *cmd, t_envp *envp_list);
+int			execute(t_data *data);
 
 // simulate_input.c
 t_command	*init_cmds(void);
@@ -94,12 +94,12 @@ int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
 
 // ========= executer/builtins=============================================== //
 
-bool	is_builtin(char **argv);
-int		handle_builtin(t_command *cmd, t_envp *envp, int fd_in, int fd_out);
+bool		is_builtin(char **argv);
+int			handle_builtin(t_command *cmd, t_data *data, int fd_in, int fd_out);
 
-int		echo(char **argv, int fd_out);
-int		pwd(int fd_out);
-int		env(t_envp *envp, int fd_out);
-int		cd(char **argv, t_envp *envp);
+int			echo(char **argv, int fd_out);
+int			pwd(int fd_out);
+int			env(t_envp *envp, int fd_out);
+int			cd(char **argv, t_envp *envp);
 
 #endif

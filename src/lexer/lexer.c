@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/27 15:30:51 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 23:43:52 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	exit_check(char *raw_input)
 	if (!raw_input)
 	{
 		printf("\e[1A");
-		printf("minishell >> exit\n");
+		printf("minishell %% exit\n");
 		exit(0);
 	}
 }
@@ -32,7 +32,7 @@ t_input	*lexer(void)
 	// raw_input = readline(C_YELLOW""C_BOLD"▬▬ι═══════> "C_RESET); // if in put window too small, it overwrites the message
 	// raw_input = readline(C_YELLOW""C_BOLD"()==[:::::::::::::> "C_RESET);
 	// raw_input = readline(C_YELLOW""C_BOLD"C Shell >> "C_RESET);
-	raw_input = readline("minishell >> ");
+	raw_input = readline("minishell \% ");
 	exit_check(raw_input);
 	add_history(raw_input);
 	if (check_quotes(raw_input))
