@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 01:25:33 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 14:52:19 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 bool	is_builtin(char **argv)
 {
 	if (!strcmp(argv[0], "echo")
-		|| (!strcmp(argv[0], "pwd")))
-		// || (!strcmp(argv[0], "cd"))
-		// || (!strcmp(argv[0], "env"))
+		|| (!strcmp(argv[0], "pwd"))
+		|| (!strcmp(argv[0], "env"))
+		|| (!strcmp(argv[0], "cd")))
 		// || (!strcmp(argv[0], "export"))
 		// || (!strcmp(argv[0], "unset")))
+		// || (!strcmp(argv[0], "exit")))
 		return (true);
 	return (false);
 }
@@ -30,19 +31,21 @@ static int	execute_builtin(char **argv, t_envp *envp_list, int fd_out)
 	char	*command;
 	char	**envp;
 
-	envp = envp_list_to_arr(envp_list);
+	envp = envp_list_to_arr(envp_list); // free this
 	command = argv[0];
 	if (!strcmp(command, "echo"))
 		return (echo(argv, fd_out));
 	if (!strcmp(argv[0], "pwd"))
 		return (pwd(fd_out));
-	// if (!strcmp(argv[0], "cd"))
-	// 	return ();
-	// if (!strcmp(argv[0], "env"))
-	// 	return ();
+	if (!strcmp(argv[0], "env"))
+		return (env(envp_list, fd_out));
+	if (!strcmp(argv[0], "cd"))
+		return (cd(argv, envp_list));
 	// if (!strcmp(argv[0], "export"))
 	// 	return ();
 	// if (!strcmp(argv[0], "unset"))
+	// 	return ();
+	// if (!strcmp(argv[0], "exit"))
 	// 	return ();
 	return (0);
 }

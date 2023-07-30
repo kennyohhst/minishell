@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/30 01:04:52 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 15:53:13 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "../lib/libft/include/libft.h"
 # include "declarations.h"
 # include "colors.h"
+# include "errno.h"
 
 //		~ test (remove later)
 void		test_data(t_data *data);
@@ -49,6 +50,7 @@ t_envp		*create_new_envp_node(char *str);
 void		*free_envp_list(t_envp *node);
 char		**envp_list_to_arr(t_envp *envp);
 char		*ft_getenv(t_envp *envp_list, char *id);
+t_envp		*add_envp_node_to_list(t_envp *list, t_envp *new);
 
 // ======= lexer ============================================================ //
 
@@ -97,6 +99,7 @@ int		handle_builtin(t_command *cmd, t_envp *envp, int fd_in, int fd_out);
 
 int		echo(char **argv, int fd_out);
 int		pwd(int fd_out);
-
+int		env(t_envp *envp, int fd_out);
+int		cd(char **argv, t_envp *envp);
 
 #endif

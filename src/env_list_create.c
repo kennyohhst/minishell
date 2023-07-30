@@ -6,13 +6,13 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/26 22:20:17 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 15:56:29 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env_id(char *str, int equal, int plus)
+static char	*get_env_id(char *str, int equal, int plus)
 {
 	char	*tmp;
 	int		len;
@@ -33,19 +33,10 @@ char	*get_env_id(char *str, int equal, int plus)
 
 static char	*get_env_value(char *str)
 {
-	char	*tmp;
-	int		len;
-
 	if (!str[0])
 		return (ft_strdup(""));
-	else
-		len = ft_strlen(str) + 1;
 
-	tmp = (char *) malloc(len * sizeof(char));
-	if (!tmp)
-		return (NULL);
-	ft_strlcpy(tmp, str, len);
-	return (tmp);
+	return (ft_strdup(str));
 }
 
 t_envp	*init_envp_node(void)
@@ -74,19 +65,24 @@ t_envp	*create_new_envp_node(char *str)
 
 	new->str = ft_strdup(str);
 	if (!new->str)
-		return (free_envp_list(new));
+	{
+		free_envp_list(new);
+		return (NULL);
+	}
 
 	new->equal = ft_strchr_index(str, '=');
 	new->plus = ft_strchr_index(str, '+');
 
 	new->id = get_env_id(str, new->equal, new->plus);
 	if (!new->id)
-		return (free_envp_list(new));
+	{
+		free_envp_list(new);
+		return (NULL);
+	}
 
 	if (new->equal == -1)
 		return (new);
 	new->value = get_env_value(str + new->equal + 1);
-
 	return (new);
 }
 
@@ -97,6 +93,8 @@ t_envp	*environ_to_list(char **environ)
 	int			i;
 
 	head = create_new_envp_node(environ[0]);
+	if (!head)
+		return (NULL);
 	current = head;
 	i = 1;
 	while (environ[i])

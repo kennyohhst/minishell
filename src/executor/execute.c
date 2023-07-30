@@ -6,14 +6,12 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 00:23:13 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 14:39:08 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
-#include <sys/wait.h>
-#include <sys/errno.h>
 
 #define USE_STANDARD_FD -1
 
@@ -27,7 +25,7 @@ void	close_fds(int fd_in, int fd_out)
 
 static void	child_process(t_command *cmd, t_envp *envp, int fd_in, int fd_out)
 {
-	if (set_command_path(cmd, envp) != 0)
+	if (set_command_path(cmd, envp) != 0) // "/echo" and "echo/" behave wrong
 	{
 		dprintf(STDERR_FILENO, "minishell: %s: command not found\n", cmd->argv[0]);
 		exit(127);
