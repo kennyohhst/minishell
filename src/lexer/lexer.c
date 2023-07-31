@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   lexer.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*   By: code <code@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/06 17:26:49 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/31 23:08:07 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 23:17:16 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	exit_check(char *raw_input)
 {
 	if (!raw_input)
 	{
-		printf("\e[1A");
-		printf("minishell %% exit\n");
+		// printf("\e[1A");
+		printf("exit\n");
 		exit(0);
 	}
 }
