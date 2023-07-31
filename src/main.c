@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/07/30 15:47:05 by code             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/07/31 23:12:07 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,9 @@
 
 static void	init_data(t_data *data)
 {
-	extern char		**environ;
-
-	data->envp = environ_to_list(environ);
+	data->envp = NULL;
 	data->command = NULL;
 	data->exit_code = 0;
-}
-
-void	checkleaks(void)
-{
-	clear_history();		// we need to implement this in our code somewhere
-	system("leaks -q minishell");
 }
 
 void	set_exit_code(t_data *data)
@@ -35,30 +27,32 @@ void	set_exit_code(t_data *data)
 	cmds = data->command;
 	while (cmds)
 	{
-		if (cmds->pid > 0)
-			waitpid(cmds->pid, &w_status, 0);
-		else
-			w_status = cmds->pid;
+		if (cmds->pid == 0)
+			return ;
+		waitpid(cmds->pid, &w_status, 0);
 		cmds = cmds->next;
 	}
-	if (w_status <= 0)
-		data->exit_code = w_status * -1;
-	else if (WIFEXITED(w_status))
+	if (WIFEXITED(w_status))
 		data->exit_code = WEXITSTATUS(w_status);
 	else
 		data->exit_code = 128 + WTERMSIG(w_status);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	t_input		*tokenized_input;
-	t_data		data;
+	t_input			*tokenized_input;
+	t_data			data;
 
-	// atexit(checkleaks);
+	(void) argc;
+	(void) argv;
 	init_data(&data);
+	data.envp = environ_to_list(envp);
+	if (!data.envp)
+		return (1);
 	while (1)
 	{
 		init_signals();
+		printf("(%d) ", data.exit_code);
 		tokenized_input = lexer();
 		if (!valid_input_check(tokenized_input, tokenized_input))
 			continue ;
@@ -68,9 +62,10 @@ int	main(void)
 		if (!data.command)
 			continue ;
 		// test_data(data);
-		execute(data.command, data.envp);
-		set_exit_code(&data);
-		// printf("\n\nexit code: %d\n", data.exit_code); // test print exit code
+		if (execute(&data) == -1)
+			data.exit_code = 69;
+		else
+			set_exit_code(&data);
 		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!

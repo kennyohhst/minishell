@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/30 00:24:07 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 21:59:19 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "../lib/libft/include/libft.h"
 # include "declarations.h"
 # include "colors.h"
+# include "errno.h"
 
 //		~ test (remove later)
 void		test_data(t_data *data);
@@ -49,6 +50,7 @@ t_envp		*create_new_envp_node(char *str);
 void		*free_envp_list(t_envp *node);
 char		**envp_list_to_arr(t_envp *envp);
 char		*ft_getenv(t_envp *envp_list, char *id);
+t_envp		*add_envp_node_to_list(t_envp *list, t_envp *new);
 
 // ======= lexer ============================================================ //
 
@@ -79,7 +81,7 @@ int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 
 // execute.c
 void		close_fds(int fd_in, int fd_out);
-int			execute(t_command *cmd, t_envp *envp_list);
+int			execute(t_data *data);
 
 // simulate_input.c
 t_command	*init_cmds(void);
@@ -92,10 +94,15 @@ int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
 
 // ========= executer/builtins=============================================== //
 
-bool	is_builtin(char **argv);
-int		handle_builtin(t_command *cmd, t_envp *envp, int fd_in, int fd_out);
+bool		is_builtin(char **argv);
+int			handle_builtin(t_command *cmd, t_data *data, int fd_in, int fd_out);
 
-int		echo(char **argv);
-
+int			echo(char **argv, int fd_out);
+int			pwd(int fd_out);
+int			env(t_envp *envp, int fd_out);
+int			cd(char **argv, t_envp *envp);
+int			export(t_data *data, char **argv, int fd_out);
+int			unset(t_data *data, char **argv);
+int			ft_exit(t_data *data, char **argv);
 
 #endif
