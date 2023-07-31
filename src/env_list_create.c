@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 18:35:19 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 23:34:23 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	set_env_id(t_envp *new, char *str)
 
 	equal = ft_strchr_index(str, '=');
 	if (equal == 0)
-		return (-1);
+		return (1);
 	if (equal == -1)
 	{
 		new->id = ft_strdup(str);
@@ -92,9 +92,9 @@ t_envp	*create_new_envp_node(char *str)
 		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
 		return (free_envp_list(new));
 	}
-	if (!set_env_id(new, str))
+	if (set_env_id(new, str) == -1)
 		return (free_envp_list(new));
-	if (!set_env_value(new, str))
+	if (set_env_value(new, str) == -1)
 		return (free_envp_list(new));
 	return (new);
 }

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 18:38:57 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 23:38:48 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,21 @@ static bool	is_valid_id(char *str)
 	int		i;
 
 	if (!str)
+	{
+		dprintf(STDERR_FILENO, "minishell: export: `=': not a valid identifier\n");
 		return (false);
+	}
 	if (!ft_isalpha((int) str[0]))
+	{
+		dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", str);
 		return (false);
+	}
 	i = 1;
 	while (str[i])
 	{
 		if (!ft_isalnum((int) str[i]))
 		{
-			dprintf(STDERR_FILENO, "minishell: export: '%s': not a valid identifier\n", str);
+			dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", str);
 			return (false);
 		}
 		i++;
@@ -110,12 +116,11 @@ int	export(t_data *data, char **argv, int fd_out)
 	if (!argv[1])
 	{
 		print_no_args(data, fd_out);
-		return (1);
+		return (0);
 	}
 	i = 1;
 	while (argv[i])
 	{
-		printf("trying to export [%s]\n", argv[i]);
 		new = create_new_envp_node(argv[i]);
 		if (!new)
 			return (1);
