@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/31 18:41:41 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 22:59:44 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,9 @@ static void	init_data(t_data *data)
 {
 	extern char		**environ;
 
-	data->envp = environ_to_list(environ);
+	data->envp = NULL;
 	data->command = NULL;
 	data->exit_code = 0;
-}
-
-void	checkleaks(void)
-{
-	clear_history();		// we need to implement this in our code somewhere
-	system("leaks -q minishell");
 }
 
 void	set_exit_code(t_data *data)
@@ -51,8 +45,10 @@ int	main(void)
 	t_input		*tokenized_input;
 	t_data		data;
 
-	// atexit(checkleaks);
 	init_data(&data);
+	data.envp = environ_to_list(environ);
+	if (!data.envp)
+		return (1);
 	while (1)
 	{
 		init_signals();
@@ -66,8 +62,10 @@ int	main(void)
 		if (!data.command)
 			continue ;
 		// test_data(data);
-		execute(&data);
-		set_exit_code(&data);
+		if (execute(&data) == -1)
+			data.exit_code = 69;
+		else
+			set_exit_code(&data);
 		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!
