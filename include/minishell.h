@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/30 21:50:36 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 16:50:29 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ int			echo(char **argv, int fd_out);
 int			pwd(int fd_out);
 int			env(t_envp *envp, int fd_out);
 int			cd(char **argv, t_envp *envp);
+int			export(t_data *data, char **argv, int fd_out);
 
 #endif

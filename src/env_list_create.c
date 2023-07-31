@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 13:51:06 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 16:47:13 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static char	*get_env_id(char *str)
 	equal = ft_strchr_index(str, '=');
 	len = ft_strlen(str);
 
+	if (equal == 0)
+		return (ft_strdup("="));
 	if (equal == -1)
 		return (ft_strdup(str));
 	if (str[equal - 1] == '+')
@@ -58,20 +60,31 @@ t_envp	*create_new_envp_node(char *str)
 
 	new = init_envp_node();
 	if (!new)
+	{
+		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
 		return (NULL);
+	}
 	new->str = ft_strdup(str);
 	if (!new->str)
 	{
+		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
 		free_envp_list(new);
 		return (NULL);
 	}
 	new->id = get_env_id(str);
 	if (!new->id)
 	{
+		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
 		free_envp_list(new);
 		return (NULL);
 	}
 	new->value = get_env_value(str);
+	if (!new->value)
+	{
+		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+		free_envp_list(new);
+		return (NULL);
+	}
 	return (new);
 }
 
