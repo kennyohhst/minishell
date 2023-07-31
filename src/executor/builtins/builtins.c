@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 16:49:21 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 21:24:31 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ bool	is_builtin(char **argv)
 		|| (!strcmp(argv[0], "pwd"))
 		|| (!strcmp(argv[0], "env"))
 		|| (!strcmp(argv[0], "cd"))
-		|| (!strcmp(argv[0], "export")))
-		// || (!strcmp(argv[0], "unset")))
-		// || (!strcmp(argv[0], "exit")))
+		|| (!strcmp(argv[0], "export"))
+		|| (!strcmp(argv[0], "unset"))
+		|| (!strcmp(argv[0], "exit")))
 		return (true);
 	return (false);
 }
@@ -29,29 +29,22 @@ bool	is_builtin(char **argv)
 static int	execute_builtin(char **argv, t_data *data, int fd_out)
 {
 	char	*command;
-	char	**envp;
 
-	envp = envp_list_to_arr(data->envp); // free this
-	if (!envp)
-	{
-		dprintf(STDERR_FILENO, "Malloc fail in builtin executor\n");
-		return (-1);
-	}
 	command = argv[0];
 	if (!strcmp(command, "echo"))
 		return (echo(argv, fd_out));
-	if (!strcmp(argv[0], "pwd"))
+	if (!strcmp(command, "pwd"))
 		return (pwd(fd_out));
-	if (!strcmp(argv[0], "env"))
+	if (!strcmp(command, "env"))
 		return (env(data->envp, fd_out));
-	if (!strcmp(argv[0], "cd"))
+	if (!strcmp(command, "cd"))
 		return (cd(argv, data->envp));
-	if (!strcmp(argv[0], "export"))
+	if (!strcmp(command, "export"))
 		return (export(data, argv, fd_out));
-	// if (!strcmp(argv[0], "unset"))
-	// 	return ();
-	// if (!strcmp(argv[0], "exit"))
-	// 	return ();
+	if (!strcmp(command, "unset"))
+		return (unset(data, argv));
+	if (!strcmp(command, "exit"))
+		return (ft_exit(data, argv));
 	return (0);
 }
 

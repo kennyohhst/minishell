@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 17:06:26 by opelser       #+#    #+#                 */
-/*   Updated: 2023/04/25 22:31:14 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 22:41:46 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,19 @@ int	ft_err_atoi(const char *str, int *result)
 	tmp = 0;
 	i = get_first_num(str, &sign);
 	if (!str[i])
-		return (0);
+		return (1);
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
-			return (0);
+			return (2);
 		tmp = tmp * 10 + (str[i] - '0');
 		i++;
 	}
 	tmp *= sign;
 	if (tmp < INT_MIN || tmp > INT_MAX)
-		return (0);
+		return (3);
 	*result = tmp;
-	return (1);
+	return (0);
 }
 
 // #include "libft.h"

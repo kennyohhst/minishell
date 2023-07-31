@@ -19,7 +19,8 @@ LIBFT_DIR		:= $(LIB_DIR)/libft
 LIB				:= $(LIBFT_DIR)/libft.a
 
 # Files
-SRC_FILES :=	main.c							\
+SRC_FILES := \
+				main.c							\
 				env_list_create.c				\
 				env_list_utils.c				\
 				signals.c						\
@@ -46,6 +47,8 @@ SRC_FILES :=	main.c							\
 				executor/builtins/env.c			\
 				executor/builtins/cd.c			\
 				executor/builtins/export.c		\
+				executor/builtins/unset.c		\
+				executor/builtins/exit.c		\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ := ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
