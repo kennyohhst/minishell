@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 17:57:06 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 13:51:06 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*get_env_value(char *str)
 	equal = ft_strchr_index(str, '=');
 	if (equal == -1)
 		return (NULL);
-	return (ft_strdup(str + equal));
+	return (ft_strdup(str + equal + 1));
 }
 
 t_envp	*init_envp_node(void)
