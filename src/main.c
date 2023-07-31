@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/30 21:55:51 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 16:55:07 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,12 @@ void	set_exit_code(t_data *data)
 	cmds = data->command;
 	while (cmds)
 	{
-		if (cmds->pid > 0)
-			waitpid(cmds->pid, &w_status, 0);
-		else
-			w_status = cmds->pid;
+		if (cmds->pid == 0)
+			return ;
+		waitpid(cmds->pid, &w_status, 0);
 		cmds = cmds->next;
 	}
-	if (w_status <= 0)
-		data->exit_code = w_status * -1;
-	else if (WIFEXITED(w_status))
+	if (WIFEXITED(w_status))
 		data->exit_code = WEXITSTATUS(w_status);
 	else
 		data->exit_code = 128 + WTERMSIG(w_status);
