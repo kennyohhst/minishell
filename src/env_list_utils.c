@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 20:24:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 15:21:44 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 17:37:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,3 +88,4 @@ char	**envp_list_to_arr(t_envp *envp)
 	char_envp[i] = NULL;
 	return (char_envp);
 }
+

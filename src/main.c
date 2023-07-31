@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/31 16:55:07 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 18:41:41 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(void)
 	while (1)
 	{
 		init_signals();
+		printf("(%d) ", data.exit_code);
 		tokenized_input = lexer();
 		if (!valid_input_check(tokenized_input, NULL))
 			continue ;
@@ -67,7 +68,6 @@ int	main(void)
 		// test_data(data);
 		execute(&data);
 		set_exit_code(&data);
-		// printf("\n\nexit code: %d\n", data.exit_code); // test print exit code
 		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!

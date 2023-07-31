@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 16:57:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 17:01:02 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,19 @@ int	run_single_command(t_data *data, int fd_in)
 {
 	int			fd_out;
 	t_command	*cmd;
+	int			ret;
 
 	cmd = data->command;
 	fd_out = USE_STANDARD_FD;
 	if (is_builtin(cmd->argv) == true)
 	{
 		cmd->pid = 0;
-		data->exit_code = handle_builtin(cmd, data, fd_in, fd_out);
-		return (1);
+		ret = handle_builtin(cmd, data, fd_in, fd_out);
+		if (ret == -1)
+			return (-1);
+		data->exit_code = ret;
 	}
-	if (run_command(cmd, data, fd_in, NULL) == -1)
+	else if (run_command(cmd, data, fd_in, NULL) == -1)
 		return (-1);
 	return (1);
 }

@@ -6,37 +6,54 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 16:47:13 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 18:35:19 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_id(char *str)
+static int	set_env_id(t_envp *new, char *str)
 {
 	int			equal;
-	int			len;
 
 	equal = ft_strchr_index(str, '=');
-	len = ft_strlen(str);
-
 	if (equal == 0)
-		return (ft_strdup("="));
+		return (-1);
 	if (equal == -1)
-		return (ft_strdup(str));
+	{
+		new->id = ft_strdup(str);
+		if (!new->id)
+		{
+			dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+			return (-1);
+		}
+		return (1);
+	}
 	if (str[equal - 1] == '+')
 		equal -= 1;
-	return (ft_substr(str, 0, equal));
+	new->id = ft_substr(str, 0, equal);
+	if (!new->id)
+	{
+		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+		return (-1);
+	}
+	return (1);
 }
 
-static char	*get_env_value(char *str)
+static int	set_env_value(t_envp *new, char *str)
 {
 	int			equal;
 
 	equal = ft_strchr_index(str, '=');
 	if (equal == -1)
-		return (NULL);
-	return (ft_strdup(str + equal + 1));
+		return (1);
+	new->value = ft_strdup(str + equal + 1);
+	if (!new->value)
+	{
+		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+		return (-1);
+	}
+	return (1);
 }
 
 t_envp	*init_envp_node(void)
@@ -46,14 +63,19 @@ t_envp	*init_envp_node(void)
 	new_node = (t_envp *) malloc(1 * sizeof(t_envp));
 	if (!new_node)
 		return (NULL);
-	new_node->prev = NULL;
 	new_node->str = NULL;
 	new_node->id = NULL;
 	new_node->value = NULL;
+	new_node->prev = NULL;
 	new_node->next = NULL;
 	return (new_node);
 }
-
+/**
+ * @brief Create a new envp node object
+ * 
+ * @param str 
+ * @return (t_envp *) on error return NULL
+ */
 t_envp	*create_new_envp_node(char *str)
 {
 	t_envp	*new;
@@ -68,23 +90,12 @@ t_envp	*create_new_envp_node(char *str)
 	if (!new->str)
 	{
 		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
-		free_envp_list(new);
-		return (NULL);
+		return (free_envp_list(new));
 	}
-	new->id = get_env_id(str);
-	if (!new->id)
-	{
-		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
-		free_envp_list(new);
-		return (NULL);
-	}
-	new->value = get_env_value(str);
-	if (!new->value)
-	{
-		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
-		free_envp_list(new);
-		return (NULL);
-	}
+	if (!set_env_id(new, str))
+		return (free_envp_list(new));
+	if (!set_env_value(new, str))
+		return (free_envp_list(new));
 	return (new);
 }
 

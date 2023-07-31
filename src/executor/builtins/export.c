@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 16:52:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 18:38:57 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,14 @@ static bool	is_valid_id(char *str)
 {
 	int		i;
 
-	i = 0;
+	if (!str)
+		return (false);
+	if (!ft_isalpha((int) str[0]))
+		return (false);
+	i = 1;
 	while (str[i])
 	{
-		if (!ft_isalpha((int) str[i]))
+		if (!ft_isalnum((int) str[i]))
 		{
 			dprintf(STDERR_FILENO, "minishell: export: '%s': not a valid identifier\n", str);
 			return (false);
@@ -111,10 +115,11 @@ int	export(t_data *data, char **argv, int fd_out)
 	i = 1;
 	while (argv[i])
 	{
+		printf("trying to export [%s]\n", argv[i]);
 		new = create_new_envp_node(argv[i]);
 		if (!new)
 			return (1);
-		if (is_valid_id(new->str) == false)
+		if (is_valid_id(new->id) == false)
 			ret = 1;
 		else if (add_node(data, new) == -1)
 			ret = 1;
