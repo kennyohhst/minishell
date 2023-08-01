@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 00:27:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 21:24:31 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,97 +14,54 @@
 
 bool	is_builtin(char **argv)
 {
-	if (!strcmp(argv[0], "echo"))
-		// || (!strcmp(argv[0], "cd"))
-		// || (!strcmp(argv[0], "pwd"))
-		// || (!strcmp(argv[0], "env"))
-		// || (!strcmp(argv[0], "export"))
-		// || (!strcmp(argv[0], "unset")))
+	if (!strcmp(argv[0], "echo")
+		|| (!strcmp(argv[0], "pwd"))
+		|| (!strcmp(argv[0], "env"))
+		|| (!strcmp(argv[0], "cd"))
+		|| (!strcmp(argv[0], "export"))
+		|| (!strcmp(argv[0], "unset"))
+		|| (!strcmp(argv[0], "exit")))
 		return (true);
 	return (false);
 }
 
-static int	reset_fds(int in_orig, int out_orig)
-{
-	if (dup2(in_orig, STDIN_FILENO) == -1)
-	{
-		dprintf(STDERR_FILENO, "minishell: dup2 failed to set fd_in\n");
-		return (-1);
-	}
-	if (dup2(out_orig, STDOUT_FILENO) == -1)
-	{
-		dprintf(STDERR_FILENO, "minishell: dup2 failed to set fd_out\n");
-		return (-1);
-	}
-	close_fds(in_orig, out_orig);
-	return (1);
-}
 
-
-static int	set_temporary_fds(int fd_in, int fd_out, int *in_orig, int *out_orig)
-{
-	*out_orig = -1;
-	*in_orig = dup(STDIN_FILENO);
-	if (*in_orig == -1)
-	{
-		dprintf(STDERR_FILENO, "Error setting temporary STDIN for builtin");
-		return (-1);
-	}
-	*out_orig = dup(STDOUT_FILENO);
-	if (*out_orig == -1)
-	{
-		dprintf(STDERR_FILENO, "Error setting temporary STDOUT for builtin");
-		return (-1);
-	}
-	if (fd_in >= 0 && dup2(fd_in, STDIN_FILENO) == -1)
-	{
-		dprintf(STDERR_FILENO, "minishell: dup2 failed to set fd_in\n");
-		return (-1);
-	}
-	if (fd_out >= 0 && dup2(fd_out, STDOUT_FILENO) == -1)
-	{
-		dprintf(STDERR_FILENO, "minishell: dup2 failed to set fd_out\n");
-		return (-1);
-	}
-	close_fds(fd_in, fd_out);
-	return (1);
-}
-
-
-static int	execute_builtin(char **argv, t_envp *envp_list)
+static int	execute_builtin(char **argv, t_data *data, int fd_out)
 {
 	char	*command;
-	char	**envp;
 
-	envp = envp_list_to_arr(envp_list);
 	command = argv[0];
 	if (!strcmp(command, "echo"))
-		return (echo(argv));
-	// if (!strcmp(argv[0], "cd"))
-	// 	return ();
-	// if (!strcmp(argv[0], "pwd"))
-	// 	return ();
-	// if (!strcmp(argv[0], "env"))
-	// 	return ();
-	// if (!strcmp(argv[0], "export"))
-	// 	return ();
-	// if (!strcmp(argv[0], "unset"))
-	// 	return ();
+		return (echo(argv, fd_out));
+	if (!strcmp(command, "pwd"))
+		return (pwd(fd_out));
+	if (!strcmp(command, "env"))
+		return (env(data->envp, fd_out));
+	if (!strcmp(command, "cd"))
+		return (cd(argv, data->envp));
+	if (!strcmp(command, "export"))
+		return (export(data, argv, fd_out));
+	if (!strcmp(command, "unset"))
+		return (unset(data, argv));
+	if (!strcmp(command, "exit"))
+		return (ft_exit(data, argv));
 	return (0);
 }
 
-int	handle_builtin(t_command *cmd, t_envp *envp, int fd_in, int fd_out)
+int	handle_builtin(t_command *cmd, t_data *data, int fd_in, int fd_out)
 {
-	int		stdin_orig;
-	int		stdout_orig;
+	int		ret;
 
-	if (set_temporary_fds(fd_in, fd_out, &stdin_orig, &stdout_orig) == -1)
-	{
-		close_fds(stdin_orig, stdout_orig);
+	if (handle_redirects(data->command, &fd_in, &fd_out) == -1)
 		return (-1);
-	}
-	cmd->pid = execute_builtin(cmd->argv, envp);
-	if (reset_fds(stdin_orig, stdout_orig) == -1)
-		return (-1);
-	return (1);
+	if (fd_in >= 0)
+		close(fd_in);
+	if (fd_out == -1)
+		fd_out = STDOUT_FILENO;
+
+	ret = execute_builtin(cmd->argv, data, fd_out);
+
+	if (fd_out != STDOUT_FILENO)
+		close(fd_out);
+	return (ret);
 }

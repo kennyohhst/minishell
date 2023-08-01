@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/08/01 17:53:45 by code             ###   ########.fr       */
+/*   Updated: 2023/08/01 21:41:47 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,5 @@ void	create_input_list(t_input **cmd, char *str)
 		else
 			i += err_check;
 		temp = (*cmd);
-		
 	}
 }

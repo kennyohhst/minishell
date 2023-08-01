@@ -6,11 +6,21 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 20:24:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/28 15:22:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 17:37:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_envp	*add_envp_node_to_list(t_envp *list, t_envp *new)
+{
+	if (!list)
+		return (new);
+	while (list->next)
+		list = list->next;
+	list->next = new;
+	return (new);
+}
 
 char	*ft_getenv(t_envp *envp_list, char *id)
 {
@@ -78,3 +88,4 @@ char	**envp_list_to_arr(t_envp *envp)
 	char_envp[i] = NULL;
 	return (char_envp);
 }
+

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/24 23:21:29 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/24 23:40:10 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/31 19:03:21 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,9 @@ void	id_check(t_data *data, char *str)
 	}
 }
 
-void	unset(t_data *data)
+int	unset(t_data *data, char **argv)
 {
-	char		**argv; 
 	int			i;
-
-	argv = data->command->argv;
 
 	i = 1;
 	while (argv[i])
@@ -48,4 +45,5 @@ void	unset(t_data *data)
 		id_check(data, argv[i]);
 		i++;
 	}
+	return (0);
 }

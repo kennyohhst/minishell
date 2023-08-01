@@ -6,48 +6,46 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 20:09:42 by opelser       #+#    #+#                 */
-/*   Updated: 2023/05/25 22:11:56 by opelser       ########   odam.nl         */
+/*   Updated: 2023/07/30 16:19:26 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <errno.h>
 
-static int	cd_home(void)
+static int	cd_home(t_envp *envp)
 {
 	char	*home;
 
-	home = getenv("HOME");		// get home from my envp list
-	printf("%s\n", home);
+	home = ft_getenv(envp, "HOME");		// get home from my envp list
+	if (!home)
+	{
+		dprintf(STDERR_FILENO, "minishell: cd: HOME not set");
+		return (1);
+	}
 	if (chdir(home) == -1)
-		return (2);
+	{
+		perror("minishell: cd");
+		return (1);
+	}
 	return (0);
 }
 
-int		cd(char **argv)	// export new cwd and old cwd
+int		cd(char **argv, t_envp *envp)	// export new cwd and old cwd
 {
 	char	cwd[1024];
-	int		arg_len;
 
 	if (!argv[1])
-		return (cd_home());
-	if (chdir(argv[1]) == 0)
-		return (1);
-	arg_len = ft_strlen(argv[1]);
-	if (arg_len >= 1024)
-	{
-		perror("cd error -> File name too long\n");
-		return (0);
-	}
+		return (cd_home(envp));
 	if (!getcwd(cwd, 256))
-		return (0);
-	// export(OLDPWD=cwd);
+		return (1);
+	// export OLDPWD=cwd
 	ft_strcat(cwd, "/");
 	ft_strcat(cwd, argv[1]);
-	write(1, cwd, ft_strlen(cwd));
-	write(1, "\n", 1);
 	if (chdir(cwd) == -1)
-		return (0);
-	ft_free_str_arr(argv);
-	return (1);
+	{
+		perror("minishell: cd");
+		return (1);
+	}
+	// export(PWD=cwd);
+	return (0);
 }
