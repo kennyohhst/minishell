@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/07/30 15:47:05 by code             ###   ########.fr       */
+/*   Updated: 2023/08/01 21:16:57 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	main(void)
 		execute(data.command, data.envp);
 		set_exit_code(&data);
 		// printf("\n\nexit code: %d\n", data.exit_code); // test print exit code
-		ft_free_input_list(tokenized_input);
 	}
 	// ft_free_data(data); // free everything!!!!
 	return (0);
