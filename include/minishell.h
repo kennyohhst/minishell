@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/31 21:59:19 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 18:11:51 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@
 # include "declarations.h"
 # include "colors.h"
 # include "errno.h"
-
-//		~ test (remove later)
-void		test_data(t_data *data);
-void		list_check(t_input *tokenized_input);
 
 //		~ create_input_list.c
 
@@ -54,7 +50,7 @@ t_envp		*add_envp_node_to_list(t_envp *list, t_envp *new);
 
 // ======= lexer ============================================================ //
 
-t_input		*lexer(void);
+t_input		*lexer(char *input);
 int			check_quotes(char *str);
 
 int			p_d_token(t_input **cmd, char *str, int i, char c);
@@ -70,7 +66,7 @@ int			valid_pipe_check(char *str);
 
 // ======== parser ========================================================== //
 
-int			valid_input_check(t_input *token, t_input *temp);
+int			valid_input_check(t_input *token);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
 

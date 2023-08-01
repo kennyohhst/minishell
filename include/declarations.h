@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 16:12:40 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 15:30:34 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct	s_input t_input;
 struct s_input
 {
 	char			*str;
-	bool			spaces;
 	t_token_type	token_type;
 
 	t_input			*next;

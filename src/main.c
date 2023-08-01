@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/31 23:29:28 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 18:59:02 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,47 @@ void	set_exit_code(t_data *data)
 		data->exit_code = 128 + WTERMSIG(w_status);
 }
 
+int		get_next_input(char **input)
+{
+	*input = readline("minishell \% ");
+	if (!*input)
+	{
+		dprintf(STDERR_FILENO, "exit\n");
+		return (-1);
+	}
+	return (1);
+}
+
+// void	print_input_list(t_input *tokenized)
+// {
+// 	while (tokenized)
+// 	{
+// 		printf("tokenized string = [%s]\n", tokenized->str);
+// 		printf("\ttype = [%d]\n\n", tokenized->token_type);
+// 		tokenized = tokenized->next;
+// 	}
+// }
+
+// void	print_command_list(t_command *cmd)
+// {
+// 	while (cmd)
+// 	{
+// 		for (int i = 0; cmd->argv[i]; i++)
+// 			printf("[%s] ", cmd->argv[i]);
+// 		printf("\n\tin [%p]\tout [%p]\n\n", cmd->input, cmd->output);
+// 		cmd = cmd->next;
+// 	}
+// }
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_input			*tokenized_input;
+	char			*input;
 	t_data			data;
-
+	
 	(void) argc;
 	(void) argv;
+	rl_outstream = stderr;
 	init_data(&data);
 	data.envp = environ_to_list(envp);
 	if (!data.envp)
@@ -52,24 +86,24 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		init_signals();
-		printf("(%d) ", data.exit_code);
-		tokenized_input = lexer();
-		if (!valid_input_check(tokenized_input, tokenized_input))
+		if (get_next_input(&input) == -1)
+			break ;
+		tokenized_input = lexer(input);
+		// print_input_list(tokenized_input);
+		if (!valid_input_check(tokenized_input))
 			continue ;
-		// list_check(tokenized_input);
 		expander(tokenized_input, &data);
 		data.command = parser(tokenized_input);
 		if (!data.command)
 			continue ;
-		// test_data(data);
+		// print_command_list(data.command);
 		if (execute(&data) == -1)
 			data.exit_code = 69;
 		else
 			set_exit_code(&data);
 		ft_free_input_list(tokenized_input);
-		// free all commands
 	}
-	return (0);
+	return (data.exit_code);
 }
 
 /*
