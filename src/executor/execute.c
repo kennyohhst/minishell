@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 17:01:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 21:28:15 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,13 @@ static int	run_command(t_command *cmd, t_data *data, int fd_in, int pipe_fd[2])
 	pid_t	pid;
 	int		fd_out;
 
+	// printf("command:\n");
+	// for (int i = 0; cmd->argv[i]; i++) { printf("[%s] ", cmd->argv[i]); }
+	// printf("\nin : [%p]\tout: [%p]\n\n", cmd->input, cmd->output);
 	fd_out = USE_STANDARD_FD;
 	if (pipe_fd)
 		fd_out = pipe_fd[1];
-	if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
-		return (-1); // doesn't close all fds on fail, should it?
+	 // doesn't close all fds on fail, should it?
 	pid = fork();
 	if (pid == -1)
 	{
@@ -67,6 +69,8 @@ static int	run_command(t_command *cmd, t_data *data, int fd_in, int pipe_fd[2])
 	}
 	else if (pid == 0)
 	{
+		if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
+			exit (1);
 		if (pipe_fd)
 			close(pipe_fd[0]);
 		child_process(cmd, data, fd_in, fd_out);

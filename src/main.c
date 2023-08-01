@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/01 18:59:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 21:54:26 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,6 @@ int		get_next_input(char **input)
 	return (1);
 }
 
-// void	print_input_list(t_input *tokenized)
-// {
-// 	while (tokenized)
-// 	{
-// 		printf("tokenized string = [%s]\n", tokenized->str);
-// 		printf("\ttype = [%d]\n\n", tokenized->token_type);
-// 		tokenized = tokenized->next;
-// 	}
-// }
-
-// void	print_command_list(t_command *cmd)
-// {
-// 	while (cmd)
-// 	{
-// 		for (int i = 0; cmd->argv[i]; i++)
-// 			printf("[%s] ", cmd->argv[i]);
-// 		printf("\n\tin [%p]\tout [%p]\n\n", cmd->input, cmd->output);
-// 		cmd = cmd->next;
-// 	}
-// }
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_input			*tokenized_input;
@@ -89,14 +68,12 @@ int	main(int argc, char **argv, char **envp)
 		if (get_next_input(&input) == -1)
 			break ;
 		tokenized_input = lexer(input);
-		// print_input_list(tokenized_input);
 		if (!valid_input_check(tokenized_input))
 			continue ;
 		expander(tokenized_input, &data);
 		data.command = parser(tokenized_input);
 		if (!data.command)
 			continue ;
-		// print_command_list(data.command);
 		if (execute(&data) == -1)
 			data.exit_code = 69;
 		else

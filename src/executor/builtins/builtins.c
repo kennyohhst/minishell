@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 21:24:31 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 21:27:56 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int	handle_builtin(t_command *cmd, t_data *data, int fd_in, int fd_out)
 {
 	int		ret;
 
-	if (handle_redirects(data->command, &fd_in, &fd_out) == -1)
-		return (-1);
 	if (fd_in >= 0)
 		close(fd_in);
 	if (fd_out == -1)
