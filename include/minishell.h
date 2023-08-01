@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/30 00:24:07 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
+/*   Updated: 2023/08/01 17:53:29 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void		list_check(t_input *tokenized_input);
 
 void		create_input_list(t_input **cmd, char *str);
 void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void		ft_free_input_list(t_input *list);
+void		free_tokens(t_input *list);
 
 //		~ lexer.c
 
 void		create_input_list(t_input **cmd, char *str);
 void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void		ft_free_input_list(t_input *list);
+void		free_tokens(t_input *list);
 void		init_signals(void);
 
 // ======== env utils ======================================================= //
@@ -96,6 +96,11 @@ bool	is_builtin(char **argv);
 int		handle_builtin(t_command *cmd, t_envp *envp, int fd_in, int fd_out);
 
 int		echo(char **argv);
+
+// ========= free_data======================================================= //
+
+void	free_cmd(t_command *cmd);
+void	free_envp(t_envp *envp);
 
 
 #endif

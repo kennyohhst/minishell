@@ -23,6 +23,7 @@ SRC_FILES :=	main.c							\
 				env_list_create.c				\
 				env_list_utils.c				\
 				signals.c						\
+				free_functions.c				\
 \
 				lexer/lexer.c					\
 				lexer/quote_count.c				\

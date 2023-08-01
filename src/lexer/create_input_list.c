@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_input_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/06/10 18:43:42 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:53:45 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,6 @@
 #define DOUBLE_QUOTE 2
 #define SINGLE_QUOTE 3
 #define STANDARD 4
-
-void	ft_free_input_list(t_input *list)
-{
-	t_input	*tmp;
-
-	while (list)
-	{
-		tmp = list;
-		list = list->next;
-		free(tmp->str);
-		free(tmp);
-	}
-}
 
 void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this function explained to me
 {
