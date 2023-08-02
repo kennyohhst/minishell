@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/02 16:56:24 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 19:24:19 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ int	main(int argc, char **argv, char **envp)
 		wait_for_children(&data);
 
 
-		ft_free_input_list(tokenized_input);
+		free_tokens(tokenized_input);
+		free_cmd(data.command);
 	}
 	return (data.exit_code);
 }
