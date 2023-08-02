@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/02 15:13:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 16:34:12 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	init_data(t_data *data)
 	data->exit_code = 0;
 }
 
-void	set_exit_code(t_data *data)
+void	wait_for_children(t_data *data)
 {
 	t_command	*cmds;
 	int			w_status;
@@ -38,7 +38,7 @@ void	set_exit_code(t_data *data)
 		data->exit_code = 128 + WTERMSIG(w_status);
 }
 
-int		get_next_input(char **input)
+int	get_next_input(char **input)
 {
 	*input = readline("minishell \% ");
 	if (!*input)
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 	t_input			*tokenized_input;
 	char			*input;
 	t_data			data;
-	
+
 	(void) argc;
 	(void) argv;
 	rl_outstream = stderr;
@@ -65,59 +65,43 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		init_signals();
+
+
+
 		if (get_next_input(&input) == -1)
 			break ;
+
+
+
 		tokenized_input = lexer(input);
 		if (!valid_input_check(tokenized_input))
 			continue ;
-		expander(tokenized_input, &data);
+
+		// if (lexer(tokenized_input, raw_input) == -1)
+		// {
+		// 	data.exit_code = 1;
+		// 	continue ;
+		// }
+
+		expander(&data, tokenized_input);
 		data.command = parser(tokenized_input);
 		if (!data.command)
 			continue ;
+
+
+		// if (parser(&data, tokenized_input) == -1)
+		// {
+		// 	data.exit_code = 1;
+		// 	continue ;
+		// }
+
+
 		if (execute(&data) == -1)
-		{
 			data.exit_code = 1;
-			while (wait(NULL) != -1)
-				;
-		}
-		else
-			set_exit_code(&data);
+		wait_for_children(&data);
+
+
 		ft_free_input_list(tokenized_input);
 	}
 	return (data.exit_code);
 }
-
-/*
-int main()
-{
-	while (1)
-	{
-		initialize signals
-		get the tokenized list of input
-		parser
-		{
-			expander
-			{
-				transform the requested environment variables to strings
-				if ($?)
-					get saved exit code from global or from main struct
-			}
-			transform the tokens into a list of commands
-			make a list of redirects for every command so the executor knows where the output should go
-		}
-		executor
-		{
-			if (builtin && no redirects)
-				execute in parent
-			else if (builtin)
-				execute in child process
-			else
-				execute in child process with execve
-			save exit code // ernumber in main struct or in a global so we can print it
-			free current command and set the command list head to next
-		}
-		free list
-	}
-	at exit: free program data and environment list
-}
-*/

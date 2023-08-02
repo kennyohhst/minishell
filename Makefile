@@ -37,7 +37,6 @@ SRC_FILES := \
 				parser/expander.c				\
 \
 				executor/execute.c				\
-				executor/heredoc.c				\
 				executor/redirects.c			\
 				executor/set_command_path.c		\
 \

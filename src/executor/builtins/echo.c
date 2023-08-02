@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/08 21:08:18 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/01 14:28:59 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 15:40:36 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static bool	is_valid_option(char *options)
 	return (1);
 }
 
-static int print_strings(char **argv, int fd_out)
+static int	print_strings(char **argv, int fd_out)
 {
 	bool	newline;
 	int		i;

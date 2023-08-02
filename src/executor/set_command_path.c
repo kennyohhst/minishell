@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/01 21:04:59 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 15:31:14 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,15 @@ int	set_command_path(t_command *cmd_struct, t_envp *envp_list)
 	char	**split_paths;
 	char	*command_path;
 
-	if (ft_strchr(cmd_struct->argv[0], '/')) // checks if the input is an absolute path
+	if (ft_strchr(cmd_struct->argv[0], '/'))
 		return (0);
-
-	paths = ft_getenv(envp_list, "PATH");	// get envp from envp list
+	paths = ft_getenv(envp_list, "PATH");
 	if (!paths)
 		return (1);
-
-	split_paths = ft_split(paths, ':'); // splits the paths
+	split_paths = ft_split(paths, ':');
 	if (!split_paths)
 		return (2);
-
-	command_path = get_command_location(cmd_struct->argv[0], split_paths); // returns the command path if it exists or NULL on error / not found
+	command_path = get_command_location(cmd_struct->argv[0], split_paths);
 	ft_free_str_arr(split_paths);
 	if (!command_path)
 		return (3);

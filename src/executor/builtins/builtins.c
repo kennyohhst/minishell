@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/01 23:19:34 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 15:32:31 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ int	handle_builtin(t_command *cmd, t_data *data, int fd_in, int fd_out)
 		close(fd_in);
 	if (fd_out == -1)
 		fd_out = STDOUT_FILENO;
-
 	ret = execute_builtin(cmd->argv, data, fd_out);
-
 	if (fd_out != STDOUT_FILENO)
 		close(fd_out);
 	return (ret);
