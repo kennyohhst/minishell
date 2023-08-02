@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 21:24:31 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 15:32:31 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ bool	is_builtin(char **argv)
 		return (true);
 	return (false);
 }
-
 
 static int	execute_builtin(char **argv, t_data *data, int fd_out)
 {
@@ -52,15 +51,11 @@ int	handle_builtin(t_command *cmd, t_data *data, int fd_in, int fd_out)
 {
 	int		ret;
 
-	if (handle_redirects(data->command, &fd_in, &fd_out) == -1)
-		return (-1);
 	if (fd_in >= 0)
 		close(fd_in);
 	if (fd_out == -1)
 		fd_out = STDOUT_FILENO;
-
 	ret = execute_builtin(cmd->argv, data, fd_out);
-
 	if (fd_out != STDOUT_FILENO)
 		close(fd_out);
 	return (ret);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   create_input_list.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/08/01 21:41:47 by code             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   create_input_list.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
+/*   Updated: 2023/08/02 16:56:19 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this
 	if (!new)
 		exit(write(2, "Error\n", 6));
 	new->str = ft_strdup(str);
-	new->spaces = false;
 	free(str);
 	new->token_type = type;
 	temp = *cmd;
@@ -73,17 +72,6 @@ static int	check_mode(char c)
 		return (SINGLE_QUOTE);
 	return (STANDARD);
 }
-int	spaces(t_input **cmd, char *str, int i)
-{
-	while (str && str[i] && str[i] == ' ')
-	{	
-		i++;
-		while ((*cmd)->next != NULL)
-			(*cmd) = (*cmd)->next;
-		(*cmd)->spaces = true;
-	}
-	return (i);
-}
 
 
 void	create_input_list(t_input **cmd, char *str)
@@ -96,7 +84,8 @@ void	create_input_list(t_input **cmd, char *str)
 	i = 0;
 	while (str[i])
 	{
-		i = spaces(&temp, str, i);
+		while (str[i] && str[i] == ' ')
+			i++;
 		mode = check_mode(str[i]);			// check_mode has an error check but it's not used here, also checkmode doesnt check for >> and <<
 		err_check = assign_token(mode, cmd, (str + i));
 		if (err_check == -1)

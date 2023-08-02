@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 20:27:18 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/07/26 22:23:38 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 16:22:15 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*replace_env(char *str, t_data *data)
 	return (free(str), temp);
 }
 
-t_input *expander(t_input *token, t_data *data)
+t_input	*expander(t_data *data, t_input *token)
 {
 	char *temp;
 	int	i;

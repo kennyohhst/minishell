@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 23:34:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 16:13:05 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_envp	*init_envp_node(void)
 	new_node->next = NULL;
 	return (new_node);
 }
+
 /**
  * @brief Create a new envp node object
  * 

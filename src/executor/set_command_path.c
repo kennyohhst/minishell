@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/28 18:09:18 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 15:31:14 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,45 +51,23 @@ static char	*get_command_location(char *command, char **paths)
 
 int	set_command_path(t_command *cmd_struct, t_envp *envp_list)
 {
-	char	*command;
 	char	*paths;
 	char	**split_paths;
 	char	*command_path;
 
-	command = ft_strdup(cmd_struct->argv[0]);
-	if (!command)
-		return (1);
-	if (ft_strchr(command, '/')) // checks if the input is an absolute path
-	{
-		free(command);
+	if (ft_strchr(cmd_struct->argv[0], '/'))
 		return (0);
-	}
-
-	paths = ft_getenv(envp_list, "PATH");	// get envp from envp list
+	paths = ft_getenv(envp_list, "PATH");
 	if (!paths)
-	{
-		free(command);
-		return (2);
-	}
-
-	split_paths = ft_split(paths, ':'); // splits the paths
+		return (1);
+	split_paths = ft_split(paths, ':');
 	if (!split_paths)
-	{
-		free(command);
-		return (3);
-	}
-
-	command_path = get_command_location(command, split_paths); // returns the command path if it exists or NULL on error / not found
+		return (2);
+	command_path = get_command_location(cmd_struct->argv[0], split_paths);
+	ft_free_str_arr(split_paths);
 	if (!command_path)
-	{
-		free(command);
-		ft_free_str_arr(split_paths);
-		return (4);
-	}
-
-	free(command);
+		return (3);
 	free(cmd_struct->argv[0]);
 	cmd_struct->argv[0] = command_path;
-	ft_free_str_arr(split_paths);
 	return (0);
 }

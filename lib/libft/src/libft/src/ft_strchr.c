@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 19:33:52 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/28 15:27:45 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 16:11:57 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_strchr(const char *s, int c)
 {
 	int		i;
-	
+
 	i = 0;
 	while (s[i - 1])
 	{
@@ -26,7 +26,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-int		ft_strchr_index(char *str, char c)
+int	ft_strchr_index(char *str, char c)
 {
 	int		i;
 

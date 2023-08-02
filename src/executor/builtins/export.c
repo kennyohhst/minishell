@@ -6,21 +6,11 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 23:38:48 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 15:43:19 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	lst_add_back(t_envp *node, t_envp *new_node)
-{
-	if (!new_node)
-		return ;
-	while (node->next)
-		node = node->next;
-	node->next = new_node;
-	new_node->prev = node;
-}
 
 static bool	is_valid_id(char *str)
 {
@@ -45,14 +35,14 @@ static bool	is_valid_id(char *str)
 			return (false);
 		}
 		i++;
-	} 
+	}
 	return (true);
 }
 
 void	print_no_args(t_data *data, int fd_out)
 {
 	t_envp		*current;
-	
+
 	current = data->envp;
 	while (current)
 	{
@@ -99,7 +89,7 @@ static int	add_node(t_data *data, t_envp *new)
 	else
 	{
 		if (data->envp)
-			lst_add_back(data->envp, new);
+			lst_add_back_envp(data->envp, new);
 		else
 			data->envp = new;
 	}
