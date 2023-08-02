@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/01 21:54:26 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/02 15:13:23 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,11 @@ int	main(int argc, char **argv, char **envp)
 		if (!data.command)
 			continue ;
 		if (execute(&data) == -1)
-			data.exit_code = 69;
+		{
+			data.exit_code = 1;
+			while (wait(NULL) != -1)
+				;
+		}
 		else
 			set_exit_code(&data);
 		ft_free_input_list(tokenized_input);

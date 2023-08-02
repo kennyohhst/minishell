@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 20:09:42 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 16:19:26 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 22:50:18 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,15 @@ static int	cd_home(t_envp *envp)
 	return (0);
 }
 
-int		cd(char **argv, t_envp *envp)	// export new cwd and old cwd
+int		cd(char **argv, t_envp *envp)
 {
-	char	cwd[1024];
-
 	if (!argv[1])
 		return (cd_home(envp));
-	if (!getcwd(cwd, 256))
-		return (1);
-	// export OLDPWD=cwd
-	ft_strcat(cwd, "/");
-	ft_strcat(cwd, argv[1]);
-	if (chdir(cwd) == -1)
+
+	if (chdir(argv[1]) == -1)
 	{
 		perror("minishell: cd");
 		return (1);
 	}
-	// export(PWD=cwd);
 	return (0);
 }

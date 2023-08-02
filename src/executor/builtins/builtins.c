@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/01 21:27:56 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 23:19:34 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ bool	is_builtin(char **argv)
 		return (true);
 	return (false);
 }
-
 
 static int	execute_builtin(char **argv, t_data *data, int fd_out)
 {

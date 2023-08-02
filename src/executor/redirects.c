@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 15:53:15 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/30 21:29:47 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/01 23:28:13 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	handle_redirects(t_command *cmd, int *fd_in, int *fd_out)
 
 	if (cmd->input)
 	{
-		if (fd_in >= 0)
+		if (*fd_in >= 0)
 			close(*fd_in);
 		last_redirect = cmd->input;
 		if (get_last_file(&last_redirect) == -1)
@@ -67,7 +67,7 @@ int	handle_redirects(t_command *cmd, int *fd_in, int *fd_out)
 	}
 	if (cmd->output)
 	{
-		if (fd_out >= 0)
+		if (*fd_out >= 0)
 			close(*fd_out);
 		last_redirect = cmd->output;
 		if (get_last_file(&last_redirect) == -1)
