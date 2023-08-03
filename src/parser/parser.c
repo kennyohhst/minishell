@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/17 22:53:38 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/19 14:48:40 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/17 22:53:38 by opelser           #+#    #+#             */
+/*   Updated: 2023/08/03 19:31:15 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ t_input	*string_type(t_input *token, t_command **command)
 	while (token)
 	{
 			i = -1;
-			if (token->token_type > 6)
+			if (token->token_type >= 6) // this one
 			{
 				temp->argv = malloc((list_length(token) + 1) * sizeof(char *));
 				if (!temp->argv)	
@@ -165,25 +165,25 @@ t_input	*string_type(t_input *token, t_command **command)
 
 t_command	*type_check(t_input *token, t_command **command, t_command *temp)
 {
+	malloc_command_node(command, NULL);
 	while (token)
 	{
-		malloc_command_node(command, NULL);
+		if (token->token_type == PIPE)
+		{
+			malloc_command_node(command, NULL);
+			token = token->next;
+		}
 		if (!(*command))
 			return (NULL);
 		temp = (*command);
 		while (temp->next != NULL)
 			temp = temp->next;
-		if (token->token_type == PIPE)
-			token = token->next;
-		if (token->token_type >= 6)
+		if (token && token->token_type >= E_VARIABLE)
 			token = string_type(token, &temp);
-		while (token && token->token_type >= 2 && token->token_type <= 5 )
-		{
-			if (token && (token->token_type == 2 || token->token_type == 3 ))
-				token = o_redirect_type(token, &temp->output, token->token_type);
-			if (token && (token->token_type == 4 || token->token_type == 5 ))
-				token = i_redirect_type(token, &temp->input, token->token_type);
-		}
+		if (token && (token->token_type == 2 || token->token_type == 3 ))
+			token = o_redirect_type(token, &temp->output, token->token_type);
+		if (token && (token->token_type == 4 || token->token_type == 5 ))
+			token = i_redirect_type(token, &temp->input, token->token_type);
 	}
 	return (*command);
 }
