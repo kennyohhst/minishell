@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:41:28 by code              #+#    #+#             */
-/*   Updated: 2023/08/01 21:08:23 by code             ###   ########.fr       */
+/*   Updated: 2023/08/04 19:50:20 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	free_tokens(t_input *list)
+t_input	*free_tokens(t_input *list)
 {
 	t_input	*tmp;
 
@@ -20,9 +20,11 @@ void	free_tokens(t_input *list)
 	{
 		tmp = list;
 		list = list->next;
-		free(tmp->str);
+		if (tmp->str)
+			free(tmp->str);
 		free(tmp);
 	}
+	return (NULL);
 }
 static void	free_argv(char **argv)
 {

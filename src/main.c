@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/02 19:24:19 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
+/*   Updated: 2023/08/06 18:17:37 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ int	main(int argc, char **argv, char **envp)
 		// }
 
 		expander(&data, tokenized_input);
+			// tokenized_input = free_tokens(tokenized_input);
 		data.command = parser(tokenized_input);
+		test_data(&data);
 		if (!data.command)
 			continue ;
 

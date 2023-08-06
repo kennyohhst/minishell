@@ -6,43 +6,72 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/08/03 19:34:41 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/08/04 20:04:18 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_input	*expander(t_data *data, t_input *token)
+static int	start_position(char *str)
 {
-	int i;
-	char *temp;
+	int	i;
 
 	i = 0;
+	while (str[i] && str[i] != '$')
+		i++;
+	return (i);
+}
+
+static bool	expand_edgecases(char c)
+{
+	if (ft_isalnum(c) || c == '_')
+		return (true);
+	return (false);
+}
+
+int	special_strlen(char *str)
+{
+	int	i;
+
+	i = 1;
+	while (str[0] && (str[0] == ' ' || str[0] != '$'))
+		str++;
+	while (str[i] != '\0' && expand_edgecases(str[i]))
+		i++;
+	return (i);
+}
+
+bool	expander(t_data *data, t_input *token)
+{
+	int start;
+	int	len;
+	char *temp;
+	
+	len = 0;
+	start = 0;
 	while (token)
 	{
 		if (token && token->token_type == E_VARIABLE)
 		{
-			temp = ft_getenv(data->envp, token->str);
-			if (temp)
+			start += start_position(token->str);
+			len += special_strlen(token->str+start);
+			temp = ft_getenv(data->envp, ft_substr(token->str, start+1, len-1));		//LEXER MAKES $USER$PATH 1 token instead of 2 tokens!
+			if (!temp)
 			{
-				free(token->str);
-				*token->str  = *temp;
+				token->token_type = STRING;
+				return (false);
 			}
-			token->token_type = DQ_STRING; 
+			free(token->str);
+			token->str = ft_strjoin("", temp);
+			token->token_type = DQ_STRING;
 		}
+		len = 0;
 		token = token->next;
 	}
-
-	return (token);
+	return (true);
 }
 
 
-// static bool	expand_edgecases(char c)
-// {
-// 	if (ft_isalnum(c) || c == '_')
-// 		return (false);
-// 	return (true);
-// }
 
 // int	env_end_count(char	*str)
 // {
