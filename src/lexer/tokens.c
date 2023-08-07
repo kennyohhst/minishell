@@ -1,16 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokens.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/06/10 17:00:19 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tokens.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/23 14:10:55 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/08/08 00:40:00 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	remove_quotes(char *str, char c)
+{
+	int i = 0;
+	int x = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+		{
+			while (str[i] != '\0')
+			{
+				ft_memset(str+i, str[i+1], 1);
+				i++;
+				x++;
+			}
+			i = i - x;
+			x = 0;
+		}
+		i++;
+	}
+}
 
 int	p_d_token(t_input **cmd, char *str, int i, char c)
 {
@@ -45,10 +66,39 @@ int	e_var_token(t_input **cmd, char *str)
 	while (str[i] != '\0')
 	{
 		i++;
-		if (str[i] == 32 || str[i] == '\0')
-			return (add_nodes(cmd, NULL, ft_substr(str, 0, i), E_VARIABLE), i);
+		// if (str[i] == ' ' || str[i] == '\0' || str[i] == '$' || str[i] == '\"')
+			//expand here already?
 	}
 	return (i);
+
+
+	
+	// int	i;
+
+	// i = 0;
+	// while (str[i] != '\0')
+	// {
+	// 	i++;
+	// 	if (str[i] == ' ' || str[i] == '\0' || str[i] == '$' || str[i] == '\"')
+	// 		return (add_nodes(cmd, NULL, ft_substr(str, 0, i), E_VARIABLE), i);
+	// }
+	// return (i);
+}
+
+void	move_quote(char *str)
+{
+	int	i;
+	char	*quote;
+	char	*s;
+
+	i = 0;
+	quote = ft_memchr(str+1, '\"', ft_strlen(str)-1);
+	s = quote;
+	s++;
+	while (s[i] != '\0' && s[i] != '<' && s[i] != '>' && s[i] != '|' && s[i] != ' ')
+		i++;
+	ft_memmove(quote, s, i);
+	ft_memset(quote+i, '\"', 1);
 }
 
 int	d_quotes_token(t_input **cmd, char *str)
@@ -58,19 +108,31 @@ int	d_quotes_token(t_input **cmd, char *str)
 	
 	e_var = 0;
 	i = 1;
+	move_quote(str);
 	while (str[i] != '\0')
 	{
 		if (str[i] == '$')
 			e_var++;
-		if (str[i] == 34 && i != 1 && e_var == 0)
-			return (add_nodes(cmd, NULL
-					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
-		else if (str[i] == 34 && i != 1 && e_var > 0)
+		if (str[i] == '\"' && i != 1 && e_var == 0)
+			return (add_nodes(cmd, NULL, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
+		else if (str[i] == '\"' && i != 1 && e_var > 0)
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), DQE_STRING), (i + 1));
 		i++;
 	}
 	return (-1);
+	// while (str[i] != '\0')
+	// {
+	// 	if (str[i] == '$')
+	// 		e_var++;
+	// 	if (str[i] == '\"' && i != 1 && e_var == 0)
+	// 		return (add_nodes(cmd, NULL, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
+	// 	else if (str[i] == '\"' && i != 1 && e_var > 0)
+	// 		return (add_nodes(cmd, NULL
+	// 				, ft_substr(str, 1, i - 1), DQE_STRING), (i + 1));
+	// 	i++;
+	// }
+	// return (-1);
 }
 
 int	s_quotes_token(t_input **cmd, char *str)
@@ -80,32 +142,12 @@ int	s_quotes_token(t_input **cmd, char *str)
 	i = 1;
 	while (str[i] != '\0')
 	{
-		if (str[i] == 39)
+		if (str[i] == '\'')
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), SQ_STRING), (i + 1));
 		i++;
 	}
 	return (-1);
-}
-void	remove_quotes(char *str, char c)
-{
-	int i = 0;
-	int x = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == c)
-		{
-			while (str[i] != '\0')
-			{
-				ft_memset(str+i, str[i+1], 1);
-				i++;
-				x++;
-			}
-			i = i - x;
-			x = 0;
-		}
-		i++;
-	}
 }
 int	check_env(char *str)
 {

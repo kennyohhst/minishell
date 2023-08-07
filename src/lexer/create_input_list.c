@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 16:56:19 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/07 20:37:34 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	create_input_list(t_input **cmd, char *str)
 	int	err_check;
 	int	i;
 	int	mode;
-	t_input	*temp;
 
 	i = 0;
 	while (str[i])
@@ -92,6 +91,5 @@ void	create_input_list(t_input **cmd, char *str)
 			return ;						// just returning doesn't tell the caller function that it's failed
 		else
 			i += err_check;
-		temp = (*cmd);
 	}
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/08/06 18:16:28 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/08/07 19:18:01 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_input		*free_tokens(t_input *list);
 //		~ lexer.c
 
 void		create_input_list(t_input **cmd, char *str);
-void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
+// void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
 void		init_signals(void);
 
 // ======== env utils ======================================================= //
@@ -69,6 +69,8 @@ int			valid_input_check(t_input *token);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
 void		test_data(t_data *data);
+void	    list_check(t_input *tokenized_input);
+
 
 
 // ========= executer ======================================================= //
