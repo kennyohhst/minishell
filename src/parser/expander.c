@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/19 20:27:18 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/07 21:09:09 by kkalika       ########   odam.nl         */
+/*   Updated: 2023/08/11 01:18:15 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,45 +29,80 @@ static bool	expand_edgecases(char c)
 	return (false);
 }
 
-int	special_strlen(char *str)
+int	end_position(char *str)
 {
 	int	i;
 
 	i = 1;
-	while (str[0] && (str[0] == ' ' || str[0] != '$'))
-		str++;
 	while (str[i] != '\0' && expand_edgecases(str[i]))
 		i++;
 	return (i);
 }
+char	*replace_env_with_value(char *token, char *env_value, int start, int end)
+{
+	char	*temp_s;
+	char	*temp_e;
+	
+	if (!env_value)
+	{
+		temp_s = ft_substr(token, 0, (start));
+		temp_e = ft_substr(token, end, (ft_strlen(token) - end));
+		free(token);
+		token = ft_strjoin_replace(temp_s, temp_e);
+		return (token);
+	}
+	else
+	{
+		temp_s = ft_substr(token, 0, (start));
+		temp_e = ft_substr(token, end+start, ft_strlen(token+end+start));
+		temp_s = ft_strjoin_replace(temp_s, env_value);
+		free(token);
+		token = ft_strjoin_replace(temp_s, temp_e);
+		return (token);
+	}
+}
+char	*exit_code_expand(char *token, t_data data, int start, int end)
+{
+	char	*temp_s;
+	char	*temp_e;
+	
+	// printf("start + end = total\n");
+	// printf("%d	  +	%d	= %d\n", start, end, start+end);
 
-bool	expander(t_data *data, t_input *token)
+	if (token[end] == '?')
+	{
+		temp_s = ft_substr(token, 0, start);
+		temp_e = ft_substr(token, end+start+1, ft_strlen(token+end+start));
+		temp_s = ft_strjoin_replace(temp_s, ft_itoa(data.exit_code));
+		free(token);
+		token = ft_strjoin_replace(temp_s, temp_e);
+		return (token);
+	}
+	else
+		return (token);
+}
+bool	expander(t_data data, t_input *token)
 {
 	int start;
-	int	len;
+	int	end;
 	char *temp;
 	
-	len = 0;
+	end = 0;
 	start = 0;
 	while (token)
 	{
-		if (token && token->token_type == E_VARIABLE)
+		while (ft_strnstr(token->str, "$", ft_strlen(token->str)))
 		{
-			start += start_position(token->str);
-			len += special_strlen(token->str+start);
-			temp = ft_getenv(data->envp, ft_substr(token->str, start+1, len-1));		//LEXER MAKES $USER$PATH 1 token instead of 2 tokens!
-			if (!temp)
-			{
-				token->token_type = STRING;
-				free(token->str);
-				token->str = temp;
-				return (false);
-			}
-			free(token->str);
-			token->str = ft_strjoin("", temp);
-			token->token_type = DQ_STRING;
+			start = start_position(token->str);
+			end = end_position(token->str+start);
+			printf("end = %d\n", end);
+			temp = ft_getenv(data.envp, ft_substr(token->str, start+1, end-1));		//LEXER MAKES $USER$PATH 1 token instead of 2 tokens!
+			// if (token->str[end] == '?')
+			// 	token->str = exit_code_expand(token->str, data, start, end);
+			// else
+				token->str = replace_env_with_value(token->str, temp, start, end);
 		}
-		len = 0;
+		end = 0;
 		token = token->next;
 	}
 	return (true);
@@ -166,3 +201,4 @@ bool	expander(t_data *data, t_input *token)
 
 // per word, take and add to new string
 // 
+		// temp_e = ft_substr(token, end, (ft_strlen(token) - end));

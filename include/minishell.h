@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/07 19:18:01 by kkalika       ########   odam.nl         */
+/*   Updated: 2023/08/10 13:45:49 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char		*ft_getenv(t_envp *envp_list, char *id);
 
 // ======= lexer ============================================================ //
 
-t_input		*lexer(char *input);
+t_input		*lexer(char *input, t_data data);
 int			check_quotes(char *str);
 
 int			p_d_token(t_input **cmd, char *str, int i, char c);
@@ -57,7 +57,7 @@ int			e_var_token(t_input **cmd, char *str);
 int			d_quotes_token(t_input **cmd, char *str);
 int			s_quotes_token(t_input **cmd, char *str);
 int			std_token(t_input **cmd, char *str);
-bool		expander(t_data *data, t_input *token);
+bool		expander(t_data data, t_input *token);
 
 // ======== valid_pipe_check.c ============================================== //
 

@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/07 20:58:57 by kkalika       ########   odam.nl         */
+/*   Updated: 2023/08/10 17:41:59 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **envp)
 
 
 
-		tokenized_input = lexer(input);
+		tokenized_input = lexer(input, data);
 		// list_check(tokenized_input);
 		if (!valid_input_check(tokenized_input))
 			continue ;
@@ -84,7 +84,7 @@ int	main(int argc, char **argv, char **envp)
 		// 	continue ;
 		// }
 
-		expander(&data, tokenized_input);
+		// expander(&data, tokenized_input);
 			// tokenized_input = free_tokens(tokenized_input);
 		data.command = parser(tokenized_input);
 		// test_data(&data);

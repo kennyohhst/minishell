@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/03 18:51:35 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/07 20:37:34 by kkalika       ########   odam.nl         */
+/*   Updated: 2023/08/10 13:37:56 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ static int	check_mode(char c)
 		return (-1);
 	if (c == '|' || c == '>' || c == '<')
 		return (REDIRECT);
-	else if (c == '$')
-		return (ENV_VARIABLE);
 	else if (c == '\"')
 		return (DOUBLE_QUOTE);
 	else if (c == '\'')
 		return (SINGLE_QUOTE);
 	return (STANDARD);
+	// else if (c == '$')
+	// 	return (ENV_VARIABLE);
 }
 
 

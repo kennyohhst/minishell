@@ -6,20 +6,25 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/23 14:10:55 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/08 00:40:00 by kkalika       ########   odam.nl         */
+/*   Updated: 2023/08/10 17:33:34 by kkalika       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_quotes(char *str, char c)
+int	remove_quotes(char *str, char c)
 {
-	int i = 0;
-	int x = 0;
+	int	len;
+	int i;
+	int	x;
+	
+	i = 0;
+	x = 0;
 	while (str[i] != '\0')
 	{
 		if (str[i] == c)
 		{
+			len = i;
 			while (str[i] != '\0')
 			{
 				ft_memset(str+i, str[i+1], 1);
@@ -31,6 +36,7 @@ void	remove_quotes(char *str, char c)
 		}
 		i++;
 	}
+	return (len);
 }
 
 int	p_d_token(t_input **cmd, char *str, int i, char c)
@@ -63,6 +69,7 @@ int	e_var_token(t_input **cmd, char *str)
 	int	i;
 
 	i = 0;
+	(void) cmd;
 	while (str[i] != '\0')
 	{
 		i++;
@@ -121,18 +128,6 @@ int	d_quotes_token(t_input **cmd, char *str)
 		i++;
 	}
 	return (-1);
-	// while (str[i] != '\0')
-	// {
-	// 	if (str[i] == '$')
-	// 		e_var++;
-	// 	if (str[i] == '\"' && i != 1 && e_var == 0)
-	// 		return (add_nodes(cmd, NULL, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
-	// 	else if (str[i] == '\"' && i != 1 && e_var > 0)
-	// 		return (add_nodes(cmd, NULL
-	// 				, ft_substr(str, 1, i - 1), DQE_STRING), (i + 1));
-	// 	i++;
-	// }
-	// return (-1);
 }
 
 int	s_quotes_token(t_input **cmd, char *str)
@@ -171,16 +166,16 @@ int	std_token(t_input **cmd, char *str)
 	while (str[i] != '\0')
 	{
 		i++;
-		if (str[i] == ' ' || str[i] == '\0' || str[i] == '|' || str[i] == '>' || str[i] == '<' || str[i] == '$')
+		if (str[i] == ' ' || str[i] == '\0' || str[i] == '|' || str[i] == '>' || str[i] == '<')
 			return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
 		else if (str[i] == '\"' || str[i] == '\'')
 		{
-			if (check_env(str+i))
+			i = remove_quotes(str, str[i]);
+			if (!str[i])
 				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
-			remove_quotes(str, str[i]);
+			else
+				i--;
 		}
-			// add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING);
-			// return (i);
 	}
 	return (-1);
 }
