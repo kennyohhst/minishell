@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/08/15 19:41:20 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/08/15 20:50:47 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	skip_single_quotes(char *str, int i)
 {
-	if (str[i] == '\'')
+	if (str[i] && str[i] == '\'')
 	{
 		i++;
 		while (str[i] && str[i] != '\'')
@@ -101,6 +101,8 @@ char	*strchr_skip_single_quotes(const char *s, int c)
 		i = skip_single_quotes((char *) s, i);
 		if (s[i] == (char) c)
 			return ((char *) s + i);
+		else if (!s[i])
+			return (NULL);
 		i++;
 	}
 	return (NULL);
