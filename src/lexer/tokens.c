@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   tokens.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/23 14:10:55 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/10 17:33:34 by kkalika       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   tokens.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
+/*   Updated: 2023/08/15 17:40:01 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ void	move_quote(char *str)
 	ft_memset(quote+i, '\"', 1);
 }
 
-int	d_quotes_token(t_input **cmd, char *str)
+int	d_quotes_token(t_input **cmd, char *str, t_data data)
 {
 	int	i;
 	int	e_var;
+	(void) data;
 	
 	e_var = 0;
 	i = 1;
-	move_quote(str);
 	while (str[i] != '\0')
 	{
 		if (str[i] == '$')

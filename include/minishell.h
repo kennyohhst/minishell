@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/10 13:45:49 by kkalika       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
+/*   Updated: 2023/08/15 15:22:08 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
 
 //		~ create_input_list.c
 
-void		create_input_list(t_input **cmd, char *str);
+void		create_input_list(t_input **cmd, char *str, t_data data);
 void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
 t_input		*free_tokens(t_input *list);
 
 //		~ lexer.c
 
-void		create_input_list(t_input **cmd, char *str);
+// void		create_input_list(t_input **cmd, char *str);
 // void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
 void		init_signals(void);
 
@@ -54,10 +54,11 @@ int			check_quotes(char *str);
 
 int			p_d_token(t_input **cmd, char *str, int i, char c);
 int			e_var_token(t_input **cmd, char *str);
-int			d_quotes_token(t_input **cmd, char *str);
+int			d_quotes_token(t_input **cmd, char *str, t_data data);
 int			s_quotes_token(t_input **cmd, char *str);
 int			std_token(t_input **cmd, char *str);
-bool		expander(t_data data, t_input *token);
+bool		expander(t_data data, char **token);
+// bool		expander(t_data data, t_input *token);
 
 // ======== valid_pipe_check.c ============================================== //
 

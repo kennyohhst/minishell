@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   expander.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/19 20:27:18 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/11 01:18:15 by kkalika       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
+/*   Updated: 2023/08/15 19:41:20 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	skip_single_quotes(char *str, int i)
+{
+	if (str[i] == '\'')
+	{
+		i++;
+		while (str[i] && str[i] != '\'')
+			i++;
+	}
+	return (i);
+}
 static int	start_position(char *str)
 {
 	int	i;
 
-	i = 0;
+	i = skip_single_quotes(str, 0);
 	while (str[i] && str[i] != '$')
+	{
+		i = skip_single_quotes(str, i);
 		i++;
+	}
 	return (i);
 }
 
@@ -46,7 +59,7 @@ char	*replace_env_with_value(char *token, char *env_value, int start, int end)
 	if (!env_value)
 	{
 		temp_s = ft_substr(token, 0, (start));
-		temp_e = ft_substr(token, end, (ft_strlen(token) - end));
+		temp_e = ft_substr(token+start, end, (ft_strlen(token) - end));
 		free(token);
 		token = ft_strjoin_replace(temp_s, temp_e);
 		return (token);
@@ -65,23 +78,35 @@ char	*exit_code_expand(char *token, t_data data, int start, int end)
 {
 	char	*temp_s;
 	char	*temp_e;
-	
-	// printf("start + end = total\n");
-	// printf("%d	  +	%d	= %d\n", start, end, start+end);
 
 	if (token[end] == '?')
 	{
 		temp_s = ft_substr(token, 0, start);
-		temp_e = ft_substr(token, end+start+1, ft_strlen(token+end+start));
+		temp_e = ft_substr(token, end+1, ft_strlen(token+end+start));
 		temp_s = ft_strjoin_replace(temp_s, ft_itoa(data.exit_code));
-		free(token);
+		// free(token);
 		token = ft_strjoin_replace(temp_s, temp_e);
 		return (token);
 	}
 	else
 		return (token);
 }
-bool	expander(t_data data, t_input *token)
+char	*strchr_skip_single_quotes(const char *s, int c)
+{
+	int		i;
+
+	i = skip_single_quotes((char *) s, 0);
+	while (s[i])
+	{
+		i = skip_single_quotes((char *) s, i);
+		if (s[i] == (char) c)
+			return ((char *) s + i);
+		i++;
+	}
+	return (NULL);
+}
+
+bool	expander(t_data data, char **token)
 {
 	int start;
 	int	end;
@@ -89,116 +114,20 @@ bool	expander(t_data data, t_input *token)
 	
 	end = 0;
 	start = 0;
-	while (token)
+	while (strchr_skip_single_quotes((*token), '$') != NULL)
 	{
-		while (ft_strnstr(token->str, "$", ft_strlen(token->str)))
+		start = start_position((*token));
+		end = end_position((*token)+start);
+		if (ft_strnstr((*token), "$?", ft_strlen((*token))))
 		{
-			start = start_position(token->str);
-			end = end_position(token->str+start);
-			printf("end = %d\n", end);
-			temp = ft_getenv(data.envp, ft_substr(token->str, start+1, end-1));		//LEXER MAKES $USER$PATH 1 token instead of 2 tokens!
-			// if (token->str[end] == '?')
-			// 	token->str = exit_code_expand(token->str, data, start, end);
-			// else
-				token->str = replace_env_with_value(token->str, temp, start, end);
+			temp = ft_itoa(data.exit_code);
+			end++;
 		}
+		else
+			temp = ft_getenv(data.envp, ft_substr((*token), start+1, end-1));
+		(*token) = replace_env_with_value((*token), temp, start, end);
+		start = 0;
 		end = 0;
-		token = token->next;
 	}
 	return (true);
 }
-
-
-
-// int	env_end_count(char	*str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i] != '\0')
-// 	{
-// 		if (str[i] == '$')
-// 		{
-// 			i++;
-// 			while (str[i] != '\0' && str[i] != ' ')
-// 			{
-// 				i++;
-// 				if (expand_edgecases(str[i]))
-// 					return (i);
-// 			}
-// 			continue ;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int	count_env(char *str)
-// {
-// 	int i;
-// 	int	x;
-
-// 	x = 0;
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$')
-// 			x++;
-// 		i++;
-// 	}
-// 	return (x);
-// }
-// char	*replace_env(char *str, t_data *data)
-// {
-// 	char	*temp;
-// 	int		i;
-// 	int		end_env;
-
-// 	end_env = env_end_count(str);
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$')
-// 		{
-// 			temp = ft_substr(str, 0, i);
-// 			temp = ft_strjoin(temp, ft_getenv(data->envp, ft_substr(str, i+1,(end_env-i-1))));	
-// 			if ((int) ft_strlen(str) != end_env)
-// 			{
-// 				temp = ft_strjoin(temp, str+end_env);
-// 				free(str);
-// 				return (temp);
-// 			}
-// 		}
-// 		i++;
-// 	}
-// 	return (free(str), temp);
-// }
-
-// t_input	*expander(t_data *data, t_input *token)
-// {
-// 	// char *temp;
-// 	int	i;
-
-// 	while (token)
-// 	{
-// 		if (token->token_type == E_VARIABLE)
-// 		{
-// 			token->token_type = DQE_STRING;
-// 		}
-// 		if (token->token_type == DQE_STRING)
-// 		{
-// 			i = count_env(token->str);
-// 			while (i--)
-// 				token->str = replace_env(token->str, data);
-// 			token->token_type = DQ_STRING;
-// 		}
-// 		token = token->next;
-// 	}
-// 	return (NULL);
-// }
-
-
-
-// per word, take and add to new string
-// 
-		// temp_e = ft_substr(token, end, (ft_strlen(token) - end));
