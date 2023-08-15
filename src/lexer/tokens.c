@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/08/15 17:40:01 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/08/15 20:15:50 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,8 @@ int	std_token(t_input **cmd, char *str)
 	int		i;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (i < (int) ft_strlen(str)+1)
 	{
-		i++;
 		if (str[i] == ' ' || str[i] == '\0' || str[i] == '|' || str[i] == '>' || str[i] == '<')
 			return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
 		else if (str[i] == '\"' || str[i] == '\'')
@@ -176,6 +175,7 @@ int	std_token(t_input **cmd, char *str)
 			else
 				i--;
 		}
+		i++;
 	}
 	return (-1);
 }
