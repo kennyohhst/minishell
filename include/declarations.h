@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   declarations.h                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 16:17:00 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   declarations.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/26 16:37:49 by opelser           #+#    #+#             */
+/*   Updated: 2023/08/17 18:30:23 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_input					t_input;
 struct s_input
 {
 	char			*str;
+	int				argcount;
 	t_token_type	token_type;
 	\
 	t_input			*next;
@@ -75,6 +76,7 @@ typedef struct s_command				t_command;
 
 struct s_command
 {
+	int				arg_count;
 	char			**argv;
 	\
 	t_redirect		*input;
