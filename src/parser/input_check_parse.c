@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   input_check_parse.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: code <code@student.42.fr>                    +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/18 18:53:30 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/10 13:29:58 by kkalika       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   input_check_parse.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/18 18:53:30 by kkalika           #+#    #+#             */
+/*   Updated: 2023/08/17 18:47:40 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ int	if_string(t_input **token)
 {
 	if ((*token)->token_type >= 6)
 	{
+		(*token)->argcount++;
+		if ((*token)->next)
+			(*token)->next->argcount += (*token)->argcount;
 		(*token) = (*token)->next;
 		return (1) ;
 	}
@@ -44,6 +47,7 @@ int	valid_input_check(t_input *token)
 			return (write(1, "syntax error\n", 14), 0);
 		if (token->token_type == 0)
 		{
+			token->argcount = 0;
 			if (next_check(&token))
 				continue ;
 			return (write(1, "syntax error\n", 14), 0);

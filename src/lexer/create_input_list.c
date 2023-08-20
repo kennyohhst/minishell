@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/08/15 19:41:56 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/08/17 18:41:09 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)	// I need this
 	new->str = ft_strdup(str);
 	free(str);
 	new->token_type = type;
+	new->argcount = 0;
 	temp = *cmd;
 	if (temp)
 	{
@@ -64,10 +65,6 @@ static int	check_mode(char c)
 		return (-1);
 	if (c == '|' || c == '>' || c == '<')
 		return (REDIRECT);
-	// else if (c == '\"')
-	// 	return (STANDARD);
-	// else if (c == '\'')
-	// 	return (STANDARD);
 	return (STANDARD);
 }
 

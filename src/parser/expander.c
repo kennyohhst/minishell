@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/08/15 20:50:47 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/08/20 20:37:20 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ char	*exit_code_expand(char *token, t_data data, int start, int end)
 		temp_s = ft_substr(token, 0, start);
 		temp_e = ft_substr(token, end+1, ft_strlen(token+end+start));
 		temp_s = ft_strjoin_replace(temp_s, ft_itoa(data.exit_code));
-		// free(token);
 		token = ft_strjoin_replace(temp_s, temp_e);
 		return (token);
 	}
@@ -107,6 +106,34 @@ char	*strchr_skip_single_quotes(const char *s, int c)
 	}
 	return (NULL);
 }
+// char	*here_doc_skip(const char *s)
+// {
+// 	int		i;
+// 	char	*temp;
+
+// 	i = 0;
+// 	temp = ft_strnstr(s+i, "<<", ft_strlen(s+i));
+// 	while (s[i])
+// 	{
+// 		return ((char *) s + i);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
+
+// int	here_doc_skip(char *str)
+// {
+// 	char	*temp;
+// 	int		i;
+
+// 	temp = ft_strnstr(str, "<<", ft_strlen(str));
+// 	if (!temp)
+// 		return (0);
+// 	else
+// 	{
+		
+// 	}
+// }
 
 bool	expander(t_data data, char **token)
 {
@@ -118,6 +145,7 @@ bool	expander(t_data data, char **token)
 	start = 0;
 	while (strchr_skip_single_quotes((*token), '$') != NULL)
 	{
+		// here_doc_skip((*token));
 		start = start_position((*token));
 		end = end_position((*token)+start);
 		if (ft_strnstr((*token), "$?", ft_strlen((*token))))
