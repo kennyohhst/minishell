@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 15:32:31 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/22 14:23:32 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 bool	is_builtin(char **argv)
 {
+	if (!argv)
+		return (false);
 	if (!strcmp(argv[0], "echo")
 		|| (!strcmp(argv[0], "pwd"))
 		|| (!strcmp(argv[0], "env"))

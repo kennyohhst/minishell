@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 16:30:21 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/22 14:21:57 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 {
 	if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
 		exit (1);
+	if (cmd->argv == NULL)
+		exit (0);
+	printf("cmd->argv = %p\n", cmd->argv);
+	printf("cmd->argv[0] = %s\n", cmd->argv[0]);
 	if (is_builtin(cmd->argv) == true)
 		exit(handle_builtin(cmd, data, fd_in, fd_out));
 	if (set_command_path(cmd, data->envp) > 0)
