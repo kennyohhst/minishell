@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   input_check_parse.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/18 18:53:30 by kkalika           #+#    #+#             */
-/*   Updated: 2023/08/17 18:47:40 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   input_check_parse.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/18 18:53:30 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/08/22 14:56:18 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,26 @@ int	next_check(t_input **token)
 int	valid_input_check(t_input *token)
 {
 	if (token && token->token_type == PIPE)
-		return (write(1, "syntax error\n", 14), 0);
+		return (write(2, "syntax error\n", 14), 0);
 	while (token)
 	{
 		if (if_string(&token))
 			continue ;
 		if (token->token_type == 1)
-			return (write(1, "syntax error\n", 14), 0);
+			return (write(2, "syntax error\n", 14), 0);
 		if (token->token_type == 0)
 		{
 			token->argcount = 0;
 			if (next_check(&token))
 				continue ;
-			return (write(1, "syntax error\n", 14), 0);
+			return (write(2, "syntax error\n", 14), 0);
 		}
 		if (token->token_type >= 2 && token->token_type <= 5)
 		{
 			token = token->next;
 			if (token && token->token_type >= 6)
 				continue ;
-			return (write(1, "syntax error\n", 14), 0);
+			return (write(2, "syntax error\n", 14), 0);
 		}
 	}
 	return (1);

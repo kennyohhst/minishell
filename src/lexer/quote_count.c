@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   quote_count.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
-/*   Updated: 2023/06/09 15:47:58 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   quote_count.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/21 13:16:43 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/08/22 14:59:50 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	quote_count(char *str, char quote_type, int i)
 	}
 	if ((count % 2) != 0)
 	{
-		write(1, "unclosed quotes\n", 17);
+		write(2, "unclosed quotes\n", 17);
 		return (-1);
 	}
 	return (i);

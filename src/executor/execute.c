@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/22 14:21:57 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/22 14:54:54 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 		exit (1);
 	if (cmd->argv == NULL)
 		exit (0);
-	printf("cmd->argv = %p\n", cmd->argv);
-	printf("cmd->argv[0] = %s\n", cmd->argv[0]);
 	if (is_builtin(cmd->argv) == true)
 		exit(handle_builtin(cmd, data, fd_in, fd_out));
 	if (set_command_path(cmd, data->envp) > 0)
@@ -131,6 +129,8 @@ int	execute(t_data *data)
 {
 	int		fd_in;
 
+	// printf("cmd->argv = %p\n", data->command->argv);
+	// printf("cmd->argv[0] = %s\n", data->command->argv[0]);
 	fd_in = dup(STDIN_FILENO);
 	if (fd_in == -1)
 	{
@@ -140,12 +140,18 @@ int	execute(t_data *data)
 	if (data->command->next)
 	{
 		if (run_pipeline(data, fd_in) == -1)
+		{
+			close(fd_in);
 			return (-1);
+		}
 	}
 	else
 	{
 		if (run_single_command(data, fd_in) == -1)
+		{
+			close(fd_in);
 			return (-1);
+		}
 	}
 	return (1);
 }

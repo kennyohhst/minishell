@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/10 17:41:59 by kkalika       ########   odam.nl         */
+/*   Updated: 2023/08/22 14:57:23 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ int	main(int argc, char **argv, char **envp)
 		tokenized_input = lexer(input, data);
 		// list_check(tokenized_input);
 		if (!valid_input_check(tokenized_input))
+		{
+			data.exit_code = 2;
 			continue ;
+		}
 
 		// if (lexer(tokenized_input, raw_input) == -1)
 		// {
