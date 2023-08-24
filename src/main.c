@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/22 14:57:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/23 00:07:25 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	get_next_input(char **input)
 	*input = readline("minishell \% ");
 	if (!*input)
 	{
-		dprintf(STDERR_FILENO, "exit\n");
+		// dprintf(STDERR_FILENO, "exit\n");
 		return (-1);
 	}
 	return (1);
@@ -57,7 +57,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void) argc;
 	(void) argv;
-	rl_outstream = stderr;
+	// rl_outstream = stderr;
 	init_data(&data);
 	data.envp = environ_to_list(envp);
 	if (!data.envp)

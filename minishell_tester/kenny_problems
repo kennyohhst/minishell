@@ -1,0 +1,128 @@
+Kenny: 
+Test  13: ❌ echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<" 
+mini output = (> >> < README.md bash.supp bash_outfiles bonus bonus_bonus builtins extras local.supp loop.out manual_tests mini_outfiles os_specific out outfiles pipes redirects syntax test_files tester wildcards ? [ ] | ; [ ] || && ( ) & # <<)
+bash output = (> >> < README.md bash.supp bash_outfiles bonus bonus_bonus builtins extras local.supp loop.out manual_tests mini_outfiles os_specific out outfiles pipes redirects syntax test_files tester wildcards ? [ ] | ; [ ] || && ( ) & # $ <<)
+
+Test  17: ❌ echo "$" 
+mini output = ()
+bash output = ($)
+
+Test  19: ❌ echo $ 
+mini output = ()
+bash output = ($)
+
+Test  66: ❌ echo <"./test_files/infile" "bonjour       42" 
+mini output = ()
+bash output = (bonjour 42)
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory)
+bash error = ()
+
+Test  73: ❌ echo <"./test_files/infile_big" | cat <"./test_files/infile" 
+mini output = ()
+bash output = (hi hello world 42)
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory)
+bash error = ()
+
+Test  74: ❌ echo <"./test_files/infile_big" | cat "./test_files/infile" 
+mini output = ()
+bash output = (hi hello world 42)
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory)
+bash error = ()
+
+Test  75: ❌ echo <"./test_files/infile_big" | echo <"./test_files/infile" 
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory)
+bash error = ()
+
+Test  93: ❌ ls >"./outfiles/outfile01" >./test_files/invalid_permission >"./outfiles/outfile02" 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+bash outfiles:
+mini error = ( No such file or directory)
+bash error = ( Permission denied)
+
+Test  95: ❌ cat <"./test_files/infile" >"./outfiles/outfile01" 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+bash outfiles:
+hi
+hello
+world
+42
+mini exit code = 1
+bash exit code = 0
+mini error = ( No such file or directory)
+bash error = ()
+
+Test 110: ❌ cat >./outfiles/outfile01 <missing 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+bash outfiles:
+
+Test 112: ✅⚠️  cat >./test_files/invalid_permission <missing 
+mini error = ( No such file or directory)
+bash error = ( Permission denied)
+
+Test 113: ❌ cat >./outfiles/outfile01 <missing >./test_files/invalid_permission 
+Only in ./bash_outfiles: outfile01
+mini outfiles:
+bash outfiles:
+
+Test 149: ❌ $ 
+mini exit code = 0
+bash exit code = 127
+mini error = ()
+bash error = ( command not found)
+
+Test  92: ❌ ls >"./outfiles/outfile""1""2""3""4""5"
+Only in ./mini_outfiles: outfile"1"2"3"4"5
+Only in ./bash_outfiles: outfile12345
+mini outfiles:
+README.md
+bash.supp
+bash_outfiles
+bonus
+bonus_bonus
+builtins
+extras
+local.supp
+loop.out
+manual_tests
+mini_outfiles
+os_specific
+out
+outfiles
+pipes
+redirects
+syntax
+test_files
+tester
+wildcards
+bash outfiles:
+README.md
+bash.supp
+bash_outfiles
+bonus
+bonus_bonus
+builtins
+extras
+local.supp
+loop.out
+manual_tests
+mini_outfiles
+os_specific
+out
+outfiles
+pipes
+redirects
+syntax
+test_files
+tester
+wildcards

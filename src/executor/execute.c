@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/22 14:54:54 by opelser       ########   odam.nl         */
+/*   Updated: 2023/08/25 00:14:27 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,39 +23,36 @@ static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 		exit (0);
 	if (is_builtin(cmd->argv) == true)
 		exit(handle_builtin(cmd, data, fd_in, fd_out));
-	if (set_command_path(cmd, data->envp) > 0)
+	if (set_command_path(cmd, data->envp) != 0)
 	{
 		dprintf(STDERR_FILENO, "minishell: %s: command not found\n", cmd->argv[0]);
 		exit(127);
 	}
 	if (fd_in != USE_STANDARD_FD && dup2(fd_in, STDIN_FILENO) == -1)
-		perror("minishell: dup2");
+		perror("minishell: dup2"); // exit and close?
 	if (fd_out >= 0 && dup2(fd_out, STDOUT_FILENO) == -1)
-		perror("minishell: dup2");
+		perror("minishell: dup2"); // exit and close?
 	if (fd_in != USE_STANDARD_FD)
 		close(fd_in);
 	if (fd_out >= 0)
 		close(fd_out);
 	execve(cmd->argv[0], cmd->argv, envp_list_to_arr(data->envp));
 	perror(cmd->argv[0]);
-	exit(errno);
+	if (errno == EACCES)
+		exit(126);
+	else
+		exit(127);
 }
 
-/**
- * @param cmd The current command node
- * @param envp The current envp list
- * @param fd_in File descriptor to read from
- * @param pipe_fd File descriptors of the current pipe
- * @return (pid_t) The pid of the child process created
- */
 static int	run_command(t_command *cmd, t_data *data, int fd_in, int pipe_fd[2])
 {
 	pid_t	pid;
 	int		fd_out;
 
-	fd_out = USE_STANDARD_FD;
 	if (pipe_fd)
 		fd_out = pipe_fd[1];
+	else
+		fd_out = USE_STANDARD_FD;
 	pid = fork();
 	if (pid == -1)
 	{

@@ -1,0 +1,27 @@
+Test  11: ✅⚠️  exit 9223372036854775807
+mini error = ( numeric argument required)
+bash error = ()
+
+Test  13: ❌ exit -9223372036854775807
+mini exit code = 255
+bash exit code = 1
+mini error = ( numeric argument required)
+bash error = ()
+
+Test  14: ❌ exit -9223372036854775808
+mini exit code = 255
+bash exit code = 0
+mini error = ( numeric argument required)
+bash error = ()
+
+Test  58: ❌ export | sort | grep -v SHLVL | grep -v "declare -x _" | grep -v "PS.=" 
+mini output = (declare -x Apple_PubSub_Socket_Render="/private/tmp/com.apple.launchd.tA8T59Hjue/Render" declare -x COLORFGBG="7;0" declare -x COLORTERM="truecolor" declare -x DISPLAY="/private/tmp/com.apple.launchd.zMVdNYyAOU/org.xquartz:0" declare -x HOME="/Users/opelser" declare -x HOMEBREW_CACHE="/tmp/opelser/Homebrew/Caches" declare -x HOMEBREW_TEMP="/tmp/opelser/Homebrew/Temp" declare -x ITERM_PROFILE="Default" declare -x ITERM_SESSION_ID="w0t0p0:7A0E62B5-9369-465E-A81A-6C8C935FE31F" declare -x LANG="en_US.UTF-8" declare -x LC_TERMINAL="iTerm2" declare -x LC_TERMINAL_VERSION="3.4.16" declare -x LESS="-R" declare -x LOGNAME="opelser" declare -x LSCOLORS="Gxfxcxdxbxegedabagacad" declare -x LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" declare -x PAGER="less" declare -x PATH="/Users/opelser/.brew/bin:/Users/opelser/.brew/bin:/Users/opelser/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/usr/local/munki:/opt/X11/bin:~/.dotnet/tools" declare -x PWD="/Users/opelser/Desktop/minishell/minishell_tester" declare -x SHELL="/bin/zsh" declare -x SSH_AUTH_SOCK="/private/tmp/com.apple.launchd.RMguIjwCBT/Listeners" declare -x TERM="xterm-256color" declare -x TERM_PROGRAM="iTerm.app" declare -x TERM_PROGRAM_VERSION="3.4.16" declare -x TERM_SESSION_ID="w0t0p0:7A0E62B5-9369-465E-A81A-6C8C935FE31F" declare -x TMPDIR="/var/folders/zz/zyxvpxvq6csfxvn_n000dq3h003drw/T/" declare -x USER="opelser" declare -x XPC_FLAGS="0x0" declare -x XPC_SERVICE_NAME="0" declare -x ZSH="/Users/opelser/.oh-my-zsh" declare -x _="../minishell" declare -x __CF_USER_TEXT_ENCODING="0x0:0:0")
+bash output = (declare -x Apple_PubSub_Socket_Render="/private/tmp/com.apple.launchd.tA8T59Hjue/Render" declare -x COLORFGBG="7;0" declare -x COLORTERM="truecolor" declare -x DISPLAY="/private/tmp/com.apple.launchd.zMVdNYyAOU/org.xquartz:0" declare -x HOME="/Users/opelser" declare -x HOMEBREW_CACHE="/tmp/opelser/Homebrew/Caches" declare -x HOMEBREW_TEMP="/tmp/opelser/Homebrew/Temp" declare -x ITERM_PROFILE="Default" declare -x ITERM_SESSION_ID="w0t0p0:7A0E62B5-9369-465E-A81A-6C8C935FE31F" declare -x LANG="en_US.UTF-8" declare -x LC_TERMINAL="iTerm2" declare -x LC_TERMINAL_VERSION="3.4.16" declare -x LESS="-R" declare -x LOGNAME="opelser" declare -x LSCOLORS="Gxfxcxdxbxegedabagacad" declare -x LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" declare -x OLDPWD declare -x PAGER="less" declare -x PATH="/Users/opelser/.brew/bin:/Users/opelser/.brew/bin:/Users/opelser/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/usr/local/munki:/opt/X11/bin:~/.dotnet/tools" declare -x PWD="/Users/opelser/Desktop/minishell/minishell_tester" declare -x SHELL="/bin/zsh" declare -x SSH_AUTH_SOCK="/private/tmp/com.apple.launchd.RMguIjwCBT/Listeners" declare -x TERM="xterm-256color" declare -x TERM_PROGRAM="iTerm.app" declare -x TERM_PROGRAM_VERSION="3.4.16" declare -x TERM_SESSION_ID="w0t0p0:7A0E62B5-9369-465E-A81A-6C8C935FE31F" declare -x TMPDIR="/var/folders/zz/zyxvpxvq6csfxvn_n000dq3h003drw/T/" declare -x USER="opelser" declare -x XPC_FLAGS="0x0" declare -x XPC_SERVICE_NAME="0" declare -x ZSH="/Users/opelser/.oh-my-zsh")
+
+Test 139: ✅⚠️  $PWD
+mini error = ( Permission denied)
+bash error = ( is a directory)
+
+Test 147: ✅⚠️  ./test_files
+mini error = ( Permission denied)
+bash error = ( is a directory)
