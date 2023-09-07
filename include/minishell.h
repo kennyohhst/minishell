@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/08/15 15:22:08 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/02 16:46:02 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ int			e_var_token(t_input **cmd, char *str);
 int			d_quotes_token(t_input **cmd, char *str, t_data data);
 int			s_quotes_token(t_input **cmd, char *str);
 int			std_token(t_input **cmd, char *str);
-bool		expander(t_data data, char **token);
-// bool		expander(t_data data, t_input *token);
+bool		expander(t_data data, char **token, char *temp, int i);
 
 // ======== valid_pipe_check.c ============================================== //
 
@@ -70,9 +69,12 @@ int			valid_input_check(t_input *token);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
 void		test_data(t_data *data);
-void	    list_check(t_input *tokenized_input);
-
-
+void		list_check(t_input *tokenized_input);
+int			malloc_argv(t_input **token);
+void		malloc_cmd_node(t_command **cmd, t_command *temp, t_input **token);
+void		malloc_redirects_node(t_redirect **red, int type);
+int			first_time(t_command **command, t_input **token, int i);
+int			pipe_encounter(t_command **command, t_input **token, int i);
 
 // ========= executer ======================================================= //
 
@@ -95,7 +97,7 @@ int			ft_exit(t_data *data, char **argv);
 
 // ========= free_data======================================================= //
 
-void	free_cmd(t_command *cmd);
-void	free_envp(t_envp *envp);
+void		free_cmd(t_command *cmd);
+void		free_envp(t_envp *envp);
 
 #endif

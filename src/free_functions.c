@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:41:28 by code              #+#    #+#             */
-/*   Updated: 2023/08/04 19:50:20 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/07 14:17:22 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_input	*free_tokens(t_input *list)
 	}
 	return (NULL);
 }
+
 static void	free_argv(char **argv)
 {
 	int	i;
@@ -40,7 +41,6 @@ static void	free_argv(char **argv)
 	}
 	free(argv);
 }
-
 
 void	free_input_output(t_redirect *output)
 {
@@ -73,17 +73,17 @@ void	free_envp(t_envp *envp)
 	}
 }
 
-
 void	free_cmd(t_command *cmd)
 {
 	t_command	*tmp;
+
 	if (!cmd)
 		return ;
 	tmp = cmd;
 	while (cmd)
 	{
 		tmp = cmd;
-		cmd = cmd->next;		
+		cmd = cmd->next;
 		free_argv(tmp->argv);
 		free_input_output(tmp->input);
 		free_input_output(tmp->output);

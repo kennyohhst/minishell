@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/23 00:07:25 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
+/*   Updated: 2023/09/02 17:09:50 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,38 @@ int	get_next_input(char **input)
 	return (1);
 }
 
+void	run_shell(t_input *tokenized_input, char *input, t_data data)
+{
+	while (1)
+	{
+		init_signals();
+		if (get_next_input(&input) == -1)
+			break ;
+		tokenized_input = lexer(input, data);
+		if (!valid_input_check(tokenized_input))
+		{
+			data.exit_code = 2;
+			continue ;
+		}
+		data.command = parser(tokenized_input);
+		if (!data.command)
+			continue ;
+		if (execute(&data) == -1)
+			data.exit_code = 1;
+		wait_for_children(&data);
+		free_tokens(tokenized_input);
+		free_cmd(data.command);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_input			*tokenized_input;
 	char			*input;
 	t_data			data;
 
+	tokenized_input = NULL;
+	input = NULL;
 	(void) argc;
 	(void) argv;
 	// rl_outstream = stderr;
@@ -62,53 +88,6 @@ int	main(int argc, char **argv, char **envp)
 	data.envp = environ_to_list(envp);
 	if (!data.envp)
 		return (1);
-	while (1)
-	{
-		init_signals();
-
-
-
-		if (get_next_input(&input) == -1)
-			break ;
-
-
-
-		tokenized_input = lexer(input, data);
-		// list_check(tokenized_input);
-		if (!valid_input_check(tokenized_input))
-		{
-			data.exit_code = 2;
-			continue ;
-		}
-
-		// if (lexer(tokenized_input, raw_input) == -1)
-		// {
-		// 	data.exit_code = 1;
-		// 	continue ;
-		// }
-
-		// expander(&data, tokenized_input);
-			// tokenized_input = free_tokens(tokenized_input);
-		data.command = parser(tokenized_input);
-		// test_data(&data);
-		if (!data.command)
-			continue ;
-
-
-		// if (parser(&data, tokenized_input) == -1)
-		// {
-		// 	data.exit_code = 1;
-		// 	continue ;
-		// }
-
-
-		if (execute(&data) == -1)
-			data.exit_code = 1;
-		wait_for_children(&data);
-
-
-		free_tokens(tokenized_input);
-		free_cmd(data.command);
-	}
+	run_shell(tokenized_input, input, data);
 	return (data.exit_code);
 }

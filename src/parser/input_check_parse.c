@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   input_check_parse.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/18 18:53:30 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/22 14:56:18 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   input_check_parse.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/18 18:53:30 by kkalika           #+#    #+#             */
+/*   Updated: 2023/09/02 14:42:16 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	if_string(t_input **token)
 		if ((*token)->next)
 			(*token)->next->argcount += (*token)->argcount;
 		(*token) = (*token)->next;
-		return (1) ;
+		return (1);
 	}
 	return (0);
 }

@@ -1,41 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   test.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/17 23:25:51 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/07 19:28:51 by kkalika       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/17 23:25:51 by kkalika           #+#    #+#             */
+/*   Updated: 2023/09/02 14:24:32 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// static const char *g_token_id[] = {
-// 	[PIPE] = "PIPE",	
-// 	[OR] = "OR",	
-// 	[OUTPUT_REDIRECT] = "OUTPUT_REDIR",
-// 	[APPEND] = "APPEND",
-// 	[INPUT_REDIRECT] = "INPUT_REDIR",
-// 	[HERE_DOC] = "HERE_DOC",
-// 	[E_VARIABLE] = "E_VAR",
-// 	[DQ_STRING] = "DQ_STR",
-// 	[DQE_STRING] = "DQ_ENV_STR",
-// 	[SQ_STRING] = "SQ_STR",
-// 	[STRING] = "STR"
-// };
-
 void	test_data(t_data *data)
 {
-	int	x = 0;
-	// int	y = 0;
+	int		x;
+	t_data	*temp;
+
+	x = 0;
 	if (!data)
 		return ;
-	t_data	*temp = data;
-	while  (temp->command)
+	temp = data;
+	while (temp->command)
 	{
-		while  (temp->command->argv && temp->command->argv[x])
+		while (temp->command->argv && temp->command->argv[x])
 			printf("%s\n", temp->command->argv[x++]);
 		temp->command = temp->command->next;
 		x = 0;

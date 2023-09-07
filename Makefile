@@ -36,6 +36,7 @@ SRC_FILES := \
 				parser/input_check_parse.c		\
 				parser/parser.c					\
 				parser/expander.c				\
+				parser/malloc_functions.c		\
 				test.c							\
 \
 				executor/execute.c				\

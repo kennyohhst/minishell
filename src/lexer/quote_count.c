@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   quote_count.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/21 13:16:43 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/08/22 14:59:50 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   quote_count.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/21 13:16:43 by kkalika           #+#    #+#             */
+/*   Updated: 2023/09/02 14:27:16 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_quotes(char *str)
 {
 	int		i;
 	char	*temp;
-	
+
 	temp = str;
 	if (!str)
 		return (0);
@@ -52,7 +52,7 @@ int	check_quotes(char *str)
 			if (str[i] != '\0')
 			{
 				i++;
-				continue;
+				continue ;
 			}
 			return (1);
 		}
