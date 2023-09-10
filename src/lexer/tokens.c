@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/02 14:36:35 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/10 16:46:14 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,16 @@ int	p_d_token(t_input **cmd, char *str, int i, char c)
 
 int	d_quotes_token(t_input **cmd, char *str, t_data data)
 {
+	bool	quote;
 	int		i;
 
 	(void) data;
 	i = 1;
+	quote = false;
 	while (str[i] != '\0')
 	{
+		if (str[i] == '\"')
+			quote = true;
 		if (str[i] == ' ' && str[i - 1] != '\"')
 			i++;
 		else if (str[i] == '\"' && str[i + 1] == ' ')
@@ -81,7 +85,7 @@ int	d_quotes_token(t_input **cmd, char *str, t_data data)
 					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
 		i++;
 	}
-	if (str[i] == '\0' && str[i - 1] == '\"')
+	if ((str[i] == '\0' && str[i - 1] == '\"') || quote == true)
 	{
 		i = remove_quotes(str, '\"');
 		return (add_nodes(cmd, NULL, ft_substr(str, 0, i), DQ_STRING), (i + 1));
