@@ -14,7 +14,6 @@
 
 int	remove_quotes(char *str, char c)
 {
-	int	len;
 	int	i;
 	int	x;
 
@@ -24,7 +23,6 @@ int	remove_quotes(char *str, char c)
 	{
 		if (str[i] == c)
 		{
-			len = i;
 			while (str[i] != '\0')
 			{
 				ft_memset(str + i, str[i + 1], 1);

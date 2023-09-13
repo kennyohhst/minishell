@@ -26,7 +26,7 @@ int	ft_exit(t_data *data, char **argv)
 		return (1);
 	}
 	if (!argv[1])
-		return (data->exit_code);
+		exit(data->exit_code);
 	if (ft_err_atoi(argv[1], &exit_code) != 0)
 	{
 		dprintf(STDERR_FILENO, "minishell: exit: numeric argument required\n");

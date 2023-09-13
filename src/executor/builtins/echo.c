@@ -18,14 +18,14 @@ static bool	is_valid_option(char *options)
 
 	i = 1;
 	if (options[0] != '-')
-		return (0);
+		return (false);
 	while (options[i])
 	{
 		if (options[i] != 'n')
-			return (0);
+			return (false);
 		i++;
 	}
-	return (1);
+	return (true);
 }
 
 static int	print_strings(char **argv, int fd_out)
@@ -35,7 +35,7 @@ static int	print_strings(char **argv, int fd_out)
 
 	newline = true;
 	i = 1;
-	while (is_valid_option(argv[i]) == true)
+	while (argv[i] && is_valid_option(argv[i]) == true)
 	{
 		newline = false;
 		i++;
