@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/02 16:46:02 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/09/14 16:25:31 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 int			execute(t_data *data);
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
 
+void		set_fds(int *fd_in, int *fd_out);
+void		close_fds(int fd_in, int fd_out);
+
 // ========= executer/builtins=============================================== //
 
 bool		is_builtin(char **argv);
@@ -99,5 +102,9 @@ int			ft_exit(t_data *data, char **argv);
 
 void		free_cmd(t_command *cmd);
 void		free_envp(t_envp *envp);
+
+// ========= utils ========================================================== //
+
+void		print_error(char *program_name, char *arg, char *error_msg);
 
 #endif

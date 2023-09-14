@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/10 20:09:42 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 15:33:02 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 14:55:53 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	cd_home(t_envp *envp)
 	home = ft_getenv(envp, "HOME");
 	if (!home)
 	{
-		dprintf(STDERR_FILENO, "minishell: cd: HOME not set");
+		print_error("cd", NULL, "HOME not set");
 		return (1);
 	}
 	if (chdir(home) == -1)

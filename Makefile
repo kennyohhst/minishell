@@ -21,9 +21,10 @@ LIB				:= $(LIBFT_DIR)/libft.a
 # Files
 SRC_FILES := \
 				main.c							\
+				signals.c						\
+				utils.c							\
 				env_list_create.c				\
 				env_list_utils.c				\
-				signals.c						\
 				free_functions.c				\
 \
 				lexer/lexer.c					\
@@ -40,6 +41,7 @@ SRC_FILES := \
 				test.c							\
 \
 				executor/execute.c				\
+				executor/execute_utils.c		\
 				executor/redirects.c			\
 				executor/set_command_path.c		\
 \
