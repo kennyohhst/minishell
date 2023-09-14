@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 14:55:30 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 17:03:48 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,16 @@ t_envp	*environ_to_list(char **environ)
 	while (environ[i])
 	{
 		current->next = create_new_envp_node(environ[i]);
-		if (!current->next)
-		{
-			free_envp_list(head);
-			return (NULL);
-		}
+		if (current->next == NULL)
+			exit(1);
 		current->next->prev = current;
 		current = current->next;
 		i++;
 	}
+	current->next = create_new_envp_node("OLDPWD");
+	if (!current->next)
+		exit(1);
+	current->next->prev = current;
+	current = current->next;
 	return (head);
 }

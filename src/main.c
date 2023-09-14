@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/09/14 16:28:31 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 17:04:13 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,9 @@ int	main(int argc, char **argv, char **envp)
 	input = NULL;
 	(void) argc;
 	(void) argv;
+	// rl_outstream = stderr;
 	init_data(&data);
 	data.envp = environ_to_list(envp);
-	if (!data.envp)
-		return (1);
 	run_shell(tokenized_input, input, data);
 	return (data.exit_code);
 }
