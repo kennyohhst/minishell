@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   execute.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 17:53:49 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/10 20:26:55 by opelser           #+#    #+#             */
+/*   Updated: 2023/09/14 18:21:30 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 {
 	if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
 		exit(1);
-	if (cmd->argv == NULL)
+	if (!cmd->argv || !cmd->argv[0])
 		exit(0);
 	if (is_builtin(cmd->argv) == true)
 		exit(handle_builtin(cmd, data, fd_in, fd_out));

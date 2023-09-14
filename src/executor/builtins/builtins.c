@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   builtins.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/29 23:15:01 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 16:57:34 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/29 23:15:01 by opelser           #+#    #+#             */
+/*   Updated: 2023/09/14 18:26:14 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 bool	is_builtin(char **argv)
 {
-	// printf("%p\n", argv);
-	// for (int i = 0; argv[i]; i++)
-	// 	printf("argv[%d] = %s\n", i, argv[i]);
-	
-	if (!argv)
+	if (!argv || !argv[0])
 		return (false);
 	if (!ft_strcmp(argv[0], "echo")
 		|| (!ft_strcmp(argv[0], "pwd"))
