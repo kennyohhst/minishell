@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 15:53:15 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 19:27:13 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 20:58:44 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ int	handle_redirects(t_command *cmd, int *fd_in, int *fd_out)
 				close(*fd_in);
 			*fd_in = open_file_with_mode(current->name, current->type);
 			if (*fd_in == -1)
+			{
+				perror("minishell");
 				return (-1);
+			}
 		}
 		else
 		{
@@ -68,7 +71,10 @@ int	handle_redirects(t_command *cmd, int *fd_in, int *fd_out)
 				close(*fd_out);
 			*fd_out = open_file_with_mode(current->name, current->type);
 			if (*fd_out == -1)
+			{
+				perror("minishell");
 				return (-1);
+			}
 		}
 		current = current->next;
 	}
