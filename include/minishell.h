@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/09/14 16:25:31 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 18:09:20 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
 
 void		set_fds(int *fd_in, int *fd_out);
 void		close_fds(int fd_in, int fd_out);
+void		execve_error(char *arg);
 
 // ========= executer/builtins=============================================== //
 

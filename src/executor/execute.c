@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 16:19:50 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 17:53:49 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,7 @@ static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 	set_fds(&fd_in, &fd_out);
 	close_fds(fd_in, fd_out);
 	execve(cmd->argv[0], cmd->argv, envp_list_to_arr(data->envp));
-	perror(cmd->argv[0]);
-	if (errno == EACCES)
-		exit(126);
-	else
-		exit(127);
+	execve_error(cmd->argv[0]);
 }
 
 static int	run_command(t_command *cmd, t_data *data, int fd_in, int pipe_fd[2])
