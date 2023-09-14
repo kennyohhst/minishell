@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 15:53:15 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 21:18:37 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 22:10:59 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@ int	heredoc(char *delim)
 	int		fd[2];
 	char	*str;
 
+	str = NULL;
 	if (pipe(fd) == -1)
 		return (-1);
-	write(STDOUT_FILENO, "> ", 2);
-	str = get_next_line(STDIN_FILENO);
-	while (str && ft_strncmp(delim, str, ft_strlen(str) - 1))
+		
+	str = readline("> ");
+	while (str && ft_strcmp(delim, str))
 	{
 		write(fd[1], str, ft_strlen(str));
+		write(fd[1], "\n", 1);
 		free(str);
-		write(STDOUT_FILENO, "> ", 2);
-		str = get_next_line(STDIN_FILENO);
+		str = readline("> ");
 	}
 	close (fd[1]);
 	return (fd[0]);
