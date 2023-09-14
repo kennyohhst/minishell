@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/09/14 15:57:33 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 16:25:31 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,6 @@ void		free_envp(t_envp *envp);
 
 // ========= utils ========================================================== //
 
-void	print_error(char *program_name, char *arg, char *error_msg);
+void		print_error(char *program_name, char *arg, char *error_msg);
 
 #endif
