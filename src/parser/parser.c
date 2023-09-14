@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/17 22:53:38 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/14 20:26:15 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parser.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/17 22:53:38 by opelser       #+#    #+#                 */
+/*   Updated: 2023/09/14 21:18:16 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ t_command	*type_check(t_input *token, t_command **cmd, t_command *temp, int i)
 		}
 		if (token && (token->token_type >= 2 || token->token_type <= 5))
 			token = o_redirect_type(token, &temp->redirects, token->token_type);
-		// if (token && (token->token_type == 4 || token->token_type == 5))
-		// 	token = i_redirect_type(token, &temp->input, token->token_type);
 	}
 	return (*cmd);
 }

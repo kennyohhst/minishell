@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   malloc_functions.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/02 16:33:03 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/14 20:27:25 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   malloc_functions.c                                 :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/02 16:33:03 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/09/14 21:18:02 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	malloc_cmd_node(t_command **cmd, t_command *temp, t_input **token)
 	if (!new)
 		return ;
 	new->redirects = NULL;
-	// new->output = NULL;
 	new->argv = ft_calloc((malloc_argv(token) + 1), sizeof(char *));
 	if (!new->argv)
 		return (free(new));

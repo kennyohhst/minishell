@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   free_functions.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/31 21:41:28 by code              #+#    #+#             */
-/*   Updated: 2023/09/14 20:27:03 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   free_functions.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/31 21:41:28 by code          #+#    #+#                 */
+/*   Updated: 2023/09/14 21:17:26 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	free_argv(char **argv)
 	free(argv);
 }
 
-void	free_input_output(t_redirect *output)
+void	free_redirects(t_redirect *output)
 {
 	t_redirect	*tmp;
 
@@ -85,8 +85,7 @@ void	free_cmd(t_command *cmd)
 		tmp = cmd;
 		cmd = cmd->next;
 		free_argv(tmp->argv);
-		free_input_output(tmp->redirects);
-		// free_input_output(tmp->output);
+		free_redirects(tmp->redirects);
 		free(tmp);
 	}
 }
