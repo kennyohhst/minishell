@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   declarations.h                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/26 16:37:49 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/02 14:18:15 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   declarations.h                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
+/*   Updated: 2023/09/14 19:26:54 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_redirect				t_redirect;
 struct s_redirect 
 {
 	t_token_type	type;
-	int				fd;
 	char			*name;
 	\
 	t_redirect		*next;
@@ -79,8 +78,7 @@ struct s_command
 	int				arg_count;
 	char			**argv;
 	\
-	t_redirect		*input;
-	t_redirect		*output;
+	t_redirect		*redirects;
 	\
 	pid_t			pid;
 	\

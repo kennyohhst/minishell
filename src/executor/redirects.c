@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 15:53:15 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/24 23:04:13 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 19:27:13 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,53 +47,30 @@ static int	open_file_with_mode(char *name, t_token_type type)
 	return (-1);
 }
 
-static int	get_last_file(t_redirect **redirect)
-{
-	t_redirect		*current;
-	int				fd;
-
-	fd = 0;
-	current = *redirect;
-	while (current)
-	{
-		fd = open_file_with_mode(current->name, current->type);
-		if (fd == -1)
-		{
-			perror(current->name);
-			return (-1);
-		}
-		current->fd = fd;
-		if (current->next)
-		{
-			close(fd);
-			*redirect = current->next;
-		}
-		current = current->next;
-	}
-	return (1);
-}
-
 int	handle_redirects(t_command *cmd, int *fd_in, int *fd_out)
 {
-	t_redirect	*last_redirect;
-
-	if (cmd->input)
+	t_redirect	*current;
+	
+	current = cmd->redirects;
+	while (current)
 	{
-		if (*fd_in >= 0)
-			close(*fd_in);
-		last_redirect = cmd->input;
-		if (get_last_file(&last_redirect) == -1)
-			return (-1);
-		*fd_in = last_redirect->fd;
-	}
-	if (cmd->output)
-	{
-		if (*fd_out >= 0)
-			close(*fd_out);
-		last_redirect = cmd->output;
-		if (get_last_file(&last_redirect) == -1)
-			return (-1);
-		*fd_out = last_redirect->fd;
+		if (current->type == INPUT_REDIRECT || current->type == APPEND)
+		{
+			if (*fd_in >= 0)
+				close(*fd_in);
+			*fd_in = open_file_with_mode(current->name, current->type);
+			if (*fd_in == -1)
+				return (-1);
+		}
+		else
+		{
+			if (*fd_out >= 0)
+				close(*fd_out);
+			*fd_out = open_file_with_mode(current->name, current->type);
+			if (*fd_out == -1)
+				return (-1);
+		}
+		current = current->next;
 	}
 	return (1);
 }
