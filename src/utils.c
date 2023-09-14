@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env.c                                              :+:    :+:            */
+/*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/05/10 19:00:00 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 15:00:43 by opelser       ########   odam.nl         */
+/*   Created: 2023/09/14 14:27:00 by opelser       #+#    #+#                 */
+/*   Updated: 2023/09/14 14:49:23 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	env(t_envp *envp, int fd_out)
+void	print_error(char *program_name, char *arg, char *error_msg)
 {
-	while (envp)
+	write(STDERR_FILENO, "minishell: ", 11);
+	if (program_name)
 	{
-		if (envp->value)
-		{
-			if (write(fd_out, envp->str, ft_strlen(envp->str)) == -1)
-				return (1);
-			if (write(fd_out, "\n", 1) == -1)
-				return (1);
-		}
-		envp = envp->next;
+		write(STDERR_FILENO, program_name, ft_strlen(program_name));
+		write(STDERR_FILENO, ": ", 2);
 	}
-	return (0);
+	if (arg)
+	{
+		write(STDERR_FILENO, arg, ft_strlen(arg));
+		write(STDERR_FILENO, ": ", 2);
+	}
+	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
 }

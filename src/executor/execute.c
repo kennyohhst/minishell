@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/25 00:14:27 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 14:51:15 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 		exit(handle_builtin(cmd, data, fd_in, fd_out));
 	if (set_command_path(cmd, data->envp) != 0)
 	{
-		dprintf(STDERR_FILENO, "minishell: %s: command not found\n", cmd->argv[0]);
+		print_error(NULL, cmd->argv[0], "command not found");
 		exit(127);
 	}
 	if (fd_in != USE_STANDARD_FD && dup2(fd_in, STDIN_FILENO) == -1)
@@ -126,8 +126,6 @@ int	execute(t_data *data)
 {
 	int		fd_in;
 
-	// printf("cmd->argv = %p\n", data->command->argv);
-	// printf("cmd->argv[0] = %s\n", data->command->argv[0]);
 	fd_in = dup(STDIN_FILENO);
 	if (fd_in == -1)
 	{

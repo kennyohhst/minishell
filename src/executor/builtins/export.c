@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 15:43:19 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 15:03:02 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static bool	is_valid_id(char *str)
 
 	if (!str)
 	{
-		dprintf(STDERR_FILENO, "minishell: export: `=': not a valid identifier\n");
+		print_error("export", "=", "not a valid identifier");
 		return (false);
 	}
 	if (!ft_isalpha((int) str[0]))
 	{
-		dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", str);
+		print_error("export", str, "not a valid identifier");
 		return (false);
 	}
 	i = 1;
@@ -31,7 +31,7 @@ static bool	is_valid_id(char *str)
 	{
 		if (!ft_isalnum((int) str[i]))
 		{
-			dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", str);
+			print_error("export", str, "not a valid identifier");
 			return (false);
 		}
 		i++;
@@ -46,10 +46,15 @@ void	print_no_args(t_data *data, int fd_out)
 	current = data->envp;
 	while (current)
 	{
-		dprintf(fd_out, "declare -x %s", current->id);
+		write(fd_out, "declare -x ", 11);
+		write(fd_out, current->id, ft_strlen(current->id));
 		if (current->value)
-			dprintf(fd_out, "=\"%s\"", current->value);
-		dprintf(fd_out, "\n");
+		{
+			write(fd_out, "=\"", 2);
+			write(fd_out, current->value, ft_strlen(current->value));
+			write(fd_out, "\"", 1);
+		}
+		write(fd_out, "\n", 1);
 		current = current->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 16:13:05 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 14:55:30 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	set_env_id(t_envp *new, char *str)
 		new->id = ft_strdup(str);
 		if (!new->id)
 		{
-			dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+			write(STDERR_FILENO, "minishell: Malloc fail\n", 24);
 			return (-1);
 		}
 		return (1);
@@ -34,7 +34,7 @@ static int	set_env_id(t_envp *new, char *str)
 	new->id = ft_substr(str, 0, equal);
 	if (!new->id)
 	{
-		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+		write(STDERR_FILENO, "minishell: Malloc fail\n", 24);
 		return (-1);
 	}
 	return (1);
@@ -50,7 +50,7 @@ static int	set_env_value(t_envp *new, char *str)
 	new->value = ft_strdup(str + equal + 1);
 	if (!new->value)
 	{
-		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+		write(STDERR_FILENO, "minishell: Malloc fail\n", 24);
 		return (-1);
 	}
 	return (1);
@@ -84,13 +84,13 @@ t_envp	*create_new_envp_node(char *str)
 	new = init_envp_node();
 	if (!new)
 	{
-		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+		write(STDERR_FILENO, "minishell: Malloc fail\n", 24);
 		return (NULL);
 	}
 	new->str = ft_strdup(str);
 	if (!new->str)
 	{
-		dprintf(STDERR_FILENO, "minishell: Malloc fail\n");
+		write(STDERR_FILENO, "minishell: Malloc fail\n", 24);
 		return (free_envp_list(new));
 	}
 	if (set_env_id(new, str) == -1)

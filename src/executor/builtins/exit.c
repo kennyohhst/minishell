@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 21:20:41 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/25 00:11:51 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 15:02:03 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ int	ft_exit(t_data *data, char **argv)
 		argc++;
 	if (argc > 2)
 	{
-		dprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
+		print_error("exit", NULL, "too many arguments");
 		return (1);
 	}
 	if (!argv[1])
 		exit(data->exit_code);
 	if (ft_err_atoi(argv[1], &exit_code) != 0)
 	{
-		dprintf(STDERR_FILENO, "minishell: exit: numeric argument required\n");
+		print_error("exit", NULL, "numeric argument required");
 		exit(255);
 	}
 	exit_code %= 256;
