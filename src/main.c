@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/14 18:26:25 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/14 20:38:10 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	run_shell(t_input *tokenized_input, char *input, t_data data)
 			continue ;
 		}
 		data.command = parser(tokenized_input);
+		test_data(&data);
 		if (!data.command)
 			continue ;
 		if (execute(&data) == -1)

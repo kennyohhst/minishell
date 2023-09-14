@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:41:28 by code              #+#    #+#             */
-/*   Updated: 2023/09/07 14:17:22 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/14 20:27:03 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void	free_cmd(t_command *cmd)
 		tmp = cmd;
 		cmd = cmd->next;
 		free_argv(tmp->argv);
-		free_input_output(tmp->input);
-		free_input_output(tmp->output);
+		free_input_output(tmp->redirects);
+		// free_input_output(tmp->output);
 		free(tmp);
 	}
 }

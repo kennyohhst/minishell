@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:53:38 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/02 16:47:17 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/14 20:26:15 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_input	*o_redirect_type(t_input *token, t_redirect **red, int type)
 		temp = temp ->next;
 	if (token)
 	{
-		if (token->token_type >= 2 && token->token_type <= 3)
+		if (token->token_type >= 2 && token->token_type <= 5)
 		{
 			token = token->next;
 			if (token && token->token_type >= DQ_STRING)
@@ -65,7 +65,7 @@ t_input	*o_redirect_type(t_input *token, t_redirect **red, int type)
 			}
 		}
 	}
-	if (token && token->token_type >= 2 && token->token_type <= 3)
+	if (token && token->token_type >= 2 && token->token_type <= 5)
 		return (o_redirect_type(token, &temp, token->token_type));
 	return (token);
 }
@@ -90,10 +90,10 @@ t_command	*type_check(t_input *token, t_command **cmd, t_command *temp, int i)
 			token = token->next;
 			continue ;
 		}
-		if (token && (token->token_type == 2 || token->token_type == 3))
-			token = o_redirect_type(token, &temp->output, token->token_type);
-		if (token && (token->token_type == 4 || token->token_type == 5))
-			token = i_redirect_type(token, &temp->input, token->token_type);
+		if (token && (token->token_type >= 2 || token->token_type <= 5))
+			token = o_redirect_type(token, &temp->redirects, token->token_type);
+		// if (token && (token->token_type == 4 || token->token_type == 5))
+		// 	token = i_redirect_type(token, &temp->input, token->token_type);
 	}
 	return (*cmd);
 }
