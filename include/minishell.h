@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/09/14 14:42:59 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 15:57:33 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ int			pipe_encounter(t_command **command, t_input **token, int i);
 int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 int			execute(t_data *data);
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
+
+void		set_fds(int *fd_in, int *fd_out);
+void		close_fds(int fd_in, int fd_out);
 
 // ========= executer/builtins=============================================== //
 

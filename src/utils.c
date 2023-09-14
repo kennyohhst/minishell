@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/14 14:27:00 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 14:49:23 by opelser       ########   odam.nl         */
+/*   Updated: 2023/09/14 15:20:41 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,5 @@ void	print_error(char *program_name, char *arg, char *error_msg)
 		write(STDERR_FILENO, ": ", 2);
 	}
 	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
+	write(STDERR_FILENO, "\n", 1);
 }

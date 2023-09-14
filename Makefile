@@ -41,6 +41,7 @@ SRC_FILES := \
 				test.c							\
 \
 				executor/execute.c				\
+				executor/execute_utils.c		\
 				executor/redirects.c			\
 				executor/set_command_path.c		\
 \
