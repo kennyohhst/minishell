@@ -33,7 +33,6 @@ SRC_FILES := \
 				lexer/valid_pipe_check.c		\
 				lexer/create_input_list.c		\
 \
-				parser/reverse_expansion_heredoc.c \
 				parser/list_length.c			\
 				parser/input_check_parse.c		\
 				parser/parser.c					\
