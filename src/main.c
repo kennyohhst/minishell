@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/09/14 22:33:01 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
+/*   Updated: 2023/10/05 19:25:39 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	run_shell(t_input *tokenized_input, char *input, t_data data)
 			continue ;
 		}
 		data.command = parser(tokenized_input);
+		// test_data(&data);
 		if (!data.command)
 			continue ;
 		if (execute(&data) == -1)
@@ -83,5 +84,6 @@ int	main(int argc, char **argv, char **envp)
 	init_data(&data);
 	data.envp = environ_to_list(envp);
 	run_shell(tokenized_input, input, data);
+	free(input);
 	return (data.exit_code);
 }

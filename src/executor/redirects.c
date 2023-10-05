@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   redirects.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/17 15:53:15 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 22:10:59 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   redirects.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/17 15:53:15 by opelser           #+#    #+#             */
+/*   Updated: 2023/09/16 17:45:56 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	heredoc(char *delim)
 	str = NULL;
 	if (pipe(fd) == -1)
 		return (-1);
-		
 	str = readline("> ");
 	while (str && ft_strcmp(delim, str))
 	{

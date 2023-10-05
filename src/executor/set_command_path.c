@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   set_command_path.c                                 :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/03 20:43:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 17:26:57 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   set_command_path.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/03 20:43:02 by opelser           #+#    #+#             */
+/*   Updated: 2023/10/05 19:32:29 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,17 @@ int	set_command_path(t_command *cmd_struct, t_envp *envp_list)
 	if (ft_strchr(cmd_struct->argv[0], '/'))
 		return (0);
 	paths = ft_getenv(envp_list, "PATH");
-	if (!paths)
+	if (!cmd_struct->argv[0][0])
 		return (1);
+	if (!paths)
+		return (2);
 	split_paths = ft_split(paths, ':');
 	if (!split_paths)
-		return (2);
+		return (3);
 	command_path = get_command_location(cmd_struct->argv[0], split_paths);
 	ft_free_str_arr(split_paths);
 	if (!command_path)
-		return (3);
+		return (4);
 	free(cmd_struct->argv[0]);
 	cmd_struct->argv[0] = command_path;
 	return (0);

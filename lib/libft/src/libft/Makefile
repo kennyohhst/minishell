@@ -8,7 +8,7 @@ OBJ_DIR := obj
 
 # Compiler flags
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra #-fsanitize=address
 
 # Includes
 HDR_FILES :=	libft.h
