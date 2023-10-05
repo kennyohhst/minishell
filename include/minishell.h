@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/09/14 18:09:20 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
+/*   Updated: 2023/09/27 15:58:59 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ char		*ft_getenv(t_envp *envp_list, char *id);
 
 t_input		*lexer(char *input, t_data data);
 int			check_quotes(char *str);
-
+int			quotes_finder(char *str, char c);
+int			remove_quotes(char *str, char c);
+int			std_remove_quotes(char *str, char c);
 int			p_d_token(t_input **cmd, char *str, int i, char c);
 int			e_var_token(t_input **cmd, char *str);
 int			d_quotes_token(t_input **cmd, char *str, t_data data);
@@ -66,6 +68,10 @@ int			valid_pipe_check(char *str);
 // ======== parser ========================================================== //
 
 int			valid_input_check(t_input *token);
+bool		expand_edgecases(char c);
+int			end_position(char *str);
+int			skip_singles(int i, char *token);
+int			find_start_exit_var(char *str);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
 void		test_data(t_data *data);
@@ -81,7 +87,6 @@ int			pipe_encounter(t_command **command, t_input **token, int i);
 int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 int			execute(t_data *data);
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
-
 void		set_fds(int *fd_in, int *fd_out);
 void		close_fds(int fd_in, int fd_out);
 void		execve_error(char *arg);

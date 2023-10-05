@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 23:25:51 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/14 20:43:16 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/16 17:45:42 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,16 @@ void	test_data(t_data *data)
 	temp = data;
 	while (temp->command)
 	{
-		printf("%sblock %d%s\n", C_DPINK, p++ ,C_RESET);
+		printf("%sblock %d%s\n", C_DPINK, p++, C_RESET);
 		while (temp->command->argv && temp->command->argv[x])
 			printf("argv: %s\n", temp->command->argv[x++]);
 		if (temp->command->redirects)
 		{
-			while(temp->command->redirects)
+			while (temp->command->redirects)
 			{
-				printf("	type: %i	%s\n", temp->command->redirects->type, temp->command->redirects->name);
+				printf("	type: %i	%s\n",
+					temp->command->redirects->type,
+					temp->command->redirects->name);
 				temp->command->redirects = temp->command->redirects->next;
 			}
 		}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   declarations.h                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 19:26:54 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   declarations.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/26 16:37:49 by opelser           #+#    #+#             */
+/*   Updated: 2023/09/27 15:44:25 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ struct s_input
  */
 typedef struct s_redirect				t_redirect;
 
-struct s_redirect 
+struct s_redirect
 {
 	t_token_type	type;
 	char			*name;

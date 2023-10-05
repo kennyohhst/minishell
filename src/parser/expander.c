@@ -6,27 +6,17 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/15 17:28:40 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/09/27 16:59:59 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	expand_edgecases(char c)
+bool	expand_edgecases(char c)
 {
 	if (c != '\0' && (ft_isalnum(c) || c == '_') && c != ' ')
 		return (true);
 	return (false);
-}
-
-int	end_position(char *str)
-{
-	int	i;
-
-	i = 1;
-	while (str[i] != '\0' && expand_edgecases(str[i]))
-		i++;
-	return (i);
 }
 
 char	*replace_env_with_value(char *token, char *e_var, int start, int end)
@@ -55,60 +45,79 @@ char	*replace_env_with_value(char *token, char *e_var, int start, int end)
 	}
 }
 
-int	skip_singles(int i, char *token)
+int	skip_heredoc(int i, char *str)
 {
-	if (token[i] == '\'')
+	int	count;
+	int	temp;
+
+	temp = i;
+	count = 0;
+	while (str && str[i])
 	{
-		i++;
-		while (token[i] && token[i] != '\'')
+		while (str[i] == '<')
+		{
+			count++;
 			i++;
+		}
+		if (count == 2)
+		{
+			if (str[i] && str[i] == '$')
+				return (i + 1);
+		}
+		else
+			count = 0;
+		i++;
 	}
-	return (i);
+	return (temp);
 }
 
-int	find_start_exit_var(char *str)
+bool	single_q(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
+	while (str && str[i])
 	{
-		i = skip_singles(i, str);
-		if (str[i] == '$')
+		if (str[i] == '\'')
 		{
 			i++;
-			if (str[i] == '?')
-				return (i-1);
-		}
-		i++;
-	}
-	return (-1);
-}
-
-bool	expander(t_data data, char **token, char *temp, int i)
-{
-	int		end;
-
-	while (i < (int) ft_strlen((*token)))
-	{
-		i = skip_singles(i, (*token));
-		if ((*token)[i] == '$')
-		{
-			if (expand_edgecases((*token)[i + 1]))
+			while (str[i] && str[i] != '\'')
 			{
-				end = end_position((*token) + i);
-				temp = ft_getenv(data.envp, 
-				ft_substr((*token), i + 1, end - 1));
-				(*token) = replace_env_with_value((*token), temp, i, end);
+				if (str[i] == '$')
+					return (false);
+				i++;
 			}
 		}
 		i++;
 	}
-	if (ft_strnstr((*token), "$?", ft_strlen((*token))))
+	return (true);
+}
+
+bool	expander(t_data data, char **tkn, char *temp, int i)
+{
+	int		end;
+
+	while (i < (int) ft_strlen((*tkn)))
 	{
-		i = find_start_exit_var(*token);
+		i = skip_singles(i, (*tkn));
+		i = skip_heredoc(i, (*tkn));
+		if ((*tkn)[i] == '$')
+		{
+			if (expand_edgecases((*tkn)[i + 1]))
+			{
+				end = end_position((*tkn) + i);
+				temp = ft_getenv(data.envp,
+						ft_substr((*tkn), i + 1, end - 1));
+				(*tkn) = replace_env_with_value((*tkn), temp, i, end);
+			}
+		}
+		i++;
+	}
+	while (ft_strnstr((*tkn), "$?", ft_strlen((*tkn))) && single_q((*tkn)))
+	{
+		i = find_start_exit_var(*tkn);
 		temp = ft_itoa(data.exit_code);
-		(*token) = replace_env_with_value((*token), temp, i, 2);
+		(*tkn) = replace_env_with_value((*tkn), temp, i, 2);
 	}
 	return (false);
 }
