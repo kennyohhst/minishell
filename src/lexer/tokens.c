@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/05 17:10:05 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/05 18:02:03 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ int	std_token(t_input **cmd, char *str)
 		else if (str[i] == '\"' || str[i] == '\'')
 		{
 			i = std_remove_quotes(str, str[i]);
+			if (!(*cmd) && i < 0)
+				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);	
 			if (!str[i] || str[i] == ' ')
 				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
 			else
