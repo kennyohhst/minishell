@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/27 16:59:59 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/06 19:06:32 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,14 @@ int	skip_heredoc(int i, char *str)
 {
 	int	count;
 	int	temp;
+	int length;
 
 	temp = i;
 	count = 0;
-	while (str && str[i])
+	length = ft_strlen(str) - 1 - temp;
+	while (str && length-- > 0 && str[i])
 	{
-		while (str[i] == '<')
+		while (length-- > 0 && str[i] == '<')
 		{
 			count++;
 			i++;
@@ -66,6 +68,7 @@ int	skip_heredoc(int i, char *str)
 		}
 		else
 			count = 0;
+		length--;
 		i++;
 	}
 	return (temp);

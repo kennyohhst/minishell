@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/27 15:58:59 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/06 18:44:41 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_input		*free_tokens(t_input *list);
 
 // void		create_input_list(t_input **cmd, char *str);
 // void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void		init_signals(void);
+void		init_signals(int s);
 
 // ======== env utils ======================================================= //
 
