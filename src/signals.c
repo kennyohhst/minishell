@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 14:28:59 by opelser           #+#    #+#             */
-/*   Updated: 2023/10/06 19:32:54 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/11 16:01:19 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	sig_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
+		write(1, "\n", 2);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 	}
@@ -56,8 +56,6 @@ void	init_signals(int s)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);	
 	}
-	
-	
-	
+
 	rl_catch_signals = 0;
 }
