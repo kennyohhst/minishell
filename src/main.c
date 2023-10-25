@@ -60,7 +60,6 @@ void	run_shell(t_input *tokenized_input, char *input, t_data data)
 			continue ;
 		}
 		data.command = parser(tokenized_input);
-		// test_data(&data);
 		if (!data.command)
 			continue ;
 		if (execute(&data) == -1)

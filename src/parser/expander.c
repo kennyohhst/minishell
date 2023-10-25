@@ -47,9 +47,9 @@ char	*replace_env_with_value(char *token, char *e_var, int start, int end)
 
 int	skip_heredoc(int i, char *str)
 {
-	int	count;
-	int	temp;
-	int length;
+	int		count;
+	int		temp;
+	int		length;
 
 	temp = i;
 	count = 0;

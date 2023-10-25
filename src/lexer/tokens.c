@@ -96,7 +96,7 @@ int	std_token(t_input **cmd, char *str)
 		{
 			i = std_remove_quotes(str, str[i]);
 			if (!(*cmd) && i < 0)
-				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);	
+				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
 			if (!str[i] || str[i] == ' ')
 				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
 			else
