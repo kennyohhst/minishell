@@ -17,6 +17,8 @@
 
 static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 {
+	char	**envp;
+
 	if (handle_redirects(cmd, &fd_in, &fd_out) == -1)
 		exit(1);
 	if (!cmd->argv || !cmd->argv[0])
@@ -30,7 +32,9 @@ static void	child_process(t_command *cmd, t_data *data, int fd_in, int fd_out)
 	}
 	set_fds(&fd_in, &fd_out);
 	close_fds(fd_in, fd_out);
-	execve(cmd->argv[0], cmd->argv, envp_list_to_arr(data->envp));
+	envp = envp_list_to_arr(data->envp);
+	execve(cmd->argv[0], cmd->argv, envp);
+	free(envp);
 	execve_error(cmd->argv[0]);
 }
 

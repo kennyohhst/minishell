@@ -59,7 +59,7 @@ void	execve_error(char *arg)
 	if (errno == EACCES)
 	{
 		if (is_dir(arg) == true)
-			print_error(NULL, arg, "is a directory");
+			print_error(NULL, arg, "Is a directory");
 		else
 			print_error(NULL, arg, "Permission denied");
 		exit(126);

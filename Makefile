@@ -39,7 +39,6 @@ SRC_FILES := \
 				parser/expander.c				\
 				parser/malloc_functions.c		\
 				parser/expand_tools.c			\
-				test.c							\
 \
 				executor/execute.c				\
 				executor/execute_utils.c		\

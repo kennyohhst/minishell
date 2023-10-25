@@ -25,7 +25,7 @@ int	ft_exit(t_data *data, char **argv)
 	if (ft_err_atoi(argv[1], &exit_code) != 0)
 	{
 		print_error("exit", NULL, "numeric argument required");
-		exit(255);
+		exit(2);
 	}
 	if (argc > 2)
 	{

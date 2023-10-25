@@ -73,7 +73,7 @@ static void	replace_old(t_data *data, t_envp *old, t_envp *new)
 	free_envp_list(old);
 }
 
-static int	add_node(t_data *data, t_envp *new)
+void	add_node(t_data *data, t_envp *new)
 {
 	t_envp		*duplicate;
 
@@ -98,7 +98,6 @@ static int	add_node(t_data *data, t_envp *new)
 		else
 			data->envp = new;
 	}
-	return (1);
 }
 
 int	export(t_data *data, char **argv, int fd_out)
@@ -120,9 +119,12 @@ int	export(t_data *data, char **argv, int fd_out)
 		if (!new)
 			return (1);
 		if (is_valid_id(new->id) == false)
+		{
 			ret = 1;
-		else if (add_node(data, new) == -1)
-			ret = 1;
+			free_envp_list(new);
+		}
+		else 
+			add_node(data, new);
 		i++;
 	}
 	return (ret);
