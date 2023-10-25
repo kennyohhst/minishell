@@ -68,6 +68,7 @@ void	run_shell(t_input *tokenized_input, char *input, t_data data)
 		wait_for_children(&data);
 		free_tokens(tokenized_input);
 		free_cmd(data.command);
+		free(input);
 	}
 }
 
@@ -84,6 +85,5 @@ int	main(int argc, char **argv, char **envp)
 	init_data(&data);
 	data.envp = environ_to_list(envp);
 	run_shell(tokenized_input, input, data);
-	free(input);
 	return (data.exit_code);
 }

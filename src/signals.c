@@ -32,29 +32,29 @@ static void	sig_heredoc(int sig)
 		rl_on_new_line();
 	}
 }
-void	init_signals(int s)
+void	init_signals(t_signals sig)
 {
 	extern int	rl_catch_signals;
-	
-	if (s == 0)
+
+	if (sig == MAIN)
 	{
 		signal(SIGINT, sig_main);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	if (s == 1)
+	if (sig == HEREDOC)
 	{
 		signal(SIGINT, sig_heredoc);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	if (s == 2)
+	if (sig == IDK)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_IGN);	
+		signal(SIGQUIT, SIG_IGN);
 	}
-	if (s == 3)
+	if (sig == IGNORE)
 	{
 		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);	
+		signal(SIGQUIT, SIG_IGN);
 	}
 
 	rl_catch_signals = 0;

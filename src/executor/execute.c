@@ -55,6 +55,7 @@ static int	run_command(t_command *cmd, t_data *data, int fd_in, int pipe_fd[2])
 			close(pipe_fd[0]);
 		child_process(cmd, data, fd_in, fd_out);
 	}
+	init_signals(IGNORE);
 	close_fds(fd_in, fd_out);
 	cmd->pid = pid;
 	return (1);

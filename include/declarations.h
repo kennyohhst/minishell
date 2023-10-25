@@ -33,6 +33,14 @@ typedef enum e_type
 	STRING
 }		t_token_type;
 
+typedef enum e_signals
+{
+	MAIN,
+	HEREDOC,
+	IDK,
+	IGNORE
+}	t_signals;
+
 // ======== structs ========================================================= //
 
 /**

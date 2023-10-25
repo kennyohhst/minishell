@@ -92,9 +92,13 @@ t_input	*lexer(char *input, t_data data)
 {
 	t_input		*input_list;
 
+	if (input[0] == '\0')
+	{
+		free(input);
+		return (NULL);
+	}
+	add_history(input);
 	ft_bzero(&input_list, sizeof(t_input *));
-	if (input[0] != '\0')
-		add_history(input);
 	if (check_quotes(input))
 		create_input_list(&input_list, input, data);
 	return (input_list);

@@ -36,7 +36,7 @@ t_input		*free_tokens(t_input *list);
 
 // void		create_input_list(t_input **cmd, char *str);
 // void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-void		init_signals(int s);
+void		init_signals(t_signals sig);
 
 // ======== env utils ======================================================= //
 

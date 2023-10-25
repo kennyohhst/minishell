@@ -46,6 +46,7 @@ static char	*get_command_location(char *command, char **paths)
 	tmp = access_paths(paths);
 	if (tmp)
 		tmp = ft_strdup(tmp);
+	free(command);
 	return (tmp);
 }
 
