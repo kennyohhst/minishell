@@ -34,6 +34,11 @@ int	cd(char **argv, t_envp *envp)
 {
 	if (!argv[1])
 		return (cd_home(envp));
+	if (argv[2])
+	{
+		print_error("cd", NULL, "too many arguments");
+		return (1);
+	}
 	if (chdir(argv[1]) == -1)
 	{
 		perror("minishell: cd");
