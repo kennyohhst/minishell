@@ -108,10 +108,7 @@ int	export(t_data *data, char **argv, int fd_out)
 
 	ret = 0;
 	if (!argv[1])
-	{
-		print_no_args(data, fd_out);
-		return (0);
-	}
+		return (print_no_args(data, fd_out), 0);
 	i = 1;
 	while (argv[i])
 	{
@@ -123,7 +120,7 @@ int	export(t_data *data, char **argv, int fd_out)
 			ret = 1;
 			free_envp_list(new);
 		}
-		else 
+		else
 			add_node(data, new);
 		i++;
 	}

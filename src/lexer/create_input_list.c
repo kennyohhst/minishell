@@ -46,17 +46,18 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)
 	}
 }
 
-static int	assign_token(int mode, t_input **cmd, char *str, t_data data)
+static int	assign_token(int mode, t_input **token_list, \
+						char *str, t_data *data)
 {
 	(void) data;
 	if (mode == REDIRECT)
-		return (p_d_token(cmd, str, 0, str[0]));
+		return (p_d_token(token_list, str, 0, str[0]));
 	if (mode == DOUBLE_QUOTE)
-		return (d_quotes_token(cmd, str, data));
+		return (d_quotes_token(token_list, str, data));
 	if (mode == SINGLE_QUOTE)
-		return (s_quotes_token(cmd, str));
+		return (s_quotes_token(token_list, str));
 	if (mode == STANDARD)
-		return (std_token(cmd, str));
+		return (std_token(token_list, str));
 	return (-1);
 }
 
@@ -73,11 +74,11 @@ static int	check_mode(char c)
 	return (STANDARD);
 }
 
-void	create_input_list(t_input **cmd, char *str, t_data data)
+void	create_input_list(t_input **token_list, char *str, t_data *data)
 {
-	int	err_check;
-	int	i;
-	int	mode;
+	int		err_check;
+	int		i;
+	int		mode;
 
 	i = 0;
 	expander(data, &str, NULL, 0);
@@ -86,7 +87,7 @@ void	create_input_list(t_input **cmd, char *str, t_data data)
 		while (str[i] && str[i] == ' ')
 			i++;
 		mode = check_mode(str[i]);
-		err_check = assign_token(mode, cmd, (str + i), data);
+		err_check = assign_token(mode, token_list, (str + i), data);
 		if (err_check == -1)
 			return ;
 		else

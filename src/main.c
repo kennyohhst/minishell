@@ -38,51 +38,41 @@ void	wait_for_children(t_data *data)
 		data->exit_code = 128 + WTERMSIG(w_status);
 }
 
-int	get_next_input(char **input)
+void	run_shell(t_data *data)
 {
-	*input = readline("minishell \% ");
-	if (!*input)
-		return (-1);
-	return (1);
-}
+	char		*input;
+	t_input		*tokenized_input;
 
-void	run_shell(t_input *tokenized_input, char *input, t_data data)
-{
-	while (1)
+	while (true)
 	{
-		init_signals(0);
-		if (get_next_input(&input) == -1)
+		init_signals(MAIN);
+		input = readline("minishell \% ");
+		if (!input)
 			break ;
 		tokenized_input = lexer(input, data);
-		if (!valid_input_check(tokenized_input))
-		{
-			data.exit_code = 2;
+		if (!tokenized_input)
 			continue ;
-		}
-		data.command = parser(tokenized_input);
-		if (!data.command)
+		data->command = parser(tokenized_input);
+		if (!data->command)
 			continue ;
-		if (execute(&data) == -1)
-			data.exit_code = 1;
-		wait_for_children(&data);
+		if (execute(data) == -1)
+			data->exit_code = 1;
+		wait_for_children(data);
 		free_tokens(tokenized_input);
-		free_cmd(data.command);
+		free_cmd(data->command);
 		free(input);
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_input			*tokenized_input;
-	char			*input;
-	t_data			data;
+	t_data		data;
 
-	tokenized_input = NULL;
-	input = NULL;
 	(void) argc;
 	(void) argv;
 	init_data(&data);
 	data.envp = environ_to_list(envp);
-	run_shell(tokenized_input, input, data);
+	run_shell(&data);
+	free_envp_list(data.envp);
 	return (data.exit_code);
 }

@@ -88,7 +88,7 @@ int	std_remove_quotes(char *str, char c)
 	return (i - len);
 }
 
-t_input	*lexer(char *input, t_data data)
+t_input	*lexer(char *input, t_data *data)
 {
 	t_input		*input_list;
 
@@ -99,7 +99,18 @@ t_input	*lexer(char *input, t_data data)
 	}
 	add_history(input);
 	ft_bzero(&input_list, sizeof(t_input *));
-	if (check_quotes(input))
-		create_input_list(&input_list, input, data);
+	if (!check_quotes(input))
+	{
+		data->exit_code = 2;
+		free(input);
+		return (NULL);
+	}
+	create_input_list(&input_list, input, data);
+	if (!valid_input_check(input_list))
+	{
+		data->exit_code = 2;
+		free_tokens(input_list);
+		return (NULL);
+	}
 	return (input_list);
 }

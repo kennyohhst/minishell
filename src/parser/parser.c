@@ -70,22 +70,30 @@ t_input	*o_redirect_type(t_input *token, t_redirect **red, int type)
 	return (token);
 }
 
-t_command	*type_check(t_input *token, t_command **cmd, t_command *temp, int i)
+t_command	*type_check(t_input *token, int i)
 {
+	t_command	*command;
+	t_command	*temp;
+
+	command = NULL;
+	temp = NULL;
 	while (token)
 	{
-		i = first_time(cmd, &token, i);
-		i = pipe_encounter(cmd, &token, i);
-		if (!(*cmd))
+		i = first_time(&command, &token, i);
+		i = pipe_encounter(&command, &token, i);
+		if (!command)
 			return (NULL);
-		temp = (*cmd);
+		temp = command;
 		while (temp->next != NULL)
 			temp = temp->next;
 		if (token && token->token_type >= DQ_STRING)
 		{
 			temp->argv[i] = ft_strdup(token->str);
 			if (!temp->argv[i])
-				return (ft_free_str_arr(temp->argv), NULL);
+			{
+				ft_free_str_arr(temp->argv);
+				return (NULL);
+			}
 			i++;
 			token = token->next;
 			continue ;
@@ -93,16 +101,13 @@ t_command	*type_check(t_input *token, t_command **cmd, t_command *temp, int i)
 		if (token && (token->token_type >= 2 || token->token_type <= 5))
 			token = o_redirect_type(token, &temp->redirects, token->token_type);
 	}
-	return (*cmd);
+	return (command);
 }
 
 t_command	*parser(t_input	*token)
 {
 	t_command	*command;
 
-	if (!token)
-		return (NULL);
-	command = NULL;
-	command = type_check(token, &command, NULL, -1);
+	command = type_check(token, -1);
 	return (command);
 }

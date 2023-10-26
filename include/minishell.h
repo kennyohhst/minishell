@@ -28,7 +28,7 @@
 
 //		~ create_input_list.c
 
-void		create_input_list(t_input **cmd, char *str, t_data data);
+void		create_input_list(t_input **cmd, char *str, t_data *data);
 void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
 t_input		*free_tokens(t_input *list);
 
@@ -49,17 +49,17 @@ char		*ft_getenv(t_envp *envp_list, char *id);
 
 // ======= lexer ============================================================ //
 
-t_input		*lexer(char *input, t_data data);
+t_input		*lexer(char *input, t_data *data);
 int			check_quotes(char *str);
 int			quotes_finder(char *str, char c);
 int			remove_quotes(char *str, char c);
 int			std_remove_quotes(char *str, char c);
 int			p_d_token(t_input **cmd, char *str, int i, char c);
 int			e_var_token(t_input **cmd, char *str);
-int			d_quotes_token(t_input **cmd, char *str, t_data data);
+int			d_quotes_token(t_input **cmd, char *str, t_data *data);
 int			s_quotes_token(t_input **cmd, char *str);
 int			std_token(t_input **cmd, char *str);
-bool		expander(t_data data, char **token, char *temp, int i);
+bool		expander(t_data *data, char **token, char *temp, int i);
 
 // ======== valid_pipe_check.c ============================================== //
 

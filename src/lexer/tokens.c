@@ -39,7 +39,7 @@ int	p_d_token(t_input **cmd, char *str, int i, char c)
 	return (-1);
 }
 
-int	d_quotes_token(t_input **cmd, char *str, t_data data)
+int	d_quotes_token(t_input **cmd, char *str, t_data *data)
 {
 	bool	quote;
 	int		i;

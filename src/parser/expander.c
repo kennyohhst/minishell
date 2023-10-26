@@ -96,7 +96,7 @@ bool	single_q(char *str)
 	return (true);
 }
 
-bool	expander(t_data data, char **tkn, char *temp, int i)
+bool	expander(t_data *data, char **tkn, char *temp, int i)
 {
 	int		end;
 
@@ -109,7 +109,7 @@ bool	expander(t_data data, char **tkn, char *temp, int i)
 			if (expand_edgecases((*tkn)[i + 1]))
 			{
 				end = end_position((*tkn) + i);
-				temp = ft_getenv(data.envp,
+				temp = ft_getenv(data->envp,
 						ft_substr((*tkn), i + 1, end - 1));
 				(*tkn) = replace_env_with_value((*tkn), temp, i, end);
 			}
@@ -119,7 +119,7 @@ bool	expander(t_data data, char **tkn, char *temp, int i)
 	while (ft_strnstr((*tkn), "$?", ft_strlen((*tkn))) && single_q((*tkn)))
 	{
 		i = find_start_exit_var(*tkn);
-		temp = ft_itoa(data.exit_code);
+		temp = ft_itoa(data->exit_code);
 		(*tkn) = replace_env_with_value((*tkn), temp, i, 2);
 	}
 	return (false);
