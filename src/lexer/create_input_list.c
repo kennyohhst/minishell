@@ -74,23 +74,24 @@ static int	check_mode(char c)
 	return (STANDARD);
 }
 
-void	create_input_list(t_input **token_list, char *str, t_data *data)
+void	create_input_list(t_input **token_list, char *input, t_data *data)
 {
 	int		err_check;
 	int		i;
 	int		mode;
 
 	i = 0;
-	expander(data, &str, NULL, 0);
-	while (str[i])
+	input = expander(data, input);
+	while (input[i])
 	{
-		while (str[i] && str[i] == ' ')
+		while (input[i] && input[i] == ' ')
 			i++;
-		mode = check_mode(str[i]);
-		err_check = assign_token(mode, token_list, (str + i), data);
+		mode = check_mode(input[i]);
+		err_check = assign_token(mode, token_list, (input + i), data);
 		if (err_check == -1)
-			return ;
+			break ;
 		else
 			i += err_check;
 	}
+	free(input);
 }

@@ -59,7 +59,7 @@ int			e_var_token(t_input **cmd, char *str);
 int			d_quotes_token(t_input **cmd, char *str, t_data *data);
 int			s_quotes_token(t_input **cmd, char *str);
 int			std_token(t_input **cmd, char *str);
-bool		expander(t_data *data, char **token, char *temp, int i);
+char		*expander(t_data *data, char *input);
 
 // ======== valid_pipe_check.c ============================================== //
 
@@ -68,7 +68,7 @@ int			valid_pipe_check(char *str);
 // ======== parser ========================================================== //
 
 int			valid_input_check(t_input *token);
-bool		expand_edgecases(char c);
+bool		is_edgecase(char c);
 int			end_position(char *str);
 int			skip_singles(int i, char *token);
 int			find_start_exit_var(char *str);

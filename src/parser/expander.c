@@ -12,37 +12,34 @@
 
 #include "minishell.h"
 
-bool	expand_edgecases(char c)
+bool	is_edgecase(char c)
 {
-	if (c != '\0' && (ft_isalnum(c) || c == '_') && c != ' ')
+	if ((ft_isalnum(c) || c == '_')
+		&& (c != '\0' && c != ' '))
 		return (true);
 	return (false);
 }
 
-char	*replace_env_with_value(char *token, char *e_var, int start, int end)
+char	*replace_env_with_value(char *input, char *env_var, int start, int end)
 {
-	char	*temp_s;
-	char	*temp_e;
+	char	*first_part;
+	char	*second_part;
 
-	if (start == -1)
-		return (token);
-	if (!e_var)
+	if (!env_var)
 	{
-		temp_s = ft_substr(token, 0, (start));
-		temp_e = ft_substr(token + start, end, (ft_strlen(token) - end));
-		free(token);
-		token = ft_strjoin_replace(temp_s, temp_e);
-		return (token);
+		first_part = ft_substr(input, 0, start);
+		second_part = ft_substr(input + start, end, ft_strlen(input + start) - end);
 	}
 	else
 	{
-		temp_s = ft_substr(token, 0, (start));
-		temp_e = ft_substr(token, end + start, ft_strlen(token + end + start));
-		temp_s = ft_strjoin_replace(temp_s, e_var);
-		free(token);
-		token = ft_strjoin_replace(temp_s, temp_e);
-		return (token);
+		first_part = ft_substr(input, 0, start);
+		first_part = ft_strjoin_replace(first_part, env_var);
+		second_part = ft_substr(input, start + end, ft_strlen(input + start) - end);
 	}
+	free(input);
+	input = ft_strjoin_replace(first_part, second_part);
+	free(second_part);
+	return (input);
 }
 
 int	skip_heredoc(int i, char *str)
@@ -96,31 +93,44 @@ bool	single_q(char *str)
 	return (true);
 }
 
-bool	expander(t_data *data, char **tkn, char *temp, int i)
+char	*expander(t_data *data, char *input)
 {
 	int		end;
+	char	*id;
+	char	*env_var;
+	int		i;
 
-	while (i < (int) ft_strlen((*tkn)))
+	env_var = NULL;
+	i = 0;
+	while (i < (int) ft_strlen(input))
 	{
-		i = skip_singles(i, (*tkn));
-		i = skip_heredoc(i, (*tkn));
-		if ((*tkn)[i] == '$')
+		i = skip_singles(i, input);
+		i = skip_heredoc(i, input);
+
+		if (input[i] == '$')
 		{
-			if (expand_edgecases((*tkn)[i + 1]))
+			if (is_edgecase(input[i + 1]) == true)
 			{
-				end = end_position((*tkn) + i);
-				temp = ft_getenv(data->envp,
-						ft_substr((*tkn), i + 1, end - 1));
-				(*tkn) = replace_env_with_value((*tkn), temp, i, end);
+				end = end_position(input + i);
+				id = ft_substr(input, i + 1, end - 1);
+
+				env_var = ft_getenv(data->envp, id);
+				free(id);
+
+				input = replace_env_with_value(input, env_var, i, end);
 			}
 		}
 		i++;
 	}
-	while (ft_strnstr((*tkn), "$?", ft_strlen((*tkn))) && single_q((*tkn)))
+
+	// for $? expansion
+	while (ft_strnstr(input, "$?", ft_strlen(input)) && single_q(input))
 	{
-		i = find_start_exit_var(*tkn);
-		temp = ft_itoa(data->exit_code);
-		(*tkn) = replace_env_with_value((*tkn), temp, i, 2);
+		i = find_start_exit_var(input);
+		env_var = ft_itoa(data->exit_code);
+		input = replace_env_with_value(input, env_var, i, 2);
+		free(env_var);
 	}
-	return (false);
+
+	return (input);
 }

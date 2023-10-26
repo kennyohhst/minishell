@@ -76,7 +76,7 @@ void	malloc_redirects_node(t_redirect **red, int type)
 	if (!new)
 		return ;
 	new->name = NULL;
-	new->type = (t_token_type) type;
+	new->type = type;
 	temp = (*red);
 	if (temp)
 	{
@@ -90,16 +90,6 @@ void	malloc_redirects_node(t_redirect **red, int type)
 		new->next = NULL;
 		(*red) = new;
 	}
-}
-
-int	first_time(t_command **command, t_input **token, int i)
-{
-	if (i < 0)
-	{
-		malloc_cmd_node(command, NULL, token);
-		i++;
-	}
-	return (i);
 }
 
 int	pipe_encounter(t_command **command, t_input **token, int i)

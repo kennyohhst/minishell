@@ -98,11 +98,10 @@ t_input	*lexer(char *input, t_data *data)
 		return (NULL);
 	}
 	add_history(input);
-	ft_bzero(&input_list, sizeof(t_input *));
+	ft_bzero(&input_list, sizeof(t_input *)); // ?
 	if (!check_quotes(input))
 	{
 		data->exit_code = 2;
-		free(input);
 		return (NULL);
 	}
 	create_input_list(&input_list, input, data);

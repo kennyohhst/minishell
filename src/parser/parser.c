@@ -41,18 +41,18 @@ t_input	*i_redirect_type(t_input *token, t_redirect **red, int type)
 	return (token);
 }
 
-t_input	*o_redirect_type(t_input *token, t_redirect **red, int type)
+t_input	*o_redirect_type(t_input *token, t_redirect **red)
 {
 	t_redirect	*temp;
 
 	if (!token)
 		return (NULL);
-	malloc_redirects_node(red, type);
+	malloc_redirects_node(red, token->token_type);
 	if (!(*red))
 		return (NULL);
 	temp = (*red);
 	while (temp->next)
-		temp = temp ->next;
+		temp = temp->next;
 	if (token)
 	{
 		if (token->token_type >= 2 && token->token_type <= 5)
@@ -66,26 +66,33 @@ t_input	*o_redirect_type(t_input *token, t_redirect **red, int type)
 		}
 	}
 	if (token && token->token_type >= 2 && token->token_type <= 5)
-		return (o_redirect_type(token, &temp, token->token_type));
+		return (o_redirect_type(token, &temp));
 	return (token);
 }
 
-t_command	*type_check(t_input *token, int i)
+t_command	*type_check(t_input *token)
 {
 	t_command	*command;
 	t_command	*temp;
+	int			i;
 
 	command = NULL;
 	temp = NULL;
+	malloc_cmd_node(&command, NULL, &token);
+	i = 0;
 	while (token)
 	{
-		i = first_time(&command, &token, i);
+		// ???
 		i = pipe_encounter(&command, &token, i);
 		if (!command)
 			return (NULL);
+
+		// ???
 		temp = command;
 		while (temp->next != NULL)
 			temp = temp->next;
+
+		// ???
 		if (token && token->token_type >= DQ_STRING)
 		{
 			temp->argv[i] = ft_strdup(token->str);
@@ -98,8 +105,10 @@ t_command	*type_check(t_input *token, int i)
 			token = token->next;
 			continue ;
 		}
+
+		// ???
 		if (token && (token->token_type >= 2 || token->token_type <= 5))
-			token = o_redirect_type(token, &temp->redirects, token->token_type);
+			token = o_redirect_type(token, &temp->redirects);
 	}
 	return (command);
 }
@@ -108,6 +117,6 @@ t_command	*parser(t_input	*token)
 {
 	t_command	*command;
 
-	command = type_check(token, -1);
+	command = type_check(token);
 	return (command);
 }

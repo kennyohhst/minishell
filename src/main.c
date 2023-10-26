@@ -60,7 +60,6 @@ void	run_shell(t_data *data)
 		wait_for_children(data);
 		free_tokens(tokenized_input);
 		free_cmd(data->command);
-		free(input);
 	}
 }
 

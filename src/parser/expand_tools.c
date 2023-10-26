@@ -17,7 +17,7 @@ int	end_position(char *str)
 	int	i;
 
 	i = 1;
-	while (str[i] != '\0' && expand_edgecases(str[i]))
+	while (str[i] != '\0' && is_edgecase(str[i]))
 		i++;
 	return (i);
 }
