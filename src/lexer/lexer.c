@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/09/27 15:50:08 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/28 18:27:44 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_input	*lexer(char *input, t_data *data)
 		return (NULL);
 	}
 	add_history(input);
-	ft_bzero(&input_list, sizeof(t_input *)); // ?
+	ft_bzero(&input_list, sizeof(t_input *));
 	if (!check_quotes(input))
 	{
 		data->exit_code = 2;

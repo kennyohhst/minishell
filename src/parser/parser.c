@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/17 22:53:38 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 21:18:16 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/17 22:53:38 by opelser           #+#    #+#             */
+/*   Updated: 2023/10/28 19:08:31 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,45 +70,43 @@ t_input	*o_redirect_type(t_input *token, t_redirect **red)
 	return (token);
 }
 
+static t_input	*process_token(t_command **command, t_input *token, int *i)
+{
+	t_command	*temp;
+
+	temp = *command;
+	while (temp->next != NULL)
+		temp = temp->next;
+	if (token && token->token_type >= DQ_STRING)
+	{
+		temp->argv[*i] = ft_strdup(token->str);
+		if (!temp->argv[*i])
+		{
+			ft_free_str_arr(temp->argv);
+			return (NULL);
+		}
+		(*i)++;
+		token = token->next;
+	}
+	else if (token && (token->token_type >= 2 || token->token_type <= 5))
+		token = o_redirect_type(token, &temp->redirects);
+	return (token);
+}
+
 t_command	*type_check(t_input *token)
 {
 	t_command	*command;
-	t_command	*temp;
 	int			i;
 
 	command = NULL;
-	temp = NULL;
-	malloc_cmd_node(&command, NULL, &token);
 	i = 0;
+	malloc_cmd_node(&command, NULL, &token);
 	while (token)
 	{
-		// ???
 		i = pipe_encounter(&command, &token, i);
 		if (!command)
 			return (NULL);
-
-		// ???
-		temp = command;
-		while (temp->next != NULL)
-			temp = temp->next;
-
-		// ???
-		if (token && token->token_type >= DQ_STRING)
-		{
-			temp->argv[i] = ft_strdup(token->str);
-			if (!temp->argv[i])
-			{
-				ft_free_str_arr(temp->argv);
-				return (NULL);
-			}
-			i++;
-			token = token->next;
-			continue ;
-		}
-
-		// ???
-		if (token && (token->token_type >= 2 || token->token_type <= 5))
-			token = o_redirect_type(token, &temp->redirects);
+		token = process_token(&command, token, &i);
 	}
 	return (command);
 }

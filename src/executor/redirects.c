@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:53:15 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/16 17:45:56 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/28 18:19:54 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	heredoc(char *delim)
 		free(str);
 		str = readline("> ");
 	}
+	free(str);
 	close (fd[1]);
 	return (fd[0]);
 }
