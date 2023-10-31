@@ -102,6 +102,7 @@ t_input	*lexer(char *input, t_data *data)
 	if (!check_quotes(input))
 	{
 		data->exit_code = 2;
+		free(input);
 		return (NULL);
 	}
 	create_input_list(&input_list, input, data);
