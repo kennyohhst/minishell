@@ -90,8 +90,7 @@ void	create_input_list(t_input **token_list, char *input, t_data *data)
 		err_check = assign_token(mode, token_list, (input + i), data);
 		if (err_check == -1)
 			break ;
-		else
-			i += err_check;
+		i += err_check;
 	}
 	free(input);
 }
