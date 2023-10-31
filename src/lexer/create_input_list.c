@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_input_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/02 16:59:29 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/31 16:41:01 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static int	assign_token(int mode, t_input **token_list, \
 	if (mode == REDIRECT)
 		return (p_d_token(token_list, str, 0, str[0]));
 	if (mode == DOUBLE_QUOTE)
-		return (d_quotes_token(token_list, str, data));
+		return (d_quotes_token(token_list, str, false));
 	if (mode == SINGLE_QUOTE)
-		return (s_quotes_token(token_list, str));
+		return (s_quotes_token(token_list, str, false));
 	if (mode == STANDARD)
 		return (std_token(token_list, str));
 	return (-1);

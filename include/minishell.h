@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/28 19:06:16 by code             ###   ########.fr       */
+/*   Updated: 2023/10/31 16:40:38 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int			remove_quotes(char *str, char c);
 int			std_remove_quotes(char *str, char c);
 int			p_d_token(t_input **cmd, char *str, int i, char c);
 int			e_var_token(t_input **cmd, char *str);
-int			d_quotes_token(t_input **cmd, char *str, t_data *data);
-int			s_quotes_token(t_input **cmd, char *str);
+int			d_quotes_token(t_input **cmd, char *str, bool quote);
+int			s_quotes_token(t_input **cmd, char *str, bool quote);
 int			std_token(t_input **cmd, char *str);
 char		*expander(t_data *data, char *input);
 

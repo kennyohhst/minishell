@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/05 18:02:03 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/10/31 16:43:02 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,20 @@ int	p_d_token(t_input **cmd, char *str, int i, char c)
 	return (-1);
 }
 
-int	d_quotes_token(t_input **cmd, char *str, t_data *data)
+int	d_quotes_token(t_input **cmd, char *str, bool quote)
 {
-	bool	quote;
 	int		i;
 
-	(void) data;
 	i = 1;
-	quote = false;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\"')
 			quote = true;
 		if (str[i] == ' ' && str[i - 1] != '\"')
+		{
 			i++;
+			continue ;
+		}
 		else if (str[i] == '\"' && str[i + 1] == ' ')
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
@@ -67,17 +67,30 @@ int	d_quotes_token(t_input **cmd, char *str, t_data *data)
 	return (-1);
 }
 
-int	s_quotes_token(t_input **cmd, char *str)
+int	s_quotes_token(t_input **cmd, char *str, bool quote)
 {
-	int	i;
+	int		i;
 
 	i = 1;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'')
+			quote = true;
+		if (str[i] == ' ' && str[i - 1] != '\'')
+		{
+			i++;
+			continue ;
+		}
+		else if (str[i] == '\'' && str[i + 1] == ' ')
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), SQ_STRING), (i + 1));
 		i++;
+	}
+	if ((str[i] == '\0' && str[i - 1] == '\'') || quote == true)
+	{
+		i = remove_quotes(str, '\'');
+		return (add_nodes(cmd, NULL
+				, ft_substr(str, 0, i + 1), SQ_STRING), (i + 1));
 	}
 	return (-1);
 }
