@@ -12,6 +12,26 @@
 
 #include "minishell.h"
 
+// need to update oldpwd and pwd
+
+static int	cd_oldpwd(t_envp *envp)
+{
+	char	*old_pwd;
+
+	old_pwd = ft_getenv(envp, "OLDPWD");
+	if (!old_pwd)
+	{
+		print_error("cd", NULL, "OLDPWD not set");
+		return (1);
+	}
+	if (chdir(old_pwd) == -1)
+	{
+		perror("minishell: cd");
+		return (1);
+	}
+	return (0);
+}
+
 static int	cd_home(t_envp *envp)
 {
 	char	*home;
@@ -39,9 +59,13 @@ int	cd(char **argv, t_envp *envp)
 		print_error("cd", NULL, "too many arguments");
 		return (1);
 	}
+	if (ft_strcmp(argv[1], "~") == 0)
+		return (cd_home(envp));
+	if (ft_strcmp(argv[1], "-") == 0)
+		return (cd_oldpwd(envp));
 	if (chdir(argv[1]) == -1)
 	{
-		perror("minishell: cd");
+		print_error("cd", strerror(errno), argv[1]);
 		return (1);
 	}
 	return (0);
