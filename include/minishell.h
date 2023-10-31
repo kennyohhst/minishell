@@ -55,7 +55,6 @@ int			quotes_finder(char *str, char c);
 int			remove_quotes(char *str, char c);
 int			std_remove_quotes(char *str, char c);
 int			p_d_token(t_input **cmd, char *str, int i, char c);
-int			e_var_token(t_input **cmd, char *str);
 int			d_quotes_token(t_input **cmd, char *str, bool quote);
 int			s_quotes_token(t_input **cmd, char *str, bool quote);
 int			std_token(t_input **cmd, char *str);
@@ -74,12 +73,8 @@ int			skip_singles(int i, char *token);
 int			find_start_exit_var(char *str);
 t_command	*parser(t_input *tokens);
 int			list_length(t_input *input);
-void		test_data(t_data *data);
-void		list_check(t_input *tokenized_input);
-int			malloc_argv(t_input **token);
 void		malloc_cmd_node(t_command **cmd, t_command *temp, t_input **token);
 void		malloc_redirects_node(t_redirect **red, int type);
-int			first_time(t_command **command, t_input **token, int i);
 int			pipe_encounter(t_command **command, t_input **token, int i);
 
 // ========= executer ======================================================= //

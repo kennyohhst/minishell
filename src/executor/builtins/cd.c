@@ -65,7 +65,7 @@ int	cd(char **argv, t_envp *envp)
 		return (cd_oldpwd(envp));
 	if (chdir(argv[1]) == -1)
 	{
-		print_error("cd", strerror(errno), argv[1]);
+		print_error("cd", argv[1], strerror(errno));
 		return (1);
 	}
 	return (0);

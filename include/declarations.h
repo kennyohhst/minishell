@@ -83,7 +83,6 @@ typedef struct s_command				t_command;
 
 struct s_command
 {
-	int				arg_count;
 	char			**argv;
 	\
 	t_redirect		*redirects;

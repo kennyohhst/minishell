@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	malloc_argv(t_input **token)
+static int	get_argc(t_input **token)
 {
 	int		count;
 	t_input	*temp;
@@ -41,17 +41,17 @@ int	malloc_argv(t_input **token)
 
 void	malloc_cmd_node(t_command **cmd, t_command *temp, t_input **token)
 {
+	const int	argc = get_argc(token);
 	t_command	*new;
 
 	new = malloc(sizeof(t_command));
 	if (!new)
 		return ;
 	new->redirects = NULL;
-	new->argv = ft_calloc((malloc_argv(token) + 1), sizeof(char *));
+	new->argv = ft_calloc(argc + 1, sizeof(char *));
 	if (!new->argv)
 		return (free(new));
-	new->arg_count = malloc_argv(token);
-	new->argv[new->arg_count] = 0;
+	new->argv[argc] = NULL;
 	temp = (*cmd);
 	if (temp)
 	{
