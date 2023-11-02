@@ -48,12 +48,7 @@ int	d_quotes_token(t_input **cmd, char *str, bool quote)
 	{
 		if (str[i] == '\"')
 			quote = true;
-		if (str[i] == ' ' && str[i - 1] != '\"')
-		{
-			i++;
-			continue ;
-		}
-		else if (str[i] == '\"' && str[i + 1] == ' ')
+		if (str[i] == '\"' && str[i + 1] == ' ')
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
 		i++;
@@ -76,12 +71,7 @@ int	s_quotes_token(t_input **cmd, char *str, bool quote)
 	{
 		if (str[i] == '\'')
 			quote = true;
-		if (str[i] == ' ' && str[i - 1] != '\'')
-		{
-			i++;
-			continue ;
-		}
-		else if (str[i] == '\'' && str[i + 1] == ' ')
+		if (str[i] == '\'' && str[i + 1] == ' ')
 			return (add_nodes(cmd, NULL
 					, ft_substr(str, 1, i - 1), SQ_STRING), (i + 1));
 		i++;
@@ -105,15 +95,14 @@ int	std_token(t_input **cmd, char *str)
 		if (str[i] == ' ' || str[i] == '\0'
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 			return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
-		else if (str[i] == '\"' || str[i] == '\'')
+		if (str[i] == '\"' || str[i] == '\'')
 		{
 			i = std_remove_quotes(str, str[i]);
 			if (!(*cmd) && i < 0)
 				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
 			if (!str[i] || str[i] == ' ')
 				return (add_nodes(cmd, NULL, ft_substr(str, 0, i), STRING), i);
-			else
-				i--;
+			i--;
 		}
 		i++;
 	}
