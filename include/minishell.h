@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/31 16:40:38 by code             ###   ########.fr       */
+/*   Updated: 2023/11/02 20:23:23 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ void		create_input_list(t_input **cmd, char *str, t_data *data);
 void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
 t_input		*free_tokens(t_input *list);
 
-//		~ lexer.c
-
-// void		create_input_list(t_input **cmd, char *str);
-// void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
 void		init_signals(t_signals sig);
 
 // ======== env utils ======================================================= //
@@ -79,6 +75,7 @@ int			pipe_encounter(t_command **command, t_input **token, int i);
 
 // ========= executer ======================================================= //
 
+int			handle_heredoc(t_data *data);
 int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 int			execute(t_data *data);
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);

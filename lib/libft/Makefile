@@ -71,23 +71,23 @@ all: ${NAME}
 $(NAME): $(OBJ)
 	@ printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling ${NICKNAME}..." "$(RESET)"
 	@ ar rc ${NAME} ${OBJ}
-	@ printf "%b%20s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
+	@ printf "\t\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HDR)
 	@ mkdir -p obj
 	@ printf "%b%s%b" "$(YELLOW)" "Compiling $<..." "$(RESET)"
 	@ gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@
-	@ printf "%b%20s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
+	@ printf "\t\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 norm:
 	@ norminette $(SRC) $(HDR)
 
 clean:
-	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning object files..." "$(RESET)"
+	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning object files in $(NICKNAME)..." "$(RESET)"
 	@ rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning executable..." "$(RESET)"
+	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning executable in $(NICKNAME)..." "$(RESET)"
 	@ rm -rf ${NAME}
 
 re: fclean ${NAME}

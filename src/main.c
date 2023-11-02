@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/06 20:41:06 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/11/02 20:39:10 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ void	run_shell(t_data *data)
 		data->command = parser(tokenized_input);
 		if (!data->command)
 			continue ;
+		if (handle_heredoc(data) == -1)
+			continue ;
 		if (execute(data) == -1)
 			data->exit_code = 1;
 		wait_for_children(data);
-		free_tokens(tokenized_input);
 		free_cmd(data->command);
 	}
 }

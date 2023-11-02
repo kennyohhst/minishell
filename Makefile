@@ -41,6 +41,7 @@ SRC_FILES := \
 				parser/malloc_functions.c		\
 				parser/expand_tools.c			\
 \
+				executor/heredoc.c				\
 				executor/execute.c				\
 				executor/execute_utils.c		\
 				executor/redirects.c			\
@@ -72,7 +73,7 @@ all: ${NAME}
 $(NAME): $(OBJ) $(LIB)
 	@ printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
 	@ gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
-	@ printf "%b%20s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
+	@ printf "\t\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 $(LIB):
 	@ make -C $(LIBFT_DIR)
@@ -85,7 +86,7 @@ $(OBJ_DIR)/%.o: src/%.c $(HDR)
 	@ mkdir -p obj/executor/builtins
 	@ printf "%b%s%b" "$(YELLOW)" "Compiling $<..." "$(RESET)"
 	@ gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
-	@ printf "%b%20s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
+	@ printf "\t\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 open: $(NAME)
 	@ ./$(NAME)
@@ -95,13 +96,13 @@ norm:
 	@ norminette $(HDR_DIR) $(SRC)
 
 clean:
-	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning object files..." "$(RESET)"
+	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning object files in $(NICKNAME)..." "$(RESET)"
 	@ rm -rf $(OBJ)
 	@ rm -rf $(OBJ_DIR)
 	@ make $(MAKEFLAGS) clean -C $(LIBFT_DIR)
 
 fclean: clean
-	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning executable..." "$(RESET)"
+	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning executable in $(NICKNAME)..." "$(RESET)"
 	@ rm -rf ${NAME}
 	@ make $(MAKEFLAGS) fclean -C $(LIBFT_DIR)
 

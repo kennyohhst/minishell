@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   free_functions.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/31 21:41:28 by code          #+#    #+#                 */
-/*   Updated: 2023/09/14 21:17:26 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   free_functions.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/31 21:41:28 by code              #+#    #+#             */
+/*   Updated: 2023/11/02 20:58:59 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,17 @@ static void	free_argv(char **argv)
 	free(argv);
 }
 
-void	free_redirects(t_redirect *output)
+void	free_redirects(t_redirect *redirect)
 {
 	t_redirect	*tmp;
 
-	while (output)
+	while (redirect)
 	{
-		tmp = output;
-		output = output->next;
+		tmp = redirect;
+		redirect = redirect->next;
 		free(tmp->name);
+		if (tmp->heredoc_fd != -1)
+			close(tmp->heredoc_fd);
 		free(tmp);
 	}
 }
