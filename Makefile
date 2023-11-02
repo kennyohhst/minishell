@@ -8,8 +8,9 @@ SRC_DIR := src
 OBJ_DIR := obj
 
 # Compiler flags
-CC := gcc
-CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
+CC				:= gcc
+CFLAGS			:= -Wall -Werror -Wextra -g -fsanitize=address
+MAKEFLAGS		:= --no-print-directory
 
 # Includes
 HDR_FILES :=	minishell.h
@@ -69,45 +70,40 @@ RESET	:= \033[0m
 all: ${NAME}
 
 $(NAME): $(OBJ) $(LIB)
-	@printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
-	@gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
-	@printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
+	@ printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
+	@ gcc $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
+	@ printf "%b%20s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 $(LIB):
-	@make -C $(LIBFT_DIR)
+	@ make -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: src/%.c $(HDR)
-	@mkdir -p obj
-	@mkdir -p obj/lexer
-	@mkdir -p obj/parser
-	@mkdir -p obj/executor
-	@mkdir -p obj/executor/builtins
-	@gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
+	@ mkdir -p obj
+	@ mkdir -p obj/lexer
+	@ mkdir -p obj/parser
+	@ mkdir -p obj/executor
+	@ mkdir -p obj/executor/builtins
+	@ printf "%b%s%b" "$(YELLOW)" "Compiling $<..." "$(RESET)"
+	@ gcc $(CFLAGS) -I $(HDR_DIR) -c $< -o $@ -I /Users/$(USER)/.brew/opt/readline/include
+	@ printf "%b%20s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
 
 open: $(NAME)
-	@./$(NAME)
-
-log:
-	git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)' --all
-
-test:
-	tester/tester.py
+	@ ./$(NAME)
 
 norm:
-	@norminette $(HDR_DIR) $(SRC)
+	@ printf "%b%s%b\n" "$(YELLOW)$(BOLD)" "Running norminette..." "$(RESET)"
+	@ norminette $(HDR_DIR) $(SRC)
 
 clean:
-	@echo "$(RED)$(BOLD)Cleaning $(NICKNAME)...$(RESET)"
-	@rm -rf $(OBJ)
-	@rm -rf $(OBJ_DIR)
-	@make clean -C $(LIBFT_DIR)
+	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning object files..." "$(RESET)"
+	@ rm -rf $(OBJ)
+	@ rm -rf $(OBJ_DIR)
+	@ make $(MAKEFLAGS) clean -C $(LIBFT_DIR)
 
-fclean:
-	@echo "$(RED)$(BOLD)Fully cleaning $(NICKNAME)...$(RESET)"
-	@rm -rf ${NAME}
-	@rm -rf $(OBJ)
-	@rm -rf $(OBJ_DIR)
-	@make fclean -C $(LIBFT_DIR)
+fclean: clean
+	@ printf "%b%s%b\n" "$(RED)$(BOLD)" "Cleaning executable..." "$(RESET)"
+	@ rm -rf ${NAME}
+	@ make $(MAKEFLAGS) fclean -C $(LIBFT_DIR)
 
 re: fclean ${NAME}
 

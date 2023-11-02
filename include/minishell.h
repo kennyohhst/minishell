@@ -21,9 +21,9 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+
 # include "../lib/libft/include/libft.h"
 # include "declarations.h"
-# include "colors.h"
 # include "errno.h"
 
 //		~ create_input_list.c

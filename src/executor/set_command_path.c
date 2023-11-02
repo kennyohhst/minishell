@@ -38,7 +38,7 @@ static char	*get_command_location(char *command, char **paths)
 	command = tmp;
 	while (paths[i])
 	{
-		paths[i] = ft_strjoin_free(paths[i], command);
+		paths[i] = ft_strjoin_replace(paths[i], command);
 		if (!paths[i])
 			return (NULL);
 		i++;
