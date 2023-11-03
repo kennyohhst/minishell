@@ -44,11 +44,16 @@ int	skip_singles(int i, char *token)
 int	find_start_exit_var(char *str)
 {
 	int	i;
+	int	q;
 
+	q = -1;
 	i = 0;
 	while (str[i])
 	{
-		i = skip_singles(i, str);
+		if (str[i] == '\"' && str[i++] != '\0')
+			q *= -1;
+		if (q == -1)
+			i = skip_singles(i, str);
 		if (str[i] == '$')
 		{
 			i++;
