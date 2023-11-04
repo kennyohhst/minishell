@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/31 16:40:38 by code             ###   ########.fr       */
+/*   Updated: 2023/11/03 17:42:42 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 //		~ create_input_list.c
 
+void        test_tokens(t_input *tokens);
 void		create_input_list(t_input **cmd, char *str, t_data *data);
 void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
 t_input		*free_tokens(t_input *list);
@@ -50,6 +51,7 @@ char		*ft_getenv(t_envp *envp_list, char *id);
 // ======= lexer ============================================================ //
 
 t_input		*lexer(char *input, t_data *data);
+void        type_read(t_input *tokens);
 int			check_quotes(char *str);
 int			quotes_finder(char *str, char c);
 int			remove_quotes(char *str, char c);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_input_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/10/31 16:41:01 by code             ###   ########.fr       */
+/*   Updated: 2023/11/04 23:18:00 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,26 @@
 #define SINGLE_QUOTE 3
 #define STANDARD 4
 
+void	set_var(t_input **lst, int type)
+{
+	(*lst)->token_type = type;
+	(*lst)->argcount = 0;
+}
+
 void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)
 {
 	t_input	*new;
 
+	if (!str)
+		return (free(str));
 	new = malloc(sizeof(t_input));
 	if (!new)
-		return ;
+		return (free(str));
 	new->str = ft_strdup(str);
 	if (!new->str)
 		return (free(str));
 	free(str);
-	new->token_type = type;
-	new->argcount = 0;
+	set_var(&new, type);
 	temp = *cmd;
 	if (temp)
 	{
@@ -53,9 +60,9 @@ static int	assign_token(int mode, t_input **token_list, \
 	if (mode == REDIRECT)
 		return (p_d_token(token_list, str, 0, str[0]));
 	if (mode == DOUBLE_QUOTE)
-		return (d_quotes_token(token_list, str, false));
+		return (d_quotes_token(token_list, str, true));
 	if (mode == SINGLE_QUOTE)
-		return (s_quotes_token(token_list, str, false));
+		return (s_quotes_token(token_list, str, true));
 	if (mode == STANDARD)
 		return (std_token(token_list, str));
 	return (-1);
@@ -88,6 +95,7 @@ void	create_input_list(t_input **token_list, char *input, t_data *data)
 			i++;
 		mode = check_mode(input[i]);
 		err_check = assign_token(mode, token_list, (input + i), data);
+		// printf("err_check = %i\n", err_check);
 		if (err_check == -1)
 			break ;
 		i += err_check;

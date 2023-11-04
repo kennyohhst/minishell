@@ -6,7 +6,7 @@
 /*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/06 20:41:06 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/11/04 22:11:21 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ void	run_shell(t_data *data)
 		if (!input)
 			break ;
 		tokenized_input = lexer(input, data);
+		test_tokens(tokenized_input);
+		type_read(tokenized_input);
+		test_tokens(tokenized_input);
 		if (!tokenized_input)
 			continue ;
 		data->command = parser(tokenized_input);

@@ -21,6 +21,7 @@ LIB				:= $(LIBFT_DIR)/libft.a
 # Files
 SRC_FILES := \
 				main.c							\
+				test_file.c						\
 				signals.c						\
 				utils.c							\
 				env_list_create.c				\
@@ -29,6 +30,7 @@ SRC_FILES := \
 \
 				lexer/lexer.c					\
 				lexer/quote_count.c				\
+				lexer/quote_remover.c			\
 				lexer/tokens.c					\
 				lexer/valid_pipe_check.c		\
 				lexer/create_input_list.c		\
