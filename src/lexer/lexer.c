@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:26:49 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/28 18:27:44 by code             ###   ########.fr       */
+/*   Updated: 2023/11/09 22:16:09 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,20 @@ int	std_remove_quotes(char *str, char c)
 	return (i - len);
 }
 
+bool	is_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 t_input	*lexer(char *input, t_data *data)
 {
 	t_input		*input_list;
@@ -97,7 +111,8 @@ t_input	*lexer(char *input, t_data *data)
 		free(input);
 		return (NULL);
 	}
-	add_history(input);
+	if (!is_spaces(input))
+		add_history(input);
 	ft_bzero(&input_list, sizeof(t_input *));
 	if (!check_quotes(input))
 	{
