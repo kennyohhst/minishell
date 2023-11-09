@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 14:10:55 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/31 16:43:02 by code             ###   ########.fr       */
+/*   Updated: 2023/11/09 19:48:24 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,50 +39,70 @@ int	p_d_token(t_input **cmd, char *str, int i, char c)
 	return (-1);
 }
 
-int	d_quotes_token(t_input **cmd, char *str, bool quote)
-{
-	int		i;
 
-	i = 1;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\"')
-			quote = true;
-		if (str[i] == '\"' && str[i + 1] == ' ')
-			return (add_nodes(cmd, NULL
-					, ft_substr(str, 1, i - 1), DQ_STRING), (i + 1));
+int	end_of_quotes(char *str, char quote, int i)
+{
+	while (str[i] && str[i] != quote)
 		i++;
-	}
-	if ((str[i] == '\0' && str[i - 1] == '\"') || quote == true)
-	{
-		i = remove_quotes(str, '\"');
-		return (add_nodes(cmd, NULL
-				, ft_substr(str, 0, i + 1), DQ_STRING), (i + 1));
-	}
-	return (-1);
+	return (i);
 }
 
-int	s_quotes_token(t_input **cmd, char *str, bool quote)
+int	edgecase(char c)
+{
+	if (c == '\0')
+		return (-1);
+	else if (c == ' ' || c == '|' || c == '>' || c == '<')
+		return (1);
+	else if (c == '\"' || c == '\'')
+		return (2);	
+	return (0);
+}
+
+int	after_quotes(char *str, int	i)
+{
+	while (str[i])
+	{
+		if (edgecase(str[i]) == 0)
+			i++;
+		else if (edgecase(str[i]) == -1)
+			return (i-1) ;
+		else if (edgecase(str[i]) == 1)
+			break ;
+		else if (edgecase(str[i] == 2))
+		{
+			i = end_of_quotes(str, str[i], i+1);
+			i++;
+		}
+	}
+	return (i-1);
+}
+
+int	d_quotes_token(t_input **cmd, char *str)
 {
 	int		i;
+	char 	*temp;
 
 	i = 1;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\'')
-			quote = true;
-		if (str[i] == '\'' && str[i + 1] == ' ')
-			return (add_nodes(cmd, NULL
-					, ft_substr(str, 1, i - 1), SQ_STRING), (i + 1));
-		i++;
-	}
-	if ((str[i] == '\0' && str[i - 1] == '\'') || quote == true)
-	{
-		i = remove_quotes(str, '\'');
-		return (add_nodes(cmd, NULL
-				, ft_substr(str, 0, i + 1), SQ_STRING), (i + 1));
-	}
-	return (-1);
+	i = end_of_quotes(str, '\"', i);
+	if (str[i+1])
+		i = after_quotes(str, i+1);
+	temp = ft_substr(str, 0, i+1);
+	add_nodes(cmd, NULL, temp, DQ_STRING);
+	return(i+1);
+}
+
+int	s_quotes_token(t_input **cmd, char *str)
+{
+	int		i;
+	char 	*temp;
+
+	i = 1;
+	i = end_of_quotes(str, '\'', i);
+	if (str[i+1])
+		i = after_quotes(str, i+1);
+	temp = ft_substr(str, 0, i+1);
+	add_nodes(cmd, NULL, temp, SQ_STRING);
+	return(i+1);
 }
 
 int	std_token(t_input **cmd, char *str)

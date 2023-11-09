@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/28 19:07:29 by code             ###   ########.fr       */
+/*   Updated: 2023/11/09 17:15:28 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ static char	*handle_dollar_var(t_data *data, char *input, int *i)
 		env_var = ft_getenv(data->envp, id);
 		free(id);
 		input = replace_env_with_value(input, env_var, *i, end);
-		(*i) += end;
+		if (!env_var)
+			return (input) ;
+		(*i) += end - 1;
 	}
 	else
 		(*i)++;
@@ -111,17 +113,24 @@ char	*expander(t_data *data, char *input)
 {
 	int		i;
 	char	*env_var;
-
+	int		q;
+	
+	q = -1;
 	i = 0;
 	while (i < (int) ft_strlen(input))
 	{
-		i = skip_singles(i, input);
+		if (input[i] == '\"' && input[i+1] != '\0')
+			q *= -1;
+		if (q == -1)
+			i = skip_singles(i, input);	
 		i = skip_heredoc(i, input);
 		input = handle_dollar_var(data, input, &i);
 	}
-	while (ft_strnstr(input, "$?", ft_strlen(input)) && single_q(input))
+	while (ft_strnstr(input, "$?", ft_strlen(input)))
 	{
 		i = find_start_exit_var(input);
+		if (i == -1)
+			break ;
 		env_var = ft_itoa(data->exit_code);
 		input = replace_env_with_value(input, env_var, i, 2);
 		free(env_var);

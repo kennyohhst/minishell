@@ -21,12 +21,14 @@ LIB				:= $(LIBFT_DIR)/libft.a
 # Files
 SRC_FILES := \
 				main.c							\
+				file_test_tokens.c				\
 				signals.c						\
 				utils.c							\
 				env_list_create.c				\
 				env_list_utils.c				\
 				free_functions.c				\
 \
+				lexer/quote_remover.c			\
 				lexer/lexer.c					\
 				lexer/quote_count.c				\
 				lexer/tokens.c					\

@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:53:15 by opelser           #+#    #+#             */
-/*   Updated: 2023/10/28 18:19:54 by code             ###   ########.fr       */
+/*   Updated: 2023/11/09 21:02:53 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	heredoc(char *delim)
 	str = NULL;
 	if (pipe(fd) == -1)
 		return (-1);
+	init_signals(HEREDOC);
 	str = readline("> ");
 	while (str && ft_strcmp(delim, str))
 	{

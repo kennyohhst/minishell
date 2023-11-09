@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/06 20:41:06 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/11/09 21:29:03 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	run_shell(t_data *data)
 		if (!input)
 			break ;
 		tokenized_input = lexer(input, data);
+		type_read(tokenized_input);
 		if (!tokenized_input)
 			continue ;
 		data->command = parser(tokenized_input);

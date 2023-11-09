@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/28 19:05:51 by code             ###   ########.fr       */
+/*   Updated: 2023/11/08 14:37:40 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,16 @@ int	skip_singles(int i, char *token)
 int	find_start_exit_var(char *str)
 {
 	int	i;
-
+	int	q;
+	
+	q = -1;
 	i = 0;
 	while (str[i])
 	{
-		i = skip_singles(i, str);
+		if (str[i] == '\"' && str[i++] != '\0')
+			q *= -1;
+		if (q == -1)
+			i = skip_singles(i, str);
 		if (str[i] == '$')
 		{
 			i++;

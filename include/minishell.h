@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/10/31 16:40:38 by code             ###   ########.fr       */
+/*   Updated: 2023/11/09 18:12:32 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,17 @@ char		*ft_getenv(t_envp *envp_list, char *id);
 
 // ======= lexer ============================================================ //
 
+void   		type_read(t_input *tokens);
+void		data_tester(t_data *cmd);
+void		token_tester(t_input *tokens);
 t_input		*lexer(char *input, t_data *data);
 int			check_quotes(char *str);
 int			quotes_finder(char *str, char c);
 int			remove_quotes(char *str, char c);
 int			std_remove_quotes(char *str, char c);
 int			p_d_token(t_input **cmd, char *str, int i, char c);
-int			d_quotes_token(t_input **cmd, char *str, bool quote);
-int			s_quotes_token(t_input **cmd, char *str, bool quote);
+int			d_quotes_token(t_input **cmd, char *str);
+int			s_quotes_token(t_input **cmd, char *str);
 int			std_token(t_input **cmd, char *str);
 char		*expander(t_data *data, char *input);
 

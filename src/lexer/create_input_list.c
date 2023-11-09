@@ -6,7 +6,7 @@
 /*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:51:35 by opelser           #+#    #+#             */
-/*   Updated: 2023/10/31 16:41:01 by code             ###   ########.fr       */
+/*   Updated: 2023/11/09 19:59:28 by code             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,18 @@
 #define SINGLE_QUOTE 3
 #define STANDARD 4
 
+static void	set_var(t_input **list, int type)
+{
+	(*list)->token_type = type;
+	(*list)->argcount = 0;
+}
+
 void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)
 {
 	t_input	*new;
 
+	if (!str)
+		return (free(str));
 	new = malloc(sizeof(t_input));
 	if (!new)
 		return ;
@@ -29,8 +37,7 @@ void	add_nodes(t_input **cmd, t_input *temp, char *str, int type)
 	if (!new->str)
 		return (free(str));
 	free(str);
-	new->token_type = type;
-	new->argcount = 0;
+	set_var(&new, type);
 	temp = *cmd;
 	if (temp)
 	{
@@ -53,9 +60,9 @@ static int	assign_token(int mode, t_input **token_list, \
 	if (mode == REDIRECT)
 		return (p_d_token(token_list, str, 0, str[0]));
 	if (mode == DOUBLE_QUOTE)
-		return (d_quotes_token(token_list, str, false));
+		return (d_quotes_token(token_list, str));
 	if (mode == SINGLE_QUOTE)
-		return (s_quotes_token(token_list, str, false));
+		return (s_quotes_token(token_list, str));
 	if (mode == STANDARD)
 		return (std_token(token_list, str));
 	return (-1);
