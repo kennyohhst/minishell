@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:30:44 by opelser           #+#    #+#             */
-/*   Updated: 2023/11/02 21:00:26 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/09 21:58:52 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	get_input(char *file_name, char *delim)
 	char	*str;
 	int		fd;
 
-	signal(SIGINT, SIG_DFL);
+	init_signals(HEREDOC);
 	fd = open(file_name, O_WRONLY);
 	if (fd == -1)
 	{
@@ -90,7 +90,7 @@ static int	get_heredoc_fd(t_data *data, char *name)
 	int			fd;
 
 	file_name = get_file_name();
-	init_signals(HEREDOC);
+	init_signals(IGNORE);
 	fd = open(file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
