@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:50:45 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/09 21:29:03 by code             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: opelser <opelser@student.codam.nl>           +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/05 17:50:45 by kkalika       #+#    #+#                 */
+/*   Updated: 2023/11/14 12:43:46 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ void	run_shell(t_data *data)
 		data->command = parser(tokenized_input);
 		if (!data->command)
 			continue ;
+		if (handle_heredoc(data) == -1)
+			continue ;
 		if (execute(data) == -1)
 			data->exit_code = 1;
 		wait_for_children(data);
-		free_tokens(tokenized_input);
 		free_cmd(data->command);
 	}
 }

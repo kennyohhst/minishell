@@ -111,10 +111,11 @@ t_command	*type_check(t_input *token)
 	return (command);
 }
 
-t_command	*parser(t_input	*token)
+t_command	*parser(t_input *token)
 {
 	t_command	*command;
 
 	command = type_check(token);
+	free_tokens(token);
 	return (command);
 }

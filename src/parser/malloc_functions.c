@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   malloc_functions.c                                 :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/09/02 16:33:03 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/09/14 21:18:02 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   malloc_functions.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/02 16:33:03 by kkalika           #+#    #+#             */
+/*   Updated: 2023/11/02 19:37:58 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	malloc_redirects_node(t_redirect **red, int type)
 	if (!new)
 		return ;
 	new->name = NULL;
+	new->heredoc_fd = -1;
 	new->type = type;
 	temp = (*red);
 	if (temp)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   declarations.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 16:37:49 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/27 15:44:25 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/11/02 20:29:18 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ struct s_input
 
 /**
  * @param type The token type i.e. output redirect
- * @param fd The file descriptor
  * @param *name The name of the file to redirect to or the delimiter for heredocs
+ * @param heredoc_fd The file descriptor for the temporary heredoc file
  */
 typedef struct s_redirect				t_redirect;
 
@@ -69,6 +69,7 @@ struct s_redirect
 {
 	t_token_type	type;
 	char			*name;
+	int				heredoc_fd;
 	\
 	t_redirect		*next;
 };
