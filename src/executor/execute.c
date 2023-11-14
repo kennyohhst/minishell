@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 20:26:55 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/14 18:21:30 by kkalika          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   execute.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: opelser <opelser@student.codam.nl>           +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/10 20:26:55 by opelser       #+#    #+#                 */
+/*   Updated: 2023/11/14 12:51:38 by opelser       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static int	run_command(t_command *cmd, t_data *data, int fd_in, int pipe_fd[2])
 	pid_t	pid;
 	int		fd_out;
 
+	init_signals(CHILD);
 	if (pipe_fd)
 		fd_out = pipe_fd[1];
 	else
@@ -59,7 +60,6 @@ static int	run_command(t_command *cmd, t_data *data, int fd_in, int pipe_fd[2])
 			close(pipe_fd[0]);
 		child_process(cmd, data, fd_in, fd_out);
 	}
-	init_signals(IGNORE);
 	close_fds(fd_in, fd_out);
 	cmd->pid = pid;
 	return (1);
