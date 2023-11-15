@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/15 15:43:24 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 16:20:21 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ t_envp		*create_new_envp_node(char *str);
 char		**envp_list_to_arr(t_envp *envp);
 char		*ft_getenv(t_envp *envp_list, char *id);
 void		add_oldpwd(t_envp *envp);
+void		add_envp_node(t_data *data, t_envp *new);
 
 // ======= lexer ============================================================ //
 
-void   		type_read(t_input *tokens);
+void		type_read(t_input *tokens);
 void		data_tester(t_data *cmd);
 void		token_tester(t_input *tokens);
 t_input		*lexer(char *input, t_data *data);
@@ -94,7 +95,7 @@ int			handle_builtin(t_command *cmd, t_data *data, int fd_in, int fd_out);
 int			echo(char **argv, int fd_out);
 int			pwd(int fd_out);
 int			env(t_envp *envp, int fd_out);
-int			cd(char **argv, t_envp *envp);
+int			cd(t_data *data, char **argv);
 int			export(t_data *data, char **argv, int fd_out);
 int			unset(t_data *data, char **argv);
 int			ft_exit(t_data *data, char **argv);

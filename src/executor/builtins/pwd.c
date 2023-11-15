@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: kkalika <kkalika@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/10 17:03:55 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 15:03:35 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/10 17:03:55 by opelser           #+#    #+#             */
+/*   Updated: 2023/11/15 16:01:58 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	pwd(int fd_out)
 
 	if (!getcwd(cwd, 1024))
 	{
-		perror("getcwd failed");
+		print_error("getcwd", NULL, strerror(errno));
 		return (1);
 	}
 	if (write(fd_out, cwd, ft_strlen(cwd)) == -1)

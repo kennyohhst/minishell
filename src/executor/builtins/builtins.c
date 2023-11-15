@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 23:15:01 by opelser           #+#    #+#             */
-/*   Updated: 2023/09/14 18:26:14 by kkalika          ###   ########.fr       */
+/*   Updated: 2023/11/15 16:21:03 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	execute_builtin(char **argv, t_data *data, int fd_out)
 	if (!ft_strcmp(command, "env"))
 		return (env(data->envp, fd_out));
 	if (!ft_strcmp(command, "cd"))
-		return (cd(argv, data->envp));
+		return (cd(data, argv));
 	if (!ft_strcmp(command, "export"))
 		return (export(data, argv, fd_out));
 	if (!ft_strcmp(command, "unset"))

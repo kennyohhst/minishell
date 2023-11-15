@@ -27,6 +27,7 @@ SRC_FILES := \
 				utils.c							\
 				env_list_create.c				\
 				env_list_utils.c				\
+				env_list_update.c				\
 				free_functions.c				\
 \
 				lexer/quote_remover.c			\
