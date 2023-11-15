@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:41:28 by code              #+#    #+#             */
-/*   Updated: 2023/11/02 20:58:59 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 15:43:09 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	free_redirects(t_redirect *redirect)
 	}
 }
 
-void	free_envp(t_envp *envp)
+void	free_envp_list(t_envp *envp)
 {
 	t_envp	*tmp;
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   unset.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/24 23:21:29 by opelser       #+#    #+#                 */
-/*   Updated: 2023/07/31 19:03:21 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 23:21:29 by opelser           #+#    #+#             */
+/*   Updated: 2023/11/15 15:46:46 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,23 @@
 void	id_check(t_data *data, char *str)
 {
 	t_envp		*node;
+	t_envp		*prev;
 
+	prev = NULL;
 	node = data->envp;
 	while (node)
 	{
 		if (!ft_strcmp(str, node->id))
 		{
-			if (node->prev)
-				node->prev->next = node->next;
-			else
+			if (node == data->envp)
 				data->envp = node->next;
-			if (node->next)
-				node->next->prev = node->prev;
+			if (prev)
+				prev->next = node->next;
 			node->next = NULL;
 			free_envp_list(node);
 			return ;
 		}
+		prev = node;
 		node = node->next;
 	}
 }

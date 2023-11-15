@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/04/05 17:47:25 by kkalika       #+#    #+#                 */
-/*   Updated: 2023/11/14 12:44:28 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
+/*   Updated: 2023/11/15 15:43:24 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void		init_signals(t_signals sig);
 void		lst_add_back_envp(t_envp *node, t_envp *new_node);
 t_envp		*environ_to_list(char **environ);
 t_envp		*create_new_envp_node(char *str);
-void		*free_envp_list(t_envp *node);
 char		**envp_list_to_arr(t_envp *envp);
 char		*ft_getenv(t_envp *envp_list, char *id);
+void		add_oldpwd(t_envp *envp);
 
 // ======= lexer ============================================================ //
 
@@ -102,7 +102,7 @@ int			ft_exit(t_data *data, char **argv);
 // ========= free_data======================================================= //
 
 void		free_cmd(t_command *cmd);
-void		free_envp(t_envp *envp);
+void		free_envp_list(t_envp *envp);
 
 // ========= utils ========================================================== //
 

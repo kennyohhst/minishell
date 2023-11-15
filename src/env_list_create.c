@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   env_list_create.c                                  :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/23 17:25:45 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 17:03:48 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   env_list_create.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 17:25:45 by opelser           #+#    #+#             */
+/*   Updated: 2023/11/15 15:44:31 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ t_envp	*init_envp_node(void)
 	new_node->str = NULL;
 	new_node->id = NULL;
 	new_node->value = NULL;
-	new_node->prev = NULL;
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -91,39 +90,37 @@ t_envp	*create_new_envp_node(char *str)
 	if (!new->str)
 	{
 		write(STDERR_FILENO, "minishell: Malloc fail\n", 24);
-		return (free_envp_list(new));
+		return (free_envp_list(new), NULL);
 	}
 	if (set_env_id(new, str) == -1)
-		return (free_envp_list(new));
+		return (free_envp_list(new), NULL);
 	if (set_env_value(new, str) == -1)
-		return (free_envp_list(new));
+		return (free_envp_list(new), NULL);
 	return (new);
 }
 
 t_envp	*environ_to_list(char **environ)
 {
 	t_envp		*current;
+	t_envp		*prev;
 	t_envp		*head;
 	int			i;
 
-	head = create_new_envp_node(environ[0]);
-	if (!head)
-		return (NULL);
-	current = head;
-	i = 1;
+	i = 0;
+	prev = NULL;
 	while (environ[i])
 	{
-		current->next = create_new_envp_node(environ[i]);
-		if (current->next == NULL)
+		current = create_new_envp_node(environ[i]);
+		if (current == NULL)
 			exit(1);
-		current->next->prev = current;
+		if (i == 0)
+			head = current;
+		if (prev)
+			prev->next = current;
+		prev = current;
 		current = current->next;
 		i++;
 	}
-	current->next = create_new_envp_node("OLDPWD");
-	if (!current->next)
-		exit(1);
-	current->next->prev = current;
-	current = current->next;
+	add_oldpwd(head);
 	return (head);
 }

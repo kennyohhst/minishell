@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   cd.c                                               :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/10 20:09:42 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 14:55:53 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/10 20:09:42 by opelser           #+#    #+#             */
+/*   Updated: 2023/11/15 15:39:10 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // need to update oldpwd and pwd
+
+// static void	update_pwd(t_envp *envp)
+// {
+
+// }
 
 static int	cd_oldpwd(t_envp *envp)
 {

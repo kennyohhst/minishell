@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   export.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/21 22:37:25 by opelser       #+#    #+#                 */
-/*   Updated: 2023/09/14 15:03:02 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/21 22:37:25 by opelser           #+#    #+#             */
+/*   Updated: 2023/11/15 15:01:22 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,12 @@ void	print_no_args(t_data *data, int fd_out)
 	}
 }
 
-static void	replace_old(t_data *data, t_envp *old, t_envp *new)
+static void	replace_old(t_data *data, t_envp *prev, t_envp *old, t_envp *new)
 {
-	if (old->prev)
-		old->prev->next = new;
-	else
+	if (prev == NULL)
 		data->envp = new;
-	if (old->next)
-		old->next->prev = new;
-	new->prev = old->prev;
+	else
+		prev->next = new;
 	new->next = old->next;
 	old->next = NULL;
 	free_envp_list(old);
@@ -76,12 +73,13 @@ static void	replace_old(t_data *data, t_envp *old, t_envp *new)
 void	add_node(t_data *data, t_envp *new)
 {
 	t_envp		*duplicate;
+	t_envp		*prev;
 
+	prev = NULL;
 	duplicate = data->envp;
-	while (duplicate)
+	while (duplicate && ft_strcmp(duplicate->id, new->id))
 	{
-		if (!ft_strcmp(duplicate->id, new->id))
-			break ;
+		prev = duplicate;
 		duplicate = duplicate->next;
 	}
 	if (duplicate)
@@ -89,7 +87,7 @@ void	add_node(t_data *data, t_envp *new)
 		if (duplicate->value && !new->value)
 			free_envp_list(new);
 		else
-			replace_old(data, duplicate, new);
+			replace_old(data, prev, duplicate, new);
 	}
 	else
 	{

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   declarations.h                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/26 16:37:49 by opelser       #+#    #+#                 */
-/*   Updated: 2023/11/14 12:50:40 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   declarations.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/26 16:37:49 by opelser           #+#    #+#             */
+/*   Updated: 2023/11/15 15:02:09 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ struct s_environment_pointers
 	char	*id;
 	char	*value;
 	\
-	t_envp	*prev;
 	t_envp	*next;
 };
 

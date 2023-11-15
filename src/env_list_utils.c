@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   env_list_utils.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: opelser <opelser@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/05/23 20:24:02 by opelser       #+#    #+#                 */
-/*   Updated: 2023/08/02 16:14:11 by opelser       ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   env_list_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 20:24:02 by opelser           #+#    #+#             */
+/*   Updated: 2023/11/15 15:31:20 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	lst_add_back_envp(t_envp *node, t_envp *new_node)
 	while (node->next)
 		node = node->next;
 	node->next = new_node;
-	new_node->prev = node;
 }
 
 char	*ft_getenv(t_envp *envp_list, char *id)
@@ -35,23 +34,24 @@ char	*ft_getenv(t_envp *envp_list, char *id)
 	return (NULL);
 }
 
-void	*free_envp_list(t_envp *node)
+void	add_oldpwd(t_envp *envp)
 {
-	t_envp	*next;
-
-	while (node)
+	t_envp	*prev;
+	t_envp	*current;
+	
+	current = envp;
+	while (current)
 	{
-		next = node->next;
-		if (node->str)
-			free(node->str);
-		if (node->id)
-			free(node->id);
-		if (node->value)
-			free(node->value);
-		free(node);
-		node = next;
+		prev = current;
+		current = current->next;
 	}
-	return (NULL);
+	if (ft_getenv(envp, "OLDPWD") == NULL)
+	{
+		current = create_new_envp_node("OLDPWD");
+		if (!current)
+			exit(1);
+		prev->next = current;
+	}
 }
 
 int	envp_list_size(t_envp *envp)
