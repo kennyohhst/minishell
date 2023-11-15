@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/15 17:02:22 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:39:39 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,6 @@
 # include "declarations.h"
 # include "errno.h"
 
-//		~ create_input_list.c
-
-void		create_input_list(t_input **cmd, char *str, t_data *data);
-void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
-t_input		*free_tokens(t_input *list);
-
-void		init_signals(t_signals sig);
-
 // ======== env utils ======================================================= //
 
 void		lst_add_back_envp(t_envp *node, t_envp *new_node);
@@ -46,13 +38,13 @@ void		add_envp_node(t_data *data, t_envp *new);
 
 // ======= lexer ============================================================ //
 
-void		type_read(t_input *tokens);
-void		data_tester(t_data *cmd);
-void		token_tester(t_input *tokens);
 t_input		*lexer(char *input, t_data *data);
+void		add_nodes(t_input **cmd, t_input *temp, char *str, int type);
+void		create_input_list(t_input **cmd, char *str, t_data *data);
+int			edgecase(char c);
+int			end_of_quotes(char *str, char quote, int i);
+void		type_read(t_input *tokens);
 int			check_quotes(char *str);
-int			quotes_finder(char *str, char c);
-int			remove_quotes(char *str, char c);
 int			std_remove_quotes(char *str, char c);
 int			p_d_token(t_input **cmd, char *str, int i, char c);
 int			d_quotes_token(t_input **cmd, char *str);
@@ -60,33 +52,27 @@ int			s_quotes_token(t_input **cmd, char *str);
 int			std_token(t_input **cmd, char *str);
 char		*expander(t_data *data, char *input);
 
-// ======== valid_pipe_check.c ============================================== //
-
-int			valid_pipe_check(char *str);
-
 // ======== parser ========================================================== //
 
+t_command	*parser(t_input *tokens);
 int			valid_input_check(t_input *token);
 bool		is_edgecase(char c);
 int			end_position(char *str);
 int			skip_singles(int i, char *token);
 int			find_start_exit_var(char *str);
-t_command	*parser(t_input *tokens);
-int			list_length(t_input *input);
 void		malloc_cmd_node(t_command **cmd, t_command *temp, t_input **token);
 void		malloc_redirects_node(t_redirect **red, int type);
 int			pipe_encounter(t_command **command, t_input **token, int i);
 
 // ========= executer ======================================================= //
 
+int			execute(t_data *data);
 int			handle_heredoc(t_data *data);
 int			find_heredoc(t_data *data, t_redirect *redirect);
 int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
-int			execute(t_data *data);
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);
 void		set_fds(int *fd_in, int *fd_out);
 void		close_fds(int fd_in, int fd_out);
-void		execve_error(char *arg);
 
 // ========= executer/builtins=============================================== //
 
@@ -105,9 +91,12 @@ int			ft_exit(t_data *data, char **argv);
 
 void		free_cmd(t_command *cmd);
 void		free_envp_list(t_envp *envp);
+t_input		*free_tokens(t_input *list);
 
 // ========= utils ========================================================== //
 
 void		print_error(char *program_name, char *arg, char *error_msg);
+void		init_signals(t_signals sig);
+void		execve_error(char *arg);
 
 #endif

@@ -3,25 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   quote_remover.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 17:19:02 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/15 16:32:32 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:23:48 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	repetitive_quotes(char *str, char c)
+int	edgecase(char c)
 {
-	int i;
+	if (c == '\0')
+		return (-1);
+	else if (c == ' ' || c == '|' || c == '>' || c == '<')
+		return (1);
+	else if (c == '\"' || c == '\'')
+		return (2);
+	return (0);
+}
+
+int	end_of_quotes(char *str, char quote, int i)
+{
+	while (str[i] && str[i] != quote)
+		i++;
+	return (i);
+}
+
+static void	repetitive_quotes(char *str, char c)
+{
+	int	i;
 	int	count;
 
 	i = 0;
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == c)		
+		if (str[i] == c)
 			count++;
 		i++;
 	}
@@ -29,15 +47,15 @@ void	repetitive_quotes(char *str, char c)
 		ft_memset(str, '\0', ft_strlen(str));
 }
 
-void handle_quotes(char *str, char c, char d, bool quote)
+static void	handle_quotes(char *str, char c, char d, bool quote)
 {
-    size_t		i;
+	size_t	i;
 	int		x;
-    
+
 	(void) quote;
 	(void) d;
 	x = 0;
-    i = 0;
+	i = 0;
 	repetitive_quotes(str, c);
 	while (i < ft_strlen(str))
 	{
@@ -49,16 +67,16 @@ void handle_quotes(char *str, char c, char d, bool quote)
 		}
 		else if (str[i] == d && (x % 2) == 0 && quote == false)
 		{
-			handle_quotes(str+i, d, c, false);
+			handle_quotes(str + i, d, c, false);
 			return ;
 		}
 		i++;
 	}
 }
 
-void    type_read(t_input *tokens)
+void	type_read(t_input *tokens)
 {
-	t_input *temp;
+	t_input	*temp;
 
 	temp = tokens;
 	while (temp)

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kkalika <kkalika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/15 16:58:06 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:34:33 by kkalika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*replace_env_with_value(char *input, char *env_var, int start, int end)
+static char	*replace_env_with_value(char *input, char *env_var,
+			int start, int end)
 {
 	char	*first_part;
 	char	*second_part;
@@ -36,7 +37,7 @@ char	*replace_env_with_value(char *input, char *env_var, int start, int end)
 	return (input);
 }
 
-int	skip_heredoc(int i, char *str)
+static int	skip_heredoc(int i, char *str)
 {
 	int		count;
 	int		temp;
