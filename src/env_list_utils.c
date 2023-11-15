@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 20:24:02 by opelser           #+#    #+#             */
-/*   Updated: 2023/11/15 15:31:20 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:04:17 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	add_oldpwd(t_envp *envp)
 {
 	t_envp	*prev;
 	t_envp	*current;
-	
+
 	current = envp;
 	while (current)
 	{

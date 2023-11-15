@@ -6,13 +6,11 @@
 /*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 20:09:42 by opelser           #+#    #+#             */
-/*   Updated: 2023/11/15 16:29:36 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 16:46:59 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// need to update oldpwd and pwd
 
 static int	update_oldpwd(t_data *data)
 {

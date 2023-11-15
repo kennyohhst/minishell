@@ -6,7 +6,7 @@
 /*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:47:25 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/15 16:20:21 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:02:22 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int			pipe_encounter(t_command **command, t_input **token, int i);
 // ========= executer ======================================================= //
 
 int			handle_heredoc(t_data *data);
+int			find_heredoc(t_data *data, t_redirect *redirect);
 int			set_command_path(t_command *cmd_struct, t_envp *envp_list);
 int			execute(t_data *data);
 int			handle_redirects(t_command *cmd, int *fd_in, int *fd_out);

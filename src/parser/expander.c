@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/09 17:15:28 by code             ###   ########.fr       */
+/*   Updated: 2023/11/15 16:58:06 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static char	*handle_dollar_var(t_data *data, char *input, int *i)
 		free(id);
 		input = replace_env_with_value(input, env_var, *i, end);
 		if (!env_var)
-			return (input) ;
+			return (input);
 		(*i) += end - 1;
 	}
 	else
@@ -114,15 +114,15 @@ char	*expander(t_data *data, char *input)
 	int		i;
 	char	*env_var;
 	int		q;
-	
+
 	q = -1;
 	i = 0;
 	while (i < (int) ft_strlen(input))
 	{
-		if (input[i] == '\"' && input[i+1] != '\0')
+		if (input[i] == '\"' && input[i + 1] != '\0')
 			q *= -1;
 		if (q == -1)
-			i = skip_singles(i, input);	
+			i = skip_singles(i, input);
 		i = skip_heredoc(i, input);
 		input = handle_dollar_var(data, input, &i);
 	}

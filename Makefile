@@ -45,6 +45,7 @@ SRC_FILES := \
 				parser/expand_tools.c			\
 \
 				executor/heredoc.c				\
+				executor/heredoc_utils.c		\
 				executor/execute.c				\
 				executor/execute_utils.c		\
 				executor/redirects.c			\

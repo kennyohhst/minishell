@@ -6,13 +6,13 @@
 /*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 14:28:59 by opelser           #+#    #+#             */
-/*   Updated: 2023/11/15 15:06:28 by opelser          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:04:41 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void sig_child(int sig)
+static void	sig_child(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -45,7 +45,6 @@ static void	sig_heredoc(int sig)
 		exit(130);
 	}
 }
-
 
 void	init_signals(t_signals sig)
 {

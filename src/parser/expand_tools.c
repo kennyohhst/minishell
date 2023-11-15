@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: code <code@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: opelser <opelser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 20:27:18 by kkalika           #+#    #+#             */
-/*   Updated: 2023/11/08 14:37:40 by code             ###   ########.fr       */
+/*   Updated: 2023/11/15 17:05:06 by opelser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	skip_singles(int i, char *token)
 
 int	find_start_exit_var(char *str)
 {
-	int	i;
-	int	q;
-	
+	int		i;
+	int		q;
+
 	q = -1;
 	i = 0;
 	while (str[i])
